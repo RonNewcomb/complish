@@ -1,0 +1,340 @@
+Complish has
+
+spaces allowed in identifiers.
+mandatory spellcheck.
+adjective and noun forms of basic types (numeric/number, text/textual, etc.).
+very limited levels of nesting.
+
+?whitespace significant like parenthesis?  ("map  adding a number to 5  to my numbers")
+?implicit function ends via dependency trace or when a new function is defined or a paragraph break or a period or a (mandatory) catch block for unnamed exceptions or uncomputable return parameters? error if imperative doesn't seem to "fit" into previous function?
+
+enums (via "The model of a Chevy is either Mustang or Camry", or "An animal is either a dog, cat, or horse. A fish is an animal.").
+numbers with units, literal struct instances (like dates); custom parse/print.
+-- subclasses of numbers and strings, for units and addresses/cities/states/etc.
+user-defined types (subclassable objects).
+
+single inheritance.
+multi-assignment of properties (via "like...")
+aggregate properties (via "the average of the nouns", defined by "The numeric average of many nouns is ...")
+?metaclass properties and inheritable static members (via "The textual service of every baseXO is "foo".").
+?type parameters? (via "To print a type, ...the type.."?) ("To print a typical thing,..."
+
+function definition (via "A noun verbs a noun with a noun by..." syntax).
+function invocation (via "the noun which the noun verbed" relative clause syntax).
+caller-defined return values (via past participal "the noun verben to" syntax) such as parse/print.
+
+unification of structs, functions/multimethods, constraints (via relations, very Prolog-like).
+auto-named function parameters (via "the type" or "the type being verbed with" syntax).
+
+strongly-typed built-in lists (via "many nouns"). 
+auto-map (via a function "To verb a noun" will also accept "many nouns" and Map(itself, nouns) implicitly).
+auto-filter (via a function "To verb a noun" can filter "many nouns" via "the many verbed nouns").
+auto-fold (via "the average of the nouns", defined by "The numeric average of many nouns is ...")
+auto-First (via relative clause syntax: "the noun which was verbed". Or define a fold.)
+auto-int-to-float on division (keep int-to-int division via Floor, Round, Banker's Round, or Ceiling to "typecast" the float back to int)
+auto-generate? key-value constructions? stream of objs?
+
+named signatures / delegates (via "<a participial phrase with indeterminate nouns> is a noun" syntax) 
+higher-order functions 
+	(invited via "a noun" in the parameter list, where the noun is the name of a signature)
+	(invoked via "try the noun" or similar).
+pass partially-applied functions (via participial phrase with a partially-applied parameter list: "map  adding a number to 5  to my numbers").
+can't do lambdas
+closures (via participial phrase with an at least partially-applied parameter list, using a local variable).
+
+partially applied functions (via passing the function as a participial phrase with "a noun" in one spot and an actual value supplied in another).
+function composition. (via a list of delegates? the new function is "earning, buying, and owning.")
+
+?immutable types (via "the noun before verbing" syntax) 
+	NOTE that immutable anon objs in C# prevented a beautiful regex interface
+	declare vars mutable or immutable; namespace declares one of them the default
+
+data relations, creates OO relations included (via noun-verb-noun sentences).
+temporal relations (via "before/after", always/never, eventually/?, during/except). 
+constraints (binding, temporality, bounds checking, overflow checking, dereference checking) via temporal relations, value relations.
+
+
+Namespaces are important because of 2,000 words in a typical person's vocabulary. 
+Namespace properties are the metaobject protocols.
+- backtracking engine for regex matching, prolog solving, SQL joining, relation walking (via "should" in an imperative statement)? "find"?
+- temporal relations connecting a multimethod to another multimethod via before/after?
+- pure multimethods, impure rules? But impure/stateful objects can relate to pure/immutable objects if the pure functions never mention those relations, or the impure objects?
+
+=========
+
+parts of speech in Complish
+
+verb
+	infinitive ("to verb") defines relation (likely func)
+	main (verbs/ verb) defines relation
+	gerund (verbing) is a func passed to another func
+	adjective (verben) performs Filter()
+
+noun
+	indeterminate/many, types parameter (even in lambdas)
+	determinate, represents storage/variable
+
+adjective
+	from verb, performs Filter()
+	from type, types parameter
+
+preposition (part of function signatures)
+
+conjunction
+	and
+	or
+	,
+	;
+	.
+	para break
+
+subordinating conjunction
+	before/after
+	during/while
+	except
+	instead of
+	which, consults a relation for a value
+
+====
+"By" : function body signifier or parameter signifier?  A: both unless specified otherwise. All "struct" relations will take a "by <body_definition>" which means they're no longer a struct. But what if you *want* a struct to use By as just another preposition?  Can Complish detect the type "by <simple_object>" and act accordingly? (If so, problem solved.)
+
+To fly by a thing, ....
+
+Fly by mounting a broom and shoving off.
+
+Fly by using something by saying "up up and away" and using the thing.
+
+===
+The "body" of a function is implicitly the part that uses the other parts of the definition. 
+But, prolog doesn't have such a clean division here.
+Since any parameter is a return value, the body of the function is re-written so that.. it is a parameter and the other parameter is the body!
+
+	To give a number to a contenstant, add the number to the contestant's smile, multiply by 2, and equal/set/change the contestant's rank to it.
+		rank = (#+smile)*2
+
+implicitly has three numbers: the first number, the smile, and the rank. The defined version treats the rank as the return value. 
+But now we invoke
+
+	the number which was given to the contestant
+		solve for #
+		rank/2 = #+smile
+		rank/2-smile = #
+	
+	the contestant's smile which 5 was given to
+		solve for smile
+		rank/2 - # = smile
+		... but rank is an input and "the type which" doesn't input that!
+
+	the contestant which 5 was given to
+		solve for contestant
+		solve for smile and rank
+		rank/2-smile = #
+		loop through contestants, choose first for whom rank/2-smile = 5
+
+Works perfect with objects, but higher-order functions?	
+
+
+	To map a skill to many numbers, try the skill each number.
+
+
+	the skill which was mapped to mylist
+	the numbers which cooking was mapped to
+
+Well, I don't think destructive assignment allows me to reconstruct any such function, and isn't the search space huge anyway? Or, instead, keep a list of the functions which have been applied to that list. Then it's just a lookup for the most recent signature match.
+It's a case of asking one's self "what was done with this object? Is this the list that we had done X to?" and going from there.
+
+======
+All closures have a definition and a body. 
+All functions are closures and are also multimethods. 
+Multiclosures?
+None are static, unless I have a Type parameter. (differentiate between parametric types and types-and-arguments. The latter is used in reflection, the former in templating.)
+
+But since closures can be defined within other closures, how's the compiler to tell whether it's a new function definition or a nested one?  Well, the outer will use the inner, by passing it to a higher-order function, or putting it in a var.  So this is called as part of the outer:
+	
+	map (verb something) to many somethings;
+
+so after the main verb, a gerund phrase of some sort is there
+
+	map  adding 5 to a number  to  the numbers;
+
+and the types match: a single-param func (because of partial application)
+
+Outer function definition takes many "invocations" which are fully-applied. Because if any one of them is not fully applied, then what could we possibly do with the outer function even with full parameters? An invocation of a higher-order function "makes room" for a partially applied function to pass parsing. 
+
+	map  increasing a number  to the numbers;
+	map  increasing 5  to the numbers; [error: "map" needs a function that takes "a" number.]
+	for each of the numbers try increasing the number;
+
+So, the body of an outer function accepts only fully-applied invocations (not counting if those invocations accept partials), or, it will "accept" a fully un-applied signature, signifying its end and the beginning of another. 
+
+For the un-applied signature, if it's a struct definition, is that OK?  What if the struct is in the same paragraph?  Both are fine; the outer function ends. 
+
+What if a struct definition is followed, in the next sentence, by what seems to be an invocation, either partially applied or not?  And arent' some of these invocations actually always-true constraints?  What's the difference between a constraint and an invocation?  
+
+Do this for a function that calls other functions and/or contains a constraint sentence:
+
+	To give a number to a contenstant, 
+		add the number to the contestant's smile, 
+		multiply by 2, 
+		and equal/set/change the contestant's rank to it.
+	A/The contestant's smile should always be greater than the smile of any/each/all audience member.
+
+	rank = (#+smile)*2
+
+Note that a constraint sentence seems to work with either the or a. If the constraint sentence is positioned within a func body, "the" will probably be the norm, since "the" is used everywhere else in the body.  But a constraint sentence can stand on its own -- it's technically like a struct definition that way -- where "a" is normal.
+
+And can "should always" be used with any verb, even "give" when its imperative? Does a "should always" sentence make sense with a how?
+
+Functions will be used in constraints. 
+
+	A character is outside the game boundary when <<body>>
+
+	The main character should never be outside the game boundary.
+	When an enemy is outside the game boundary, delete the enemy. 
+
++++++
+
+Prolog
+	relational language, just like SQL. 
+	define relationships. 
+	query relationships. yes/no questions, which questions, as well as "what combinations" questions
+	backtracking + unification (bind variables) define prolog. 
+	declarative character: use the same "procedure" in different ways: a parameter can be input in one invocation but output on a different invocation. 
+		... said "procedures" are just data. not compiled. They are SQL tables. 
+
+
+
+======
+how to tell when the signature of a function parameter ends and the rest of the parameters belong to the outer function's (the H.O. function's) signature?
+0) duplicated prepositions definitely end the inner's sig. 
+1) use the signature of an existing function that will be passed to the HO function. This is "by example". 
+ a) guarantees at least one function in the code will fit.
+ b) but, that function may have multiple signatures of varying length, so we're ambiguous again.
+2) use named signatures.  "Giving something to someone is caring.  To learn caring for someone, ...."
+ a) clear. consistant. names types.
+ b) wordier. requires extra sentences.
+ c) not necessarily mutually exclusive with other approaches
+3) don't accept inner signatures at all. "To learn giving for someone..." where any function can be passed.
+ a) short, easy
+ b) how many params must the invocation supply? None? then what's the point? 3? then how can the compiler typecheck?
+ c) can be used with #2 above
+4) use a comma. "To learn giving somethign to someone, for someone, ... "
+ a) punctuation-wordy. 
+ b) if the sig also ends the outer sig, we can't use two commas in a row. 
+ c) doesn't read well. 
+
+
+when matching an inner sig, the matcher must know if "trailing words" are ok (because they're part of the outer sig). 
+
+when matching an  inner sig, some bound arguments are ok. That would be creating a partially-bound version of the passed function, which reduces its arity, which allows it to be passed to a HO function accepting exactly that arity. 
+
+When matching an entire temporal constraint, there are both bound & unbound args, though (I think) every bound points back to an unbound elsewhere in teh same sentence.  (So, a temporal constraint is considered its own scope?? But it can reference global vars, and maybe function vars if its completely within that func's scope?  Or maybe all temporal constraints are, like properties-to-containers, in a separate scope tree than functions?) 
+
+When matching relative clauses, TheSearchFieldIsNext implies that a "I am the search field" token would match the signature that the invocation is trying to match. 
+
+When matching relative clauses, keep matching past the end of a possible signature, because the last field might be the Search field.
+
+The order of params is unimportant except with types appearing multiple times. 
+
+	Giving a number to a number is an activity.
+	
+	learn dividing a number by a number. 
+
+Prepositions won't even match.  Functional programming has the ordering problem, and solves it by wrapping a lambda around it.  (Assuming a higher-order swap function doesn't already exist.)  
+
+	learn operating on a number and a number (via dividing the second number by the first number)
+
+Maybe complish should just "number" the parameters.
+
+	learn dividing a second number by a first number. 
+
+So when parsing the above, three things:
+
+	1) the signature to match is in the definition of Learn, (which uses the definition of Activity here)
+	2) neither the verb nor the prepositions need match
+	3) types will match
+	4) specific ordinals are allowed after an indefinite article (first, second)
+	5) in the cases that polymorphism messes with things, typecasts may be required
+
+	learn dividing a percentage as a number by a first number
+
+
+
+    /// <summary>Part of CreateParameterObject, which does the work for ParseNounPhraseForParameter. 
+    /// When declaring the parameters of a function's signature, this helper digests the "many..." parameter, which isn't
+    /// a trivial operation, considering that lists have subtypes, some of which may not be known yet.</summary>
+    static parameter CreateListParameterObject(ref StandardType? type, string ident, bool adjnounswap)
+    {
+        if (ident == null && type == null)
+        {
+            Console.WriteLine("  ERROR: many whats?");
+            method_being_constructed.problems++;
+            return new parameter("", ident, Article.many, (StandardType)0, adjnounswap);
+        }
+
+        //either ident has value, type has value, or both have value
+        // if basetype has value, then ident must not be a type. i.e., warn of "numeric car" or "many numeric cars" when car is of type object
+        if (ident.HasValue() && type.HasValue)
+        {
+            InheritedType it = InheritanceTree.Find(item => item.name == ident);
+            if (it != null && it.typeid != type.Value)
+                Console.WriteLine("  WARNING: '{0}' is declared elsewhere as a '{1}', not a '{2}'", it.name, NameOfType(it.typeid), NameOfType(type.Value));
+        }
+
+        // for the term "several/many/multiple numbers", set ident to the whole term "many numbers" -- a generated name
+        if (string.IsNullOrEmpty(ident)) ident = string.Format("many {0}", type);
+
+        // for the term "many gadgets", set type to "gadgets" by finding the type by name, or making a new one
+        if (type == null)
+        {
+            InheritedType subtype = InheritanceTree.Find(item => item.name == ident);
+            if (subtype == null)
+            {   // make a new type, "gadgets", whose parent (and subtype, if applicable) to be filled out later?
+                subtype = new InheritedType() { name = ident, typeid = (StandardType)(InheritanceTree.Count + 2) };
+                InheritanceTree.Add(subtype);
+            }
+            type = subtype.typeid;
+        }
+
+        // now all three are populated:  mode, type, ident
+        // now, does our composite type already exist? Else make a new typeid
+        string typeAsString = type.Value.ToString();
+        InheritedType aggregate = InheritanceTree.Find(item => item.name == ident && item.parent == StandardType.list.ToString() && item.subtypes == typeAsString);
+
+        if (aggregate != null)
+        {
+            Console.WriteLine("  another '{0}' (a list of {1})", ident, NameOfType(type.Value));
+            return new parameter("", ident, Article.many, type.Value, adjnounswap);
+        }
+        aggregate = new InheritedType() { name = ident, parent = StandardType.list.ToString(), subtypes = type.Value.ToString(), typeid = (StandardType)(InheritanceTree.Count + 2) };
+        InheritanceTree.Add(aggregate);
+        just_declared_new_type = true;
+
+        string typename = NameOfType(type.Value);
+        if (ident != typename)
+            Console.WriteLine("  a list of {0}, called {1}", typename, ident);
+        else
+            Console.WriteLine("  a list of {0}", typename);
+
+        return new parameter("", ident, Article.many, type.Value, adjnounswap);
+    }
+
+
+Handle passive voice constructions like "the type1 to which the type2 WAS GIVEN".
+
+
+===========
+Jon Blow on videogames: 
+
+better explicit control over memory layout of objects? 
+* do properties need to be contiguous? can declare properties as "elsewhere" or can optimizer move it?
+* can array/string properties be allocated "in" the object?
+* moving functions around shouldn't requires lots of silly syntax chagnes (from -> to . and back)
+* optional and non-optional types
+* multiple arrays can be "of corresponding length"
+* a struct / object of variable size because it's fields are variable size (string, array, etc)
+* deref'ing freed memory will happen. Give great error messages.
+* memory ownership. Enforcing strong/weak references: exactly one strong ref.
+* object pooling / recycling easier. Init seperate from allocate. 
+
+explore Rust

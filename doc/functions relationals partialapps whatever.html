@@ -1,0 +1,101 @@
+<p>This doc does NOT mean using the relative clause method of embedding an expression within another. Rather it means replacing a parameter with an unbound type, like it was declaring rather than invoking: add 5 to <i>a number</i>.
+
+</p><p>This doc DOES assume that we're in an invocation context, i.e., inside the <font color="red">function</font> body. 
+
+</p><p>When invoking a relation during a body: <ul>
+<li>A relation is either a <font color="red">function</font>...<br>
+	<blockquote><font color="lightgreen">A person</font> <font color="red">sells</font> <font color="lightgreen">a car</font> by...</blockquote>
+	...or a list of <font color="orange">structs</font>.
+	<blockquote><font color="lightgreen">A person</font> <font color="orange">loves</font> <font color="lightgreen">a person</font>.</blockquote> 
+<li>A relation can either stand alone as a statement...
+	<blockquote><font color="green">Ron</font> <font color="red">sells</font> <font color="green">the Buick</font>.</blockquote> 
+	... or be embedded within <font color="blue">a larger statement</font> as an expression...
+	<blockquote><font color="blue">Ron</font> <font color="blue">learns</font> <font color="green">Ron</font> <font color="red">selling</font> <font color="green">the Buick</font> <font color="blue">at college</font>.</blockquote> 
+<li>A relation can either be provided <font color="green">all </font>its arguments...
+	<blockquote><font color="green">Ron</font> <font color="red">sells</font> <font color="green">the Buick</font>.</blockquote> 
+	...<font color="green">s<font color="lightgreen">om</font>e</font> of them...
+	<blockquote><font color="lightgreen">A person</font> <font color="red">sells</font> <font color="green">the Buick</font>.</blockquote> 
+	...or <font color="lightgreen">none</font> of them.  
+	<blockquote><font color="lightgreen">A person</font> <font color="red">sells</font> <font color="lightgreen">a car</font>.</blockquote> 
+</ul>
+  
+</p><p><b>What happens in each situation of relation type, of placement, and parameter satisfaction (i.e. provided arguments)?</b> </p>
+
+<table>
+<tr><th>Relation</th><th>Placement</th><th> Args&nbsp;&nbsp;</th><th>Example</th><th width="50%">Result</th></tr>
+
+<tr><td><font color="orange">structs</font> </td> <td>expression<br><font color="blue">in&nbsp;a&nbsp;statement</font></td> <td><font color="green">all </font></td> <td><font color="blue">if</font> <font color="green">Ron</font> <font color="orange">loves</font> <font color="green">Maggie</font>...</td> <td>It is asking is it found in the <font color="orange">structs</font>.</td> </tr>
+
+<tr><td><font color="red">function</font></td> <td>expression<br><font color="blue">in&nbsp;a&nbsp;statement</font></td> <td><font color="green">all </font></td> <td><font color="blue">if</font> <font color="green">Ron</font> <font color="red">sells</font> <font color="green">the Buick</font>...</td> <td>it is asking does it satisfy the func or produce a contradiction</td> </tr>
+
+<tr><td><font color="orange">structs</font> </td> <td>statement<br>&nbsp;</td> <td><font color="green">all </font></td> <td><font color="green">Ron</font> <font color="orange">loves</font> <font color="green">Maggie</font>.</td> <td>insert it into the <font color="orange">structs</font>, unless the verb is negated in which case delete it instead</td> </tr>
+
+<tr><td><font color="red">function</font></td> <td>statement<br>&nbsp;</td> <td><font color="green">all </font></td> <td><font color="green">The owner</font> <font color="red">sells</font> <font color="green">the Buick</font>.</td> <td>invoke func, every arg should be considered going out of scope, and a new var brought into scope with any return value. (also, is the Ownership list modified by this call captured by-ref?)</td> </tr>
+
+<tr><td><font color="orange">structs</font> </td> <td>expression<br><font color="blue">in&nbsp;a&nbsp;statement</font></td> <td><font color="green">s<font color="lightgreen">om</font>e</font></td> <td><font color="blue">Learn</font> <font color="lightgreen">a person</font> <font color="orange">loving</font> <font color="green">Maggie</font> <font color="blue">at college</font>.</td> <td>Partial application, passed to a higher-order <font color="blue">function</font>.</td> </tr>
+
+<tr><td><font color="red">function</font></td> <td>expression<br><font color="blue">in&nbsp;a&nbsp;statement</font></td> <td><font color="green">s<font color="lightgreen">om</font>e</font></td> <td><font color="blue">Learn</font> <font color="green">Ron</font> <font color="red">selling</font> <font color="lightgreen">a car</font> <font color="blue">at college</font>.</td> <td>Partial application, passed to a higher-order <font color="blue">function</font>.</td> </tr>
+
+<tr><td><font color="orange">structs</font> </td> <td>statement<br>&nbsp;</td> <td><font color="green">s<font color="lightgreen">om</font>e</font></td> <td><font color="lightgreen">A person</font> <font color="orange">loves</font> <font color="green">Maggie</font>.</td> <td>Error (unless we're defining the nullable variable "the person which loves Maggie" that's retrieved via relative clause?)</td> </tr>
+
+<tr><td><font color="red">function</font></td> <td>statement<br>&nbsp;</td> <td><font color="green">s<font color="lightgreen">om</font>e</font></td> <td><font color="green">Ron</font> <font color="red">sells</font> <font color="lightgreen">a car</font>.</td> <td>Error (unless we're defining the nullable variable "the car which 
+Ron sells" that's retrieved via relative clause?)</td> </tr>
+
+<tr><td><font color="orange">structs</font> </td> <td>expression<br><font color="blue">in&nbsp;a&nbsp;statement</font></td> <td><font color="lightgreen">none</font></td> <td><font color="blue">Learn</font> <font color="orange">loving</font> <font color="blue">at college</font>.</td> <td>it is passing the relation to a higher-order <font color="blue">function</font>.</td> </tr>
+
+<tr><td><font color="red">function</font></td> <td>expression<br><font color="blue">in&nbsp;a&nbsp;statement</font></td> <td><font color="lightgreen">none</font></td> <td><font color="blue">Learn</font> <font color="red">selling</font> <font color="blue">at college</font>.</td> <td>it is passing the <font color="red">function</font> to a higher-order <font color="blue">function</font>.</td> </tr>
+
+<tr><td><font color="orange">structs</font> </td> <td>statement<br>&nbsp;</td> <td><font color="lightgreen">none</font></td> <td><font color="lightgreen">A person</font> <font color="orange">loves</font> <font color="lightgreen">a person</font>.</td> <td>Declare a new <font color="orange">struct</font>. End previous <font color="blue">function</font>? </td> </tr>
+
+<tr><td><font color="red">function</font></td> <td>statement<br>&nbsp;</td> <td><font color="lightgreen">none</font></td> <td><font color="lightgreen">A person</font> <font color="red">sells</font> <font color="lightgreen">a car</font> by...</td> <td>End previous <font color="blue">function</font>. Define a new <font color="red">function</font>.</td> </tr>
+
+</table>
+
+
+<p>A partially applied relation, as a statement, can be joined to another via a <b>subordinating conjunction</b> to form a constraint. But any <font color="green">bound parameters</font> must refer to an <font color="lightgreen">unbound parameter</font> elsewhere in the sentence.</p>
+
+<p>
+<font color="lightgreen">A person</font> 
+<font color="red">learns</font> 
+<font color="lightgreen">selling</font>
+<font color="red">at</font> 
+<font color="lightgreen">a place</font> 
+<b>before</b>
+<font color="green">the person</font> 
+<font color="red">sells</font>
+<font color="lightgreen">a car</font>
+.
+</p>
+
+<p>How to blend the temporal aspects of imperatives variables ("state") with the temporal constraints? A declarative variable means it can't be assigned to twice. </p>
+
+
+<h3>How to deal with imperatives outside of a sentence containing "to verb"?</h3> 
+
+<p>This breaks down into:<ol>
+<li> how to know a function definition is beginning that will span multiple sentences.
+<li> how to determine where the multi-sentence imperative function definition ends.
+</ol></p>
+
+<p>For #1, a continuation of an existing imperative: "To drive a car, get the keys. Open the door and enter the car. Shut the door." If a sentence is imperative, by itself, like "Verb the noun.", then it obviously must connect to something; it's obviously a step in a series of steps. So connect it to whatever sentence is in front of it? What if the preceding sentence doesn't make any sense? </p>
+
+<p>For #2, the fact that any naked imperative must connect to something previous (aside from parenthetical asides), and anything leftover must end it, by process of elimination. Well, if a statement only makes sense inside a function body, assume it belongs to the most recent one no matter how many sentences ago one was. (Well, check and see if it actually uses any of the outputs of them; if not then error.) I don't see any real problem with allowing struct definitions "mid-body". Heck, maybe they are intended to be local to the function.</p>
+
+
+<h3>Variables and Their History</h3>
+
+<p>How do variables with a past-participial verb in their name, like "the gotten car" or "the drawn wagon", work?<ol>
+<li> The variable is a global and the verb was the function in which it appeared?
+<li> "apply this single-input single-output function to this noun right now"?
+<li> "this was the function that was previously applied to this noun"? But what about functions which need be applied multiple times?
+</ol></p>
+
+<p>Declarations use adjectives as type: the textual title, the numeric length, etc.  Can a verb, translated into an adjective via the past participle, be used this way?  Say there's a function called sanitize which removes injection attacks or whatever. So the adjective would be sanitized, and a database-calling function might accept "a sanitized text" rather than just "a text". </p>
+
+<p>Well are the basic types actually a verb? No, "numeric" isn't a past tense verb. There *is* a verb "to number", but the type would be "a numbered list", not "a numeric list". </p>
+
+<p> The above presumed option #3, the function was previously applied. But for sanitized text it seems to work at that moment as well.  Should the code even make a distinction? Maybe sanitize will be applied to the text if it has not already been?  That would make sense, and it dovetails with the way lazy evaluation tends to create structures like 2+(3*(4/5))) instead of evaluating them strictly; here the history is checked to ensure text is sanitized.</p>
+
+<p>Does the notion of variable history extend to encompass immutable-once-assigned variables and imperative variables? (Not really?)</p>
+
+

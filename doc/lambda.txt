@@ -1,0 +1,209 @@
+Closures don't violate referential transparency as long as the bound values are immutable after the closure is created.
+
+Currying is turning a function f(x,y,z)=w  into f(x)(y)(z)=w  
+
+Partial evaluation, also known as function specialization, means to run & optimize a created (partly-applied) function at runtime.
+
+With referential transparency, no distinction is made or difference recognized between a reference to a thing and the corresponding thing itself. DateTimeNow() is not ref.transparent, as if you evaluate it and replace it by its value (say, "Jan 1, 2001"), you don't get the same result as you will if you run it tomorrow. 
+
+Timestamps are useful in stores to know when something had happened.  If timestamps are a side-effect of Save() and the program can never see the timestamp, then it doesn't violate ref.trans. 
+
+Global vars are OK if they are "quietly" passed to functions.
+
+Function composition is like method chaining except you're not invoking them yet; you're assigning the chain to a var. It is how FPs create new functions at runtime.
+
+Functions need to be pure for composition. (I think "need" is too strong of a word here.)
+
+======
+
+returning a lambda which accesses outer variables (i.e., the parameters of the outer function) requires a closure.  Those values in the closure effectively become constants. (Except with reference types of course, but they'll break referential transparency. Unless they're immutable.)
+
+This means they are also acting like private declarative variables? Yes. A closure created first has unbound vars, bound on construction. Can the binding be delayed?  Via partial application, yes. Can the vars be accessed by name from outside the closure after set?  It's a function-object not a closure, then. 
+
+Returning a closure means the closure must store the bound variables somewhere. Can they be beside the function pointer, so that the function pointer with those variables becomes a c# struct which is always passed by copy, not by reference?
+
+========================
+different types of expository essay writing:
+
+- Definition essays explain the meaning of a word, term, or concept. The topic can be a concrete subject such as an animal or tree, or it can be an abstract term, such as freedom or love. This type of essay should discuss the word’s denotation (literal or dictionary definition), as well as its connotation or the associations that a word usually brings to mind.
+- Classification essays break down a broad subject or idea into categories and groups. The writer organizes the essay by starting with the most general category and then defines and gives examples of each specific classification.
+- Compare and contrast essays describe the similarities and differences between two or more people, places, or things. Comparison tells how things are alike and contrast shows how they are different.
+- Cause and effect essays explain how things affect each other and depend on each other. The writer identifies a clear relationship between two subjects, focusing on why things happen (causes) and/or what happens as a result (effects).
+- “How to” essays, sometimes called process essays, explain a procedure, step-by-step process, or how to do something with the goal of instructing the reader.
+
+You may write your thesis statement as either the first or the last sentence of your essay. If you choose to put it in your first sentence, make sure that the succeeding sentences will tell more about your first sentence. In doing so, provide brief supporting ideas. On the other hand, if you choose to put in your last sentence, make sure that the sentences preceding it logically follow from one another until your last sentence.
+
+Use transitory words and sentences to make your essay flow smoothly.  Connect sentences with words like: however, for example, or such as.  Connect paragraphs by having the topic sentence refer back to the preceding paragraph or the thesis statement. 
+======
+
+How are constraints and relations related?  Which is superclass to the other?
+
+Complish is NOT a constraint-based programming language, because it's only about constraint satisfaction, not solving. It uses constraint-based abilities to produce more compiler errors. 
+
+X is y before z is w. 
+
+foo is [always] bar + faux. 
+
+Eventually, x is y. 
+
+=====
+
+Complish lacks Inform's knack for noun phrases that return different nouns: 
+
+	To decide what person is the current manager: blah.
+
+Rather, relative clauses return a noun.
+
+=====
+
+Higher order functions are problematic in Complish.  
+
+	To draw using a thing with a thing...
+
+Is the outer function "draw using with a thing" with inner function "using a thing", or is the outer function simply "draw using" with inner function "using a thing with a thing"? 
+
+Lambdas both declare params as well as use them:
+	(x,y) => x * (x + y)
+Complish equiv:
+	a number and a number which is the number given by the first number * (the first number * the second number)
+
+	to draw what's given by a number * (the first number + a second number)
+
+
+And assuming the inner function has multiple parameters, what if the function you want to pass has different prepositions?  How does that even work? 
+
+But if you specifically want to accept only functions with 2 parameters, one a person and another a number -- and programming-wise, you eventually will -- how to re-map things so that they work?
+
+also, which is the return value?
+
+=====
+You can "name signatures"
+
+	Giving a number to a person is an activity. 
+
+then use those signature?
+
+	To learn an activity:
+
+which would "partially" solve the above problem, since the number and types of the params are known. 
+
+	learn drawing a person a number 
+
+The order of params is unimportant except with types appearing multiple times. 
+
+	Giving a number to a number is an activity.
+	
+	learn dividing a number by a number. 
+
+Prepositions won't even match.  Functional programming has the ordering problem, and solves it by wrapping a lambda around it.  (Assuming a higher-order swap function doesn't already exist.)  
+
+	learn operating on a number and a number (via dividing the second number by the first number)
+
+Maybe complish should just "number" the parameters.
+
+	learn dividing a second number by a first number. 
+
+So when parsing the above, three things:
+
+	1) the signature to match is in the definition of Learn, (which uses the definition of Activity here)
+	2) neither the verb nor the prepositions need match
+	3) types will match
+	4) specific ordinals are allowed after an indefinite article (first, second)
+	5) in the cases that polymorphism messes with things, typecasts may be required
+
+	learn dividing a percentage as a number by a first number
+
+
+========
+
+It's like I need a general function in the compiler to match a tree (sentence diagram) to another tree, for a few variations on "match": contravariant vs. covariant, indefinite/unbound vs. definite/bound, specific verbs (and prepositions) vs. any verb (or any preposition).  
+
+===
+
+Another thing is keeping track of variable's previous values, or variables just to keep track if something happened recently.  Past-tense constructions would tidy the code. 
+
+Actually, let declarative variables be the default, and only have imperative-style "time-sensitive" variables when they're used with past-tense functions?  But nouns aren't past tense; only verbs.  
+
+=======================
+My UI app wants to use a REST-like method for getting different kinds of data objects from the backend. It’s your basic CRUD interface.
+ 
+For .Save() and .Delete() methods, these can be instance methods on the XO in question.
+But .Get() and .GetAll() methods, these should be static methods because we’re getting something from nothing, by loading an XO or three from the database.
+ 
+All four methods are in the XO base class, either as abstract or otherwise.
+ 
+So every time I want a new XO class, I subclass from “XO” and should be forced to implement all four methods.
+ 
+But wait, I want the .Get() and such to return the subclassXO, not baseXO.  So the base class needs to be of parameterized type, so the methods are of the parameterized type.
+ 
+And .GetAll() returns a parameterized list.
+ 
+Of course, I don’t know how or even if the interface can provide a useful base implementation of, say, Delete(). 
+ 
+And what if I need to set a property like RemotingService (or NotificationName) to a string, “com.imprezzio.UserServices.Contacts.ContactXO”, but do it to the subclassed static / the subclassed singleton. Where does that go?  Into the constructor of the subclassXO’s singleton?  Do I really need a singleton? Or can the Class class hold this info just like it holds the pointer to the right static method? (If such a language allowed Class-level properties, where/how do you init them?)
+The problem here is that the class is going to have lots of instances of subclassXO so the RemotingService needn’t be a property on each one – it’s by definition the same for all of that class type. But it’s different from the baseXO and all other subclasses of baseXO.
+ 
+ 
+       public abstract class XO<T>
+       {
+              // tells database to create or update. Returns itself as a convenience.
+              public abstract T Save();
+             
+              // tells database to delete this instance. Returns itself as a convenience.
+              public abstract T Delete();
+             
+              // Static methods //////////////////////////////////////////
+              public string RemoteService;//:String;// = "com.imprezzio.UserServices.Contacts.XOs.ContactXO";
+             
+              //public static function get Notification():String { return getQualifiedClassName(XO); };
+ 
+              public string Notification { get { return  "/" + "ID"; } }
+ 
+              public abstract static T Get(string id);
+             
+              public abstract static List<T> GetAll();
+             
+       }
+ 
+
+
+Since it's annoying to re-implement those methods for all XOs, there must be a parent class (base, default implementation) that does so.  That implementatino would need to do all those methods without knowing ahead of time what properties are on the object. So, reflection. 
+
+But the interface / default implementation must be able to state that the return values are of type derived<XO>, not XO (the base) itself. 
+
+also see: the curiously recurring template pattern
+
+We say they are two different instances of the same class.  But, a class can itself have properties, static properties, and could be inheritable. These are metaclass properties. They also, incidentally, allow us to declare abstract static methods, as well as inherit and override static methods. This solves the issue with XO.Get() above. 
+Metaclass properties are stored "elsewhere", not with the instances. If runtime type info or reflection is wanted, it could live there but it needn't do so. 
+
+Class foo
+{
+	@RemoteService = "com.imprezzio.UserServices.Contacts.ContactXO"; // property of the class type
+	@static T Get(string id); // property (pointer to method) of the class type
+	@Instances foo[];  // property of the class type??!
+}
+
+A metaobject protocol allows the user to define how inheritance and such work. Want two different kinds of object hierarchy in your program? Go for it. 
+
+I think generics can be discussed in terms of a metaobject protocol? 
+
+====================
+
+FP introduces the notion of pure functions/methods.  A pure function is one that doesn't affect the state of anything outside of it, nor depends on anything other than the arguments passed to it.  Also, given a set of arguments, a pure function will return the same result.
+
+Among other things, if a method does any of the following, it is impure:
+
+· Altering a parameter that was passed by reference
+· Altering the members of a passed object (all objects are passed by reference)
+· Altering external objects, static members of classes, etc.
+
+The term for these things is "side effects".  A pure function doesn't have any side-effects.
+
+The benefits of writing pure functions are:
+
+· If we write functions that don't have side-effects, then we can use them whenever and wherever we want to when composing our queries.  Pure functions lead to composability.
+· Testing is easy.  Once we have tested all edge conditions on the arguments to our function, we can be certain that the function works properly.
+· Concurrency is (at least theoretically) possible.  If we know that a function relies on nothing other than its parameters, then we (or the compiler) might be able to execute the function in a new thread, or even a different CPU.  
+
+One of the sources of bugs in conventional-object oriented programs is something called broken invariants.  There are invariants associated with many classes - for example, if one member has some value, then another member needs to have a particular range of values.  This is a funny way to get rid of those types of bugs: just say no to state!
+

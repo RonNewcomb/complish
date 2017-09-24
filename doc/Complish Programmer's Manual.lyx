@@ -1,0 +1,2808 @@
+#LyX 2.0 created this file. For more info see http://www.lyx.org/
+\lyxformat 413
+\begin_document
+\begin_header
+\textclass book
+\use_default_options true
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family sfdefault
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\default_output_format pdf2
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize 12
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry true
+\use_amsmath 1
+\use_esint 1
+\use_mhchem 1
+\use_mathdots 1
+\cite_engine basic
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 2cm
+\topmargin 2cm
+\rightmargin 2cm
+\bottommargin 2cm
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Complish
+\end_layout
+
+\begin_layout Subsection*
+Goals of the Language.
+\end_layout
+
+\begin_layout Standard
+Complish is a programming language whose primary purpose is English-like
+ syntax.
+ Its identifiers may contain spaces and must pass a spell-check.
+ It efficiently re-uses short common words via polymorphism, multimethods,
+ namespaces, tenses, inflections, determiners, and multi-use functions.
+ It supports user-defined units of measurement including subclassing basic
+ types like Text and Number.
+ It prefers declaratively stating constraints between entities so it can
+ automatically discover contradictions.
+ It supports temporal connectives and named durations of time in order to
+ make sequencing explicit and checkable at compile-time.
+ It performs higher order functions with gerunds and function invocations
+ with relative clauses.
+ It distinguishes bound parameters from unbound with articles, and lists
+ from singulars through determiners.
+ It is case-insensitive and light on punctuation, and comes pre-loaded with
+ the knowledge of how to properly conjugate some 17,000 verbs.
+ Finally, it unifies objects with functions by way of relations to check
+ user-created constraints at compile-time.
+\end_layout
+
+\begin_layout Subsection*
+Storage versus Computation.
+\end_layout
+
+\begin_layout Standard
+Functions and objects/structs are treated as similar things: an N-way relation
+ between nouns.
+ There's little syntactic difference between defining a computed relation
+ (function) and a stored relation (struct/object).
+ So just as you can have a mostly-complete instance of a struct and ask
+ what should the remaining piece be -- searching through all instances --
+ you can also pass all but one parameter to a function and get the missing
+ parameter returned.
+ 
+\end_layout
+
+\begin_layout Standard
+Relations are defined with a complete sentence, in either imperative or
+ declarative mood.
+\end_layout
+
+\begin_layout Quotation
+
+\noun on
+To give X to Y
+\end_layout
+
+\begin_layout Quotation
+
+\noun on
+P gives X to
+\noun default
+ Y
+\end_layout
+
+\begin_layout Quotation
+
+\noun on
+Give X to Y
+\end_layout
+
+\begin_layout Standard
+At the end of the declaration is punctuation to end the sentence -- which
+ defines the relation as a struct -- or punctuation such as commas or colons
+ to indicate more words follow for defining the function body.
+ 
+\end_layout
+
+\begin_layout Quotation
+
+\noun on
+To give X to Y, <
+\noun default
+list of instructions
+\noun on
+>.
+\end_layout
+
+\begin_layout Quotation
+
+\noun on
+P gives X to Y.
+
+\noun default
+ 
+\end_layout
+
+\begin_layout Standard
+The infinitive definition lends itself well to defining a computation, while
+ the declarative lends itself well to storage, but it's how the initial,
+ main clause of the sentence ends that decides computation versus storage,
+ not the form of the clause itself.
+ 
+\end_layout
+
+\begin_layout Standard
+Throughout this manual, when we refer to a relation we are referring to
+ both structs as well as functions.
+ Effectively, this encompasses anything with a verb in it.
+\end_layout
+
+\begin_layout Subsection*
+Types.
+\end_layout
+
+\begin_layout Standard
+
+\noun on
+Ordinals, Boolean
+\noun default
+ and plain old 
+\noun on
+numbers
+\noun default
+ are kinds of enum, though the names of their members may be partially computed
+ rather than listed in full somewhere.
+ Similar are the variations on number, called units, of which 
+\noun on
+money
+\noun default
+ and 
+\noun on
+percent
+\noun default
+ are fine examples.
+ Defining new enums is similar to defining a new struct relation with comma-sepa
+rated parameters, except for the conjunction used is 
+\noun on
+or
+\noun default
+ rather than 
+\noun on
+and
+\noun default
+: 
+\noun on
+A make is Chevrolet, Ford, or Lamborghini.
+ 
+\noun default
+The word 
+\noun on
+either
+\noun default
+ is optional since 
+\noun on
+or
+\noun default
+ is always exclusive.
+ 
+\end_layout
+
+\begin_layout Standard
+
+\noun on
+time
+\noun default
+ uses the same plug-in system of printing/parsing that user-defined types
+ use.
+ Almost relatedly is 
+\noun on
+duration
+\noun default
+, which is a named, elastic measure usually defined by two events (one marking
+ the beginning and one marking the end), but absolute measures of time could
+ be an option, such as three minutes after an event began the duration.
+ Durations help define when a constraint rule should apply.
+ 
+\end_layout
+
+\begin_layout Standard
+Lists appear in English as the determiners 
+\noun on
+many, some,
+\noun default
+ and 
+\noun on
+several
+\noun default
+.
+ Indexes into lists, if ever used, are of course of type 
+\noun on
+ordinal
+\noun default
+.
+ 
+\end_layout
+
+\begin_layout Standard
+The two relations which define object-oriented programming are 
+\noun on
+is-a
+\noun default
+ and 
+\noun on
+has-a
+\noun default
+.
+ The former is known to Complish as 
+\noun on
+a-is-a (
+\begin_inset Quotes eld
+\end_inset
+
+
+\noun default
+A cat is an animal.
+\noun on
+
+\begin_inset Quotes erd
+\end_inset
+
+)
+\noun default
+ The latter is known as 
+\noun on
+a-is-a-and (
+\begin_inset Quotes eld
+\end_inset
+
+A cat is 
+\begin_inset Quotes erd
+\end_inset
+
+) 
+\noun default
+as well as 
+\noun on
+of-a
+\noun default
+ (
+\begin_inset Quotes eld
+\end_inset
+
+the cost of the car
+\begin_inset Quotes erd
+\end_inset
+
+).
+ 
+\end_layout
+
+\begin_layout Standard
+
+\noun on
+Property
+\noun default
+ is another basic type, a category of similar instance-to-instance relations
+ invoked with 
+\noun on
+X of
+\noun default
+.
+ The X is part of the relation's name just like the 
+\noun on
+of
+\noun default
+ is -- such as 
+\noun on
+cost of
+\noun default
+.
+ The relation relates two types -- such as an enum called 
+\begin_inset Quotes eld
+\end_inset
+
+car
+\begin_inset Quotes erd
+\end_inset
+
+ to a number like 
+\noun on
+money
+\noun default
+.
+ And invoking the relation's name on the former returns the latter's instance
+ -- 
+\noun on
+the cost of the 1978 Chevrolet Mustang
+\noun default
+ returns a specific dollar value.
+\end_layout
+
+\begin_layout Standard
+An 
+\noun on
+object
+\noun default
+ is an aggregate type, defined by 
+\begin_inset Quotes eld
+\end_inset
+
+is
+\begin_inset Quotes erd
+\end_inset
+
+ and named per the sentence's subject: 
+\noun on
+A car is a make, a model, and a year
+\noun default
+ creates a noun, 
+\begin_inset Quotes eld
+\end_inset
+
+car
+\begin_inset Quotes erd
+\end_inset
+
+.
+ An object defined by a main verb is named by the verb if anything: 
+\noun on
+A person loves another person
+\noun default
+ creates a relation, 
+\begin_inset Quotes eld
+\end_inset
+
+loves
+\begin_inset Quotes erd
+\end_inset
+
+, with noun form 
+\begin_inset Quotes eld
+\end_inset
+
+loving
+\begin_inset Quotes erd
+\end_inset
+
+.
+
+\noun on
+ C
+\noun default
+lasses are enums used in several property relations, so aren't per-se a
+ base type of the language.
+ Rather, the property relation works in tandem with other relations, 
+\noun on
+is
+\noun default
+-a and 
+\noun on
+has
+\noun default
+-a, to give us our familiar hierarchy.
+ The compiler has rules regarding these: 
+\noun on
+is
+\noun default
+ cannot be circular, for example.
+ Struct is synonymous with object because functions are multimethods, not
+ methods.
+ 
+\end_layout
+
+\begin_layout Standard
+Type 
+\noun on
+type
+\noun default
+ is intended as parameter only.
+ All parameters of type 
+\noun on
+type
+\noun default
+ are type-parameters, not actual parameters.
+ This is how generics work.
+\end_layout
+
+\begin_layout Standard
+Constraints aren't first-class types.
+\end_layout
+
+\begin_layout Subsection*
+Articles Define and Name Parameters to Functions.
+\end_layout
+
+\begin_layout Standard
+When defining a relation, the relation's base name is always whatever verb
+ you'd like to put into the sentence.
+ The nouns follow stricter rules, which you might call naming conventions,
+ but in truth the parameters are automatically named: it's types that appear
+ in the main clause.
+ This keeps code readable.
+ 
+\end_layout
+
+\begin_layout Itemize
+A function is a verb, and the nouns that go with it are its parameters.
+ Excepting the subject and direct object which are placed immediately adjacent
+ to the verb, a preposition heralds another noun belonging to the function.
+ English has over 200 prepositions.
+ (Prepositional phrases must follow the direct object, never precede the
+ subject?)
+\end_layout
+
+\begin_layout Itemize
+Each parameter-noun must have its type specified, but not necessarily a
+ name.
+ 
+\end_layout
+
+\begin_layout Itemize
+In the commonest case, we use 
+\noun on
+a,
+\noun default
+ 
+\noun on
+an, 
+\noun default
+or
+\noun on
+ some
+\noun default
+ in front of a singular noun, but not 
+\noun on
+the
+\noun default
+.
+ The singular noun that follows the article is the type, like car or person:
+ 
+\noun on
+a car; a person; a number
+\noun default
+.
+ Mass nouns read differently, and so we have 
+\noun on
+some money
+\noun default
+ or 
+\noun on
+some water
+\noun default
+.
+ Some are interchangeable so use whichever you are most comfortable, such
+ as 
+\noun on
+a time
+\noun default
+ or 
+\noun on
+some time
+\noun default
+.
+ These articles are all synonymous so use what reads best.
+\end_layout
+
+\begin_layout Itemize
+Parameters are later referred to within a function body by 
+\noun on
+the
+\noun default
+ followed by the type: 
+\noun on
+the car; the person; the number
+\noun default
+.
+ If there are two or more of the same type in the main clause, as in 
+\noun on
+a person trades a car to a person for a car,
+\noun default
+ we use the longer form of the names that incorporate the verb and leading
+ preposition.
+ In this example they are, in order: 
+\noun on
+the person trading, the car being traded, the person being traded to,
+\noun default
+ and 
+\noun on
+the car being traded for
+\noun default
+.
+ Those names are certainly long, but in practice functions don't tend to
+ take multiple parameters of the same type unless it's a basic value type,
+ like integers.
+ But for those...
+ 
+\end_layout
+
+\begin_layout Itemize
+The commonest value types of a programming language appear so frequently
+ in function signatures that in the interest of brevity they have adjective
+ forms: 
+\noun on
+numeric, textual, ordinal, boolean, monetary, temporal, unique
+\noun default
+, and 
+\noun on
+sequential
+\noun default
+.
+ The adjectives precede the nouns, which are the real name.
+ So 
+\noun on
+to append a textual base to a textual appellation
+\noun default
+ would have parameters 
+\noun on
+the base 
+\noun default
+and
+\noun on
+ the appellation
+\noun default
+, both of type 
+\noun on
+text
+\noun default
+.
+ (Can this be reversed, as in "a horizontal percent" and "a vertical percent"?
+ Is there an unknown term (one or more unknown words) allowed for every
+ base type parameter? How would it differentiate between a name and a typo?)
+\end_layout
+
+\begin_layout Itemize
+A verbose form allows naming divorced from type.
+ A trailing parenthetical, as in 
+\noun on
+to transfer a purchase (a car) to a receiver (a person)
+\noun default
+, uses parenthesis as English intended: to provide supplementary information.
+ It is usually only useful in cases where the same class is being passed
+ multiple times and not as a list, such as in 
+\noun on
+a priest (a person) weds a groom (a person) to a bride (a person) by
+\noun default
+...
+\end_layout
+
+\begin_layout Itemize
+Lists have special syntax.
+ Instead of 
+\noun on
+a, an, 
+\noun default
+or
+\noun on
+ some
+\noun default
+ we use 
+\noun on
+many
+\noun default
+ for a list of that noun: 
+\noun on
+many cars; several people
+\noun default
+.
+ We can bind the number of elements with 
+\noun on
+at most 5 people
+\noun default
+ or 
+\noun on
+at least 2 cars
+\noun default
+.
+ (The use of 
+\begin_inset Quotes eld
+\end_inset
+
+at
+\begin_inset Quotes erd
+\end_inset
+
+ here doesn't preclude using it to flag a parameter.) Lists are written as
+ in English: items separated by commas, with the conjunction 
+\noun on
+and
+\noun default
+ or 
+\noun on
+or
+\noun default
+ appearing just before the final item.
+ The Oxford comma is optional so that lists of only two items do not produce
+ a special case.
+ 
+\end_layout
+
+\begin_layout Itemize
+The direct object of a function is 
+\noun on
+it
+\noun default
+.
+ Or if a function has only one parameter, it is 
+\noun on
+it
+\noun default
+.
+ 
+\noun on
+It
+\noun default
+ is very short to type.
+ Curried functions can use 
+\noun on
+it
+\noun default
+ concisely because they only have a single input and a single output.
+\end_layout
+
+\begin_layout Itemize
+One parameter may immediately follow the verb (called the direct object,
+ in English grammar), but after that each parameter needs at least one prepositi
+on in front of it: 
+\noun on
+Give a car to a person
+\noun default
+.
+ An exception to this is two nouns immediately following the verb, as in
+ 
+\noun on
+give a person a car
+\noun default
+, which the compiler understands the first as a 
+\begin_inset Quotes eld
+\end_inset
+
+to
+\begin_inset Quotes erd
+\end_inset
+
+ parameter and the second as the 
+\begin_inset Quotes eld
+\end_inset
+
+immediately following
+\begin_inset Quotes erd
+\end_inset
+
+ noun, effectively re-writing 
+\noun on
+Give X Y
+\noun default
+ as 
+\noun on
+give Y to X
+\noun default
+.
+ 
+\end_layout
+
+\begin_layout Itemize
+The verb 
+\noun on
+is
+\noun default
+ looks to break the above rules because it seems to take a comma-delimited
+ list of stuff rather than a 
+\begin_inset Quotes eld
+\end_inset
+
+preposition-ed
+\begin_inset Quotes erd
+\end_inset
+
+ list of stuff.
+ But in fact it takes only two parameters, subject and direct object, and
+ the direct object is 
+\begin_inset Quotes eld
+\end_inset
+
+many properties
+\begin_inset Quotes erd
+\end_inset
+
+: 
+\noun on
+An unknown name is many properties via...
+\noun default
+.
+ 
+\end_layout
+
+\begin_layout Itemize
+The prepositions 
+\noun on
+by
+\noun default
+ and 
+\noun on
+via
+\noun default
+ bend the rules by actually preferring a particular type after itself.
+ It prefers to associate with the type of 
+\begin_inset Quotes eld
+\end_inset
+
+function body
+\begin_inset Quotes erd
+\end_inset
+
+, and the body of a function spans sentences until a different function
+ is started.
+ 
+\end_layout
+
+\begin_layout Itemize
+A parameter's type may include extra adjectives that are the past participles
+ of verbs which were defined elsewhere as functions.
+ So 
+\noun on
+a sanitized text
+\noun default
+ would declare the parameter 
+\noun on
+the text
+\noun default
+ which was recently, or if not will be immediately, ran through the function
+ 
+\noun on
+to sanitize a text
+\noun default
+.
+ (For multiple participial adjectives, how important is order? And what
+ operations make the text de-sanitized again?) 
+\end_layout
+
+\begin_layout Itemize
+All functions are multimethods.
+ Function-selection is based on the polymorphic type of all arguments, not
+ just the first.
+ Since most functions have a single verb as their name, multimethods allow
+ reusing a verb for many purposes without conflict.
+ Selection is based on a simple distance formula, with ties broken by giving
+ left-most arguments slightly greater weight.
+ The dispatcher can call out of the assembly to handle new classes or methods
+ added after compilation, in order to solve the Expression Problem.
+\end_layout
+
+\begin_layout Itemize
+With referential transparency, there's no difference between pass-by-value
+ and pass-by-reference; they yield the same result.
+ ??Parameters are always passed by reference except when forced with the
+ adjective 
+\noun on
+copied
+\noun default
+ or the preamble 
+\noun on
+a copy of
+\noun default
+.
+ This is because 1) we shouldn't have to know the size of a type to know
+ how it works, 2) the most interesting parameters are objects anyway, 3)
+ passing by value can always be an optimization, 4) explicit plain-English
+ language exists, even in adjective form, to name and create a copy (but
+ not for a reference?), 5) in everyday programming practice, it's uncommon
+ anyway, because 5a) we don't need the extra four bytes of memory, 5b) using
+ the same variable for two unrelated concepts is always a bad idea, and
+ 5c) code added later may not notice the value was replaced by something
+ else, leading to maintenance headaches.
+\end_layout
+
+\begin_layout Subsection*
+Functions are Reversible.
+\end_layout
+
+\begin_layout Standard
+Since relations encompass structs and functions, and structs can be used
+ in a fill-in-the-blank method, then it must be true that functions can
+ be used in this way as well: any mixture of parameters may be given to
+ get the answers for the ones not provided.
+ This idea comes from Prolog, a relational language in which functions bind
+ values to variables, only to rollback and re-try bindings when it discovers
+ the first-guess bindings cannot work.
+ 
+\end_layout
+
+\begin_layout Standard
+Complish doesn't backtrack.
+ Its functions can be called with any combination of bound and unbound parameter
+s and the function could run, filling in the unbound parameters with return
+ values.
+ The primary example is a parse/print function, which deserializes or serializes
+ depending on whether it was given an object argument or a text argument.
+ 
+\end_layout
+
+\begin_layout Standard
+The reason for this odd feature is to support invariant constraints and
+ declarative programming.
+ By declaratively expressing the relationship between an object and its
+ textual representation it should be obvious how parsing and printing are
+ both done.
+ Complish doesn't worry about a function being reversible unless it is actually
+ used that way.
+\end_layout
+
+\begin_layout Standard
+Anyway, using 
+\noun on
+each
+\noun default
+ or 
+\noun on
+every
+\noun default
+ on a partially applied function will run through all the returned combinations.
+\end_layout
+
+\begin_layout Subsection*
+Immutable Variables Hide.
+ 
+\end_layout
+
+\begin_layout Standard
+Complish's variables don't seem to be immutable because the value of X at
+ the beginning of the function won't match its value at the end.
+ The reason for that is the X at the end of the function isn't the same
+ variable; it's the same name on a different variable.
+ Remember than a variable has an existence separate from its name.
+ Here, the old immutable variable is still in scope but its name was re-bound
+ to the newer value, while another name, 
+\noun on
+the X before Ying
+\noun default
+, was bound to it.
+ Just as functional compilers will optimize away the copying of an immutable
+ variable to a newer version of itself by actually treating it as mutable
+ under the hood, Complish does the same but with the added trick of swapping
+ name bindings: re-binding the original name to the new variable, and binding
+ a new name to the old variable.
+ 
+\end_layout
+
+\begin_layout Standard
+Alternately, if a parameter-variable's name has the word 
+\noun on
+being
+\noun default
+ in it, it is a name *being* continually re-bound.
+\end_layout
+
+\begin_layout Subsection*
+Relative Clauses Invoke Functions and Search Structs.
+\end_layout
+
+\begin_layout Standard
+Functions can be invoked with a relative clause of the form 
+\noun on
+the
+\noun default
+ (type) 
+\noun on
+which
+\noun default
+.
+ So for the relation 
+\noun on
+give a car to a person
+\noun default
+, we can use it like 
+\noun on
+the person which was given 
+\noun default
+(the car)
+\noun on
+ to
+\noun default
+ to return a person, while 
+\noun on
+the car which was given to
+\noun default
+ (the person) returns the appropriate car.
+ The relative clause syntax allows asking for any single parameter as output
+ when supplying the other parameters with input.
+ It resembles a typical query of SQL or Prolog.
+ And similar to both, the syntax can return a list rather than just the
+ first value by prepending 
+\noun on
+each, every, 
+\noun default
+or
+\noun on
+ all the.
+
+\noun default
+ Otherwise, relative clauses assume there is only one value to return for
+ a given set of inputs.
+ 
+\end_layout
+
+\begin_layout Subsection*
+Multiple Return Values Can Be 
+\begin_inset Quotes eld
+\end_inset
+
+Gone Gotten
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+A function can define a new local var which names an intermediate result.
+ The caller can 
+\begin_inset Quotes eld
+\end_inset
+
+go get
+\begin_inset Quotes erd
+\end_inset
+
+ this value, giving us return values that weren't explicitly passed in or
+ out.
+ The name of the 
+\begin_inset Quotes eld
+\end_inset
+
+gotten
+\begin_inset Quotes erd
+\end_inset
+
+ value is similar to its name inside the function, but without the continuous
+ tense.
+ So if the full name of the variable inside the callee was 
+\noun on
+the money being traded away
+\noun default
+, it's known to the caller as 
+\noun on
+the money traded away
+\noun default
+.
+ The usual way of getting a return value is still the relative clause, but
+ for cases where it can't be used this is the way to go.
+\end_layout
+
+\begin_layout Standard
+Imperative sentences, meaning relations which are functions and given all
+ arguments, tend to make a change in some state 
+\begin_inset Quotes eld
+\end_inset
+
+elsewhere
+\begin_inset Quotes erd
+\end_inset
+
+ rather than returning a value.
+ It looks like it must be changing state because since all arguments are
+ supplied, it has no place to return a value.
+ But it can: any values 
+\begin_inset Quotes eld
+\end_inset
+
+gone gotten
+\begin_inset Quotes erd
+\end_inset
+
+ by the caller count as a return value, plus any or all of the parameters
+ themselves are return values.
+ Complish avoids the constant need for x=f(x) by assuming x is changed by
+ f(x).
+ So in f(x,y,z) it is assumed that all three could have been changed.
+ 
+\end_layout
+
+\begin_layout Standard
+The syntactic structure 
+\noun on
+before <verb>ing
+\noun default
+ refers to a variable's value as it was just before that (most recently)
+ mentioned verb.
+ So in the above example, we might want to say we started with 
+\noun on
+the money before trading
+\noun default
+.
+ Typically, it is assumed that any or all arguments to a function were changed,
+ so the 
+\noun on
+before <verb>ing
+\noun default
+ syntax allows access to the immutable inputs.
+\end_layout
+
+\begin_layout Standard
+;
+\end_layout
+
+\begin_layout Standard
+We can ask for multiple parameters of a single query by using names as well.
+ After the search, the local parameters' names are exported to the caller
+ for use after the invocation.
+ So if we have functions 
+\noun on
+trade some money for a car
+\noun default
+ and 
+\noun on
+give a car to a person
+\noun default
+, in the sequence 
+\end_layout
+
+\begin_layout Quotation
+
+\noun on
+trade $50,000 for the car which was given to a person; 
+\end_layout
+
+\begin_layout Quotation
+
+\noun on
+say 
+\begin_inset Quotes eld
+\end_inset
+
+
+\noun default
+We have
+\noun on
+ [the car given]
+\noun default
+ which now belongs to 
+\noun on
+[the person given to].
+\begin_inset Quotes erd
+\end_inset
+
+.
+
+\noun default
+ 
+\end_layout
+
+\begin_layout Standard
+This would be how to 
+\begin_inset Quotes eld
+\end_inset
+
+go get
+\begin_inset Quotes erd
+\end_inset
+
+ any return value, rather than passively accept the one and only return
+ value that a particular function decided to grant.
+ The new name, auto-created and auto-named from the invoked function, points
+ to the callee's copy of it, as if the relative clause's 
+\begin_inset Quotes eld
+\end_inset
+
+input
+\begin_inset Quotes erd
+\end_inset
+
+ parameter worked like the 
+\noun on
+ref
+\noun default
+ keyword of C#.
+ (Under the hood, it's actually copied from callee to caller, into the stack
+ space that the caller specifically reserved for it.) These are like implicit
+ parameters, but as implicit return values.
+\end_layout
+
+\begin_layout Standard
+(Of course, this only makes sense with mutable variables.)
+\end_layout
+
+\begin_layout Subsection*
+Pass Functions to Other Functions with Gerunds.
+\end_layout
+
+\begin_layout Standard
+A partially-applied function is a function that has values supplied for
+ only some of its parameters.
+ Although this can be done at compile-time in the plainest of Pascals, languages
+ with explicit support can create such wrappers at runtime.
+ The run-time ability to change a function's signature by wrapping it helps
+ when trying to string together a series of very different functions.
+ Wrappers act as adapters, and partial-application is how to reduce the
+ number of parameters a function needs.
+ 
+\end_layout
+
+\begin_layout Standard
+English can use a verb as a noun, with or without the verb's attached nouns.
+ Gerunds and gerundial phrases naturally fit passing functions to functions.
+\end_layout
+
+\begin_layout Standard
+How about an example of an ordinary function taking a function parameter,
+ and using it on some stuff?
+\end_layout
+
+\begin_layout Itemize
+
+\noun on
+To learn repairing a car with a tool, ...
+
+\noun default
+ This defines a function that takes a function.
+ Invoking the outer function might be done like, 
+\noun on
+learn re-belting the Buick with your pantyhose
+\noun default
+.
+ Inside the learn function, what do we wish to do with the parameter? (What's
+ the parameter's name? 
+\noun on
+The repairing
+\noun default
+?) We might want to just store the invocation for later, or look up the
+ invocation in a list of same, or actually invoke it.
+ For the former two, a short name to sling around is desirable: 
+\noun on
+repairing, the repairing
+\noun default
+, or even 
+\noun on
+repair
+\noun default
+.
+ Invoking is easy in this case since the parameters come with it: 
+\noun on
+do the repair
+\noun default
+, 
+\noun on
+try repairing, repair it
+\noun default
+, or even just 
+\noun on
+do it
+\noun default
+.
+ Note that the passed function may have nothing to do with repairing.
+ That's just the name the outer function uses in its body to refer to whatever
+ function was passed to it.
+\end_layout
+
+\begin_layout Itemize
+But what do we do with a case of partially-applied or even wholly unapplied
+ functions? Invoke the above as 
+\noun on
+learn re-belting a car with a tool
+\noun default
+.
+ Now what? Or even 
+\noun on
+learn re-belting the Buick with a tool
+\noun default
+.
+ With the instances of inserting or looking up in a list this partially-applied
+ or wholly-unapplied function, little has changed except the type of the
+ list.
+ (Usually such a list only cares about the number of unapplied arguments,
+ and that each item within has the same types for each unapplied argument.
+ Applied arguments are effectively an assignment statement in the first
+ line of the function body.) Granted, the compiler makes a distinction between
+ functions with zero unapplied arguments and non-zero, because that determines
+ if it can be invoked.
+ 
+\end_layout
+
+\begin_layout Itemize
+Lambdas come with some restrictions because of syntax issues.
+ Statements can be put into a list, and lists can be delimited by semicolons
+ as easily as commas.
+ So when defining a lambda join the statements of its body with commas or
+ semicolons instead of periods.
+ The lambda ends at a period.
+ Of course, said period also ends the outer statement, but since arguments
+ in Complish can be rearranged thanks to the prepositions marking which
+ slot is being bound, it's only a problem with statements taking multiple
+ lambdas or relative clauses taking a lambda.
+ These limits are acceptable since a lambda could always be put into a local
+ variable.
+\end_layout
+
+\begin_layout Itemize
+How to begin a lambda? The phrase 
+\noun on
+such that
+\noun default
+ works in math and English both.
+ Prepend a parameter list to one like 
+\noun on
+a car and a numeric days such that
+\noun default
+ and the rest follows from that, semicolons and all.
+ The parameters are a comma'd list not a preposition'd one.
+\end_layout
+
+\begin_layout Itemize
+There's also 
+\begin_inset Quotes eld
+\end_inset
+
+lambda light
+\begin_inset Quotes erd
+\end_inset
+
+ cases like 
+\noun on
+every car whose year precedes 1974
+\noun default
+ which acts as a where clause to filter the list.
+ It's a bit shorter than 
+\noun on
+all cars such that the year of the car precedes 1974
+\noun default
+.
+ In the middle is 
+\noun on
+every car such that its year precedes 1974
+\noun default
+, which doesn't merge the possessive with the relative pronoun.
+ Both 
+\noun on
+whose
+\noun default
+ and 
+\noun on
+such that
+\noun default
+ set 
+\noun on
+it
+\noun default
+ to each item in the attached list it's filtering.
+ But 
+\noun on
+such that
+\noun default
+ can be easily attached to a comma'd parameter list instead of a concrete
+ list of objects, wherein it doesn't set 
+\noun on
+it
+\noun default
+ but does create local 
+\noun on
+the
+\noun default
+ variables.
+ 
+\end_layout
+
+\begin_layout Itemize
+
+\noun on
+To learn a skill, ...
+
+\noun default
+ Here note that 
+\noun on
+skill
+\noun default
+ seems to have no adjective describing its type as a simple type, so it
+ must be an object, like 
+\noun on
+car
+\noun default
+, correct? Well, perhaps not.
+ 
+\noun on
+Re-belting a car with a tool is a skill
+\noun default
+.
+ 
+\noun on
+To re-belt a car with a tool, ...
+
+\noun default
+ Now skill defines a type, like a C# delegate.
+ But it's an 
+\begin_inset Quotes eld
+\end_inset
+
+opt-in
+\begin_inset Quotes erd
+\end_inset
+
+ delegate; only those relations explicitly listed as a skill are considered
+ to be one.
+ Rather, we could go the other way, where a skill is any relation accepting
+ a car and a tool.
+ Or, explicit listings could take various signature, and applying nouns
+ to one for invocation could ignore the un-needed arguments.
+ Effectively if 
+\noun on
+re-starting a car
+\noun default
+ were also classed as a skill, then to invoke a skill would require specifying
+ both a car and a tool, even if the function being invoked is 
+\noun on
+re-starting
+\noun default
+, not 
+\noun on
+re-belting
+\noun default
+.
+ This would allow skill to participate in inheritance chains with other
+ delegates.
+\end_layout
+
+\begin_layout Itemize
+Zarfian could categorize functions by patterns on name as well as if a variable
+ was read or modified, or a particular section or file contained the function,
+ or by what functions the function called.
+ By providing many little ways of describing functions, Complish can group
+ multimethods concisely and ad-hoc.
+ If such a grouping is named, then it can be a type for a parameter.
+ 
+\end_layout
+
+\begin_layout Itemize
+
+\noun on
+Repairing a car with a tool requires a mechanic.
+
+\noun default
+ This defines a complex struct, a relation between a function and a noun.
+\end_layout
+
+\begin_layout Subsection*
+Relations.
+\end_layout
+
+\begin_layout Standard
+The bones of Complish are relations.
+ Verbs are relations between nouns.
+ The preposition 
+\noun on
+via
+\noun default
+ establishes a relation between a definition and the defined.
+ Subordinating conjunctions like 
+\noun on
+before
+\noun default
+ and 
+\noun on
+after
+\noun default
+ are temporal relations between other constructs.
+ But the most basic relation is 
+\noun on
+is
+\noun default
+.
+ Its several definitions are divvied up thusly:
+\end_layout
+
+\begin_layout Itemize
+The 
+\noun on
+a-is-a
+\noun default
+ relation, which is the familiar is-a of OOP.
+ When two structs are connected by 
+\noun on
+a-is-a
+\noun default
+, then operations such as allocation, deallocation, and property-lookup
+ affect both as if they were one.
+ 
+\noun on
+A-is-a
+\noun default
+ is a non-circular asymmetric relation.
+ Unlike 
+\noun on
+is-and
+\noun default
+ and 
+\noun on
+is-or
+\noun default
+, 
+\noun on
+a-is-a
+\noun default
+ does not accept a list of anything, on either side of the verb.
+ 
+\end_layout
+
+\begin_layout Itemize
+The 
+\noun on
+the-is-a
+\noun default
+ relation defines the first term to be of a given type.
+ When we say that 
+\noun on
+the appellation
+\noun default
+ is of type 
+\noun on
+text
+\noun default
+, it's this relation we're referring to: 
+\emph on
+the
+\emph default
+\noun on
+ 
+\noun default
+appellation 
+\emph on
+is a
+\emph default
+ text.
+ It also defines an instance of storage, though the storage may be in a
+ larger struct, defined elsewhere, or a standalone variable.
+\end_layout
+
+\begin_layout Itemize
+The 
+\noun on
+a-is-and
+\noun default
+ relation defines a struct type.
+ The sentence should begin with a word which doesn't take the first slot
+ of a 
+\noun on
+the-is-a
+\noun default
+ relation, but likely takes the second slot.
+ After the 
+\noun on
+is
+\noun default
+ comes a list of names which do participate in the first slot of the 
+\noun on
+the-is-a
+\noun default
+ relation.
+ The sentence, and this relation, define that initial word to be a struct.
+ Effectively, it defines a larger piece of storage.
+ Note: it is an error for the inital term to have a 
+\begin_inset Quotes eld
+\end_inset
+
+the
+\begin_inset Quotes erd
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Itemize
+The 
+\noun on
+is-or
+\noun default
+ relation, used by a sentence which begins with a word not in the first
+ slot of an 
+\noun on
+the-is-a
+\noun default
+ relation (but can be in an 
+\noun on
+is-and
+\noun default
+ relation), followed by 
+\noun on
+is
+\noun default
+ and a list of names (typed or untyped).
+ This creates an enum.
+ If the initial word is in an 
+\noun on
+is-and
+\noun default
+ relation, the values of the enum are effectively peer subclasses of the
+ initial word, which is their parent class.
+ The only difference between whether the initial term is 
+\begin_inset Quotes eld
+\end_inset
+
+a
+\begin_inset Quotes erd
+\end_inset
+
+ or 
+\begin_inset Quotes eld
+\end_inset
+
+the
+\begin_inset Quotes erd
+\end_inset
+
+ is that the 
+\begin_inset Quotes eld
+\end_inset
+
+the
+\begin_inset Quotes erd
+\end_inset
+
+ will also create a variable of that type, with that name, which can be
+ assigned to and read.
+ A singleton, in other words.
+ 
+\end_layout
+
+\begin_layout Itemize
+The 
+\noun on
+of
+\noun default
+ relation is the property relation.
+ It is a function on structs, not a struct itself, and returns (a pointer
+ to) a storage location.
+ The right-hand side of the relation is a word which was on the left-hand
+ side of an 
+\noun on
+a-is-and
+\noun default
+ definition.
+ The left-hand side of this relation is one of the names listed on the right-han
+d side of that same 
+\noun on
+a-is-and
+\noun default
+ relation.
+ Effectively, the 
+\noun on
+a-is-and
+\noun default
+ relation 
+\begin_inset Quotes eld
+\end_inset
+
+writes
+\begin_inset Quotes erd
+\end_inset
+
+ this relationship while the 
+\noun on
+of
+\noun default
+ relation 
+\begin_inset Quotes eld
+\end_inset
+
+reads
+\begin_inset Quotes erd
+\end_inset
+
+ it.
+ 
+\end_layout
+
+\begin_layout Itemize
+Take a moment to note the two different is-a relationships, 
+\noun on
+a-is-a
+\noun default
+ and 
+\noun on
+the-is-a
+\noun default
+.
+ The former specifies object inheritance.
+ The latter specifies an ordinary, typed variable (global, local, property,
+ or otherwise).
+ Neither accept a list on either side of the verb.
+\end_layout
+
+\begin_layout Itemize
+Objects and classes are incidentally created with this system.
+ An 
+\noun on
+a-is-and
+\noun default
+ creates a struct.
+ Another 
+\noun on
+a-is-and
+\noun default
+ creates another struct.
+ Join the two structs with 
+\noun on
+a-is-a
+\noun default
+ and the left-hand one inherits the right-hand one.
+ Create an instance of the subclass with 
+\noun on
+the-is-a
+\noun default
+.
+ Read and write the values in the class'es properties with 
+\noun on
+of
+\noun default
+.
+ 
+\end_layout
+
+\begin_layout Itemize
+The 
+\noun on
+instead of
+\noun default
+ relation defines a handler.
+\end_layout
+
+\begin_layout Itemize
+The 
+\noun on
+by
+\noun default
+/
+\noun on
+via
+\noun default
+ / 
+\noun on
+[in-order]-to-<verb>
+\noun default
+ relation connects a function signature to its body.
+ 
+\end_layout
+
+\begin_layout Subsection*
+Constraint Satisfaction, not Constraint Solving.
+\end_layout
+
+\begin_layout Standard
+There are three categories of constraints.
+ Unary constraints restrict the domain of a variable.
+ Temporal constraints specify order of operations.
+ The third and most important specifies invariant rules between variables
+ via expressions as a tree of dependencies.
+ 
+\end_layout
+
+\begin_layout Standard
+Unary constraints can be preprocessed by altering the details of the variable's
+ type.
+ Temporal constraints merely sort invocations into a chronological ordering.
+ It's the invariant constraints which are the difficult ones.
+ A lot of imperative coding just maintains invariants.
+ "This should always be true" usually requires sprinkling a lot of checks,
+ corrections, remedies, and exceptions all over the place.
+ And sometimes the invariant must be broken in one specific place, because
+ that place is the one telling the rest of the code that the invariant exists.
+
+\noun on
+ 
+\end_layout
+
+\begin_layout Standard
+First of all, Complish is concerned with constraint satisfaction, not constraint
+ solving.
+ Complish requires that most variables have an initial value, which it checks
+ at compile-time to ensure invariant satisfaction from the get-go.
+ Then Complish looks for cases where functions modify variables in a way
+ that eventually violates the invariants.
+ This involves a graph, the nodes of which are typed variables and the arcs
+ are the constraints themselves.
+ Although the constraints in said graph only allow binary constraints, higher-or
+der constraints can be represented by a constellation of binary constraints.
+ 
+\end_layout
+
+\begin_layout Standard
+Functions should be viewed not as a list of instructions but as an invariant
+ constraint.
+ Functions can be evaluated for any combination of its parameters to return
+ the unbound parameters in the same manner as struct relations can be searched
+ by any set of values.
+ And so, Complish should be able to calculate the allowed range of every
+ parameter in the source at compile time.
+ For mismatches between functions when one's range doesn't perfectly match
+ the other's, Complish can either reduce the larger range to match the smaller,
+ thereby reducing all its parameters indirectly and setting off a cascade,
+ or complain to the user.
+ Unsolvable equations demand the user define how that case should be handled.
+ 
+\end_layout
+
+\begin_layout Standard
+;
+\end_layout
+
+\begin_layout Standard
+Constraints in the Kaleidoscope sense relate a duration of time to a declarative
+ statement like 
+\noun on
+X is an integer
+\noun default
+ or 
+\noun on
+Z is X + Y
+\noun default
+.
+ Numerical formulae, boolean algebra, regexes, and mapping storage locations
+ to types all can be part of a temporal constraint.
+ A temporal constraint relates a duration to a (non-temporal) relation.
+ Constraints which don't seem to relate to time relate to 
+\noun on
+always
+\noun default
+.
+ (Or 
+\noun on
+next
+\noun default
+, in the imperative.)
+\end_layout
+
+\begin_layout Standard
+The before/after rules of Inform and AspectJ trivially fall under this umbrella:
+ relating a named block of code to execute in relation to an inline block
+ of code.
+\end_layout
+
+\begin_layout Standard
+The 
+\begin_inset Quotes eld
+\end_inset
+
+precedes
+\begin_inset Quotes erd
+\end_inset
+
+ keyword of Zarfian relates a description-of-rules to another description-of-rul
+es, creating two ad-hoc groups of rules with a temporal ordering.
+ Besides a rule specifically invoking another rule from within itself (at
+ which point the callee was called a function), this keyword defines a sequencin
+g of steps besides the metarule of 
+\begin_inset Quotes eld
+\end_inset
+
+most specific first
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+All imperative blocks of code must be related, directly or indirectly, to
+ a temporal word that hints at when that code runs.
+ If a imperative block is named, the name must be used in another block,
+ pushing back this problem a level.
+ Eventually, the topmost block runs when the program is started, presumably
+ 
+\begin_inset Quotes eld
+\end_inset
+
+once
+\begin_inset Quotes erd
+\end_inset
+
+ but possibly 
+\begin_inset Quotes eld
+\end_inset
+
+always
+\begin_inset Quotes erd
+\end_inset
+
+ or even 
+\begin_inset Quotes eld
+\end_inset
+
+during
+\begin_inset Quotes erd
+\end_inset
+
+ something else going on in the operating system.
+\end_layout
+
+\begin_layout Subsection*
+Aspects, Events, and Exceptions via Subordinating Conjunctions.
+\end_layout
+
+\begin_layout Standard
+
+\noun on
+Instead of
+\noun default
+ is like the override keyword of OOP.
+
+\noun on
+ 
+\noun default
+It allows defining handlers for exceptions, events, and other such pre-existing
+ bits of code, named by gerund phrases.
+ Further conditions can be hung on it: 
+\noun on
+Instead of dividing by zero while trading away a car for a car
+\noun default
+, etc.
+\end_layout
+
+\begin_layout Standard
+The subordinating conjunctions 
+\noun on
+before
+\noun default
+ and 
+\noun on
+after
+\noun default
+ can also be used to implement aspect-oriented programming.
+ Given the multimethod 
+\noun on
+Give a car to a person
+\noun default
+, we can use these conjunctions to attach a rule to the multimethod, using
+ an appropriate form of the verb: 
+\noun on
+Before giving a car to a person
+\noun default
+, etc.
+ The function otherwise acts like any other function.
+ 
+\end_layout
+
+\begin_layout Standard
+Conditions can test whether a method is currently executing with 
+\noun on
+while
+\noun default
+ or 
+\noun on
+during
+\noun default
+, again using an appropriate verb form: 
+\noun on
+Before trading away a car for a car while/during giving a car to a person
+\noun default
+, 
+\emph on
+etc
+\emph default
+.
+ 
+\end_layout
+
+\begin_layout Subsection*
+Immutable Input Files, Self-Consuming Output, and Infinite Realtime.
+\end_layout
+
+\begin_layout Standard
+Videogames use a lot of input files -- videos, graphics, sounds, music,
+ text -- that is effectively immutable.
+ Assuming that game start checks that the files exist (and maybe the file's
+ general shape isn't broken, and possibly even mark the files readonly at
+ the OS level before verifying contents), then those input files could be
+ considered immutable like the number 5, and hence, easy to use in a FP
+ language without sticking it or 
+\begin_inset Quotes eld
+\end_inset
+
+IO
+\begin_inset Quotes erd
+\end_inset
+
+ into the input args.
+ If the gameplay needs to load the file at runtime, and the file is missing
+ for whatever reason, the thread will block until it is there.
+ 
+\end_layout
+
+\begin_layout Standard
+Output that happens during the execution occurs 
+\begin_inset Quotes eld
+\end_inset
+
+in another world
+\begin_inset Quotes erd
+\end_inset
+
+ which we do not model.
+ Output functions return a special oroboros value, a recursive lambda that
+ does nothing, which won't get the output statement optimized away because
+ the return value uses itself.
+ Multiple such statements listed together will not have their relative order
+ guaranteed, only that they run.
+ Multiple output statements should be combined into a single statement taking
+ 
+\begin_inset Quotes eld
+\end_inset
+
+many somethings
+\begin_inset Quotes erd
+\end_inset
+
+.
+ (Wait, can't the 
+\begin_inset Quotes eld
+\end_inset
+
+many somethings
+\begin_inset Quotes erd
+\end_inset
+
+ just be an infinite list itself?)
+\end_layout
+
+\begin_layout Standard
+Realtime input, like that from joysticks, mice, keyboards, and http sockets,
+ spring from a Configure Hardware function.
+ That function returns an infinite list (so, use lazily) of all the input
+ that stream will ever get.
+ That list must be passed around as normal, or put into a 
+\begin_inset Quotes eld
+\end_inset
+
+global
+\begin_inset Quotes erd
+\end_inset
+
+ variable, which passes it implicitly.
+ (Does it return it implicity as well?)
+\end_layout
+
+\begin_layout Subsection*
+Namespaces are Named Contexts, and Have Properties Which Are Functions.
+\end_layout
+
+\begin_layout Standard
+It is said that most people use only about 2,000 words in their everyday
+ vocabulary.
+ My experience with Inform 7 has taught me that because of this fact, namespaces
+ are an important addition to English-like programming languages.
+ (One plea I made on the Inform 7 forums, directed to the creators of libraries
+ and extensions, was to 
+\begin_inset Quotes eld
+\end_inset
+
+not use up all the good words
+\begin_inset Quotes erd
+\end_inset
+
+.) The ordinary word for namespaces is context, and deciding what is or isn't
+ exported outside the namespace is the primary purpose: 
+\noun on
+Foobar only provides giving a car to a person, drawing a skill, and carriages
+\noun default
+.
+ And to use other namespaces, 
+\noun on
+[This] Foobar only needs Foo, and Bar
+\noun default
+.
+ Usually languages require a keyword on each method or variable, but Complish
+ wraps it all up into a single sentence.
+ Or two or three, one for each level of access defined.
+ 
+\end_layout
+
+\begin_layout Standard
+Complish can take context a bit further than just the definitions of words.
+ Many properties of how things work under the hood, what some languages
+ call a metaobject protocol, allow rewriting and rewiring such basics as
+ calling conventions, rounding floats back to ints, growable ints, closure
+ variable capture, inheritance, functional purity, automatic decorators
+ like backtracking instrumentation, member accessibility, parsing of the
+ source itself via a parse/print function on a preexisting user-defined
+ object, etc.
+ A context has properties which are functions, with the default implementation
+ of how these glue bits work.
+ Assign a different function of the same (or contravariant) signature to
+ these properties to alter how the code in the context is put together.
+\end_layout
+
+\begin_layout Subsection*
+Object Initializers.
+\end_layout
+
+\begin_layout Standard
+An object initializer looks like 
+\noun on
+Fido has a coat of brown, a buoyant personality, and [an age of] three years.
+ 
+\noun default
+If only one property's type accepts a value, then the property needn't be
+ named: the value three years is enough.
+ Similar for enum properties like booleans or even personality, if we had
+ worded personality as nouns instead of adjectives.
+ Otherwise, the construct 
+\begin_inset Quotes eld
+\end_inset
+
+
+\noun on
+a (property) of (value
+\noun default
+)
+\begin_inset Quotes erd
+\end_inset
+
+ works.
+\end_layout
+
+\begin_layout Standard
+The construct 
+\noun on
+Fido is buoyant
+\noun default
+ only works if Complish already knows buoyant is an adjective and/or Fido
+ is a struct.
+\end_layout
+
+\begin_layout Standard
+The rules about uniquely typed values in object creation apply to complex
+ instances as well: 
+\noun on
+Toby has a buoyant personality and a 1978 Chevrolet Mustang
+\noun default
+.
+ (But can any object be named according to its values? In other words, if
+ the totality of an object's values is in the name, do we really need a
+ 
+\begin_inset Quotes eld
+\end_inset
+
+name
+\begin_inset Quotes erd
+\end_inset
+
+? Esp.
+ if closures' read-only nature comes into play.)
+\end_layout
+
+\begin_layout Standard
+If regexes are part of the compiler, use them to describe how to parse a
+ struct instance, which is trickier than how to write one.
+\end_layout
+
+\begin_layout Subsection*
+Business Programming Includes Videogame Programming: Lessons from PS3 and
+ XBox 360 Devs.
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+Functional programming is the right default for multicore cpus, but imperative
+ constructs are vital.
+
+\series default
+ (multimethods intended to be pure functional, 
+\noun on
+after
+\noun default
+ rules can do I/O because they can see into the multimethod.
+ Rules cannot affect multimethods.) Perhaps disallowing globals...
+ but that still doesn't allow objects to have member variables.
+ But if member variables can be thought of as a shortcut to writing them
+ out in every method call in the class, and the constructor virtually passes
+ them in to itself with their initial values, then the function constructing
+ the object is passing those in a ordinary arguments.
+ So, all member vars must be initialized from the scope of the caller of
+ the constructor, not from the in-object scope? Also, but if multimethods
+ don't belong to objects, and the member variables belong to the caller
+ of the constructor (allocated on that function's call stack), then what's
+ left? Objects and closures are the same, this closure is a nil closure
+ -- calling it doesn't do anything because no methods belong to it -- closures
+ are usually curried until only a single return value remains.
+ So can these objects 
+\begin_inset Quotes eld
+\end_inset
+
+shrink
+\begin_inset Quotes erd
+\end_inset
+
+ to nothingness? Then what is Type?
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+Imperative constructs are vital.
+ Wrap them in dedicated 
+\begin_inset Quotes eld
+\end_inset
+
+side-effect
+\begin_inset Quotes erd
+\end_inset
+
+ Monad types? 
+\series default
+If so, then define partiality as a Effect, thus the base language is amendable
+ to proofs.
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+Lenient evaluation is better than eager or lazy evaluation.
+
+\series default
+ Eager eval is an optimization.
+ If so, support lazy eval with explicit keywords? Infinite lists etc.
+ should always be lazily evaluated of course.
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+Features that aid reliability also enable concurrency.
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+Mutable state & heaps are OK within a function, if used locally & destroyed
+ before function's end.
+
+\series default
+ 
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+Don't tie Nullable to reference-type/value-type distinction.
+ If a type isn't explicitly nullable, then it isn't null.
+
+\series default
+ 
+\end_layout
+
+\begin_layout Itemize
+How is the bottom type written in Complish? Can Nothing be a determiner,
+ replacing a/many with 
+\begin_inset Quotes eld
+\end_inset
+
+no
+\begin_inset Quotes erd
+\end_inset
+
+? Sure.
+ But how do you specify a nullable X as a parameter distinct from 
+\begin_inset Quotes eld
+\end_inset
+
+an X
+\begin_inset Quotes erd
+\end_inset
+
+? The adjective possible or optional? The word maybe?
+\end_layout
+
+\begin_layout Itemize
+Covariance means 
+\noun on
+object x = new string();
+\noun default
+ works, as you can put a more derived (
+\begin_inset Quotes eld
+\end_inset
+
+smaller
+\begin_inset Quotes erd
+\end_inset
+
+) type into a spot intended for a less derived (
+\begin_inset Quotes eld
+\end_inset
+
+larger
+\begin_inset Quotes erd
+\end_inset
+
+) type.
+ Contravariance is used on function types as you can put a larger, base
+ class type into a spot for a smaller, more derived type.
+ This is because a function variable that can hold a cat-accepting function
+ could also hold an animal-accepting function, because all the pre-existing
+ invocations of that function-within use cats, or more specific kinds of
+ cats.
+ Since the animal-accepting function also accepts cats, we can put the animal-ac
+cepting function into that variable.
+ IEnumerable is declared as IEnumerable<out T> so it can accept covariant
+ values: an IEnumerable<object> accepts a list of strings.
+ 
+\end_layout
+
+\begin_layout Subsection*
+Miscellany.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Quotes eld
+\end_inset
+
+Real
+\begin_inset Quotes erd
+\end_inset
+
+ functional programming is referential transparency because of immutable
+ aggregate-values, not function composition.
+ I like referential transparency partly because there's no difference between
+ a value and a reference to a value.
+ But ref trans works by making everything work like value types.
+ What if we made everything work like reference types? Well, i wouldn't
+ know if a global var is supposed to be a reference to an existing item
+ or is a new item altogether.
+ 
+\end_layout
+
+\begin_layout Standard
+Regexes and Prolog both use backtracking.
+ 
+\end_layout
+
+\begin_layout Standard
+Regexes can transform a string into a boolean or a propertied object.
+ 
+\end_layout
+
+\begin_layout Standard
+Can method chains backtrack?
+\end_layout
+
+\begin_layout Standard
+Method chaining with branches is dataflow programming.
+ (Minor note: multiple data items are in multiple stages simultaneously
+ during dataflow programming, but without necessarily being concurrent.)
+\end_layout
+
+\begin_layout Standard
+Closures are defined imperatively; objects are defined declaratively.
+ 
+\end_layout
+
+\begin_layout Standard
+Declarative statements are 
+\noun on
+always
+\noun default
+; imperative statements are 
+\noun on
+after
+\noun default
+ previous imperative statements.
+ 
+\end_layout
+
+\begin_layout Standard
+Aspect-oriented rules and functional programming complement one another:
+ one factors out side-effects while the other disallows side-effects.
+\end_layout
+
+\begin_layout Standard
+When user code uses string.ToInt(), it is effectively calling a part of the
+ compiler.
+ 
+\end_layout
+
+\begin_layout Standard
+Method chaining is main-verb chaining.
+\end_layout
+
+\begin_layout Standard
+A class can have properties itself, separate from the properties on its
+ instances.
+ 
+\noun on
+The textual service of every baseXO is "foo".
+
+\noun default
+ 
+\end_layout
+
+\begin_layout Standard
+This isn't to be confused with with defining an enum property, as 
+\noun on
+The model of a Chevy is either Mustang or Camry
+\noun default
+.
+\end_layout
+
+\begin_layout Standard
+I want an easy way of splitting an object's properties into smaller objects,
+ or creating larger objects via the properties of smaller objects.
+ A lot of business programming is this.
+\end_layout
+
+\begin_layout Standard
+A business rule is frequently a constraint on a web of objects.
+\end_layout
+
+\begin_layout Standard
+It should always be possible to delete an item from the list while iterating
+ through the list.
+ 
+\end_layout
+
+\begin_layout Standard
+I want static object methods that can be inherited, and I want properties
+ on the classes themselves (metaclass properties, to be precise) which inherit
+ and can be initialized at compile-time or at run-time.
+ (Like C# 
+\noun on
+readonly
+\noun default
+.) I want this for ContactXO.Get(lambda) to return an item, or null, the latter
+ of which constructors can't do.
+\end_layout
+
+\begin_layout Standard
+Hypernym/hyponym = superclass/subclass.
+ Holonym/meronym = container/item or whole/part.
+ 
+\end_layout
+
+\begin_layout Standard
+Writing in imperative style isn't natural because people don't talk in long
+ lists of imperatives.
+ Writing in functional style isn't natural because it's endlessly digressive.
+ But people do speak in a story style which is still chronological.
+\end_layout
+
+\begin_layout Subsection*
+Implicit Loops?
+\end_layout
+
+\begin_layout Standard
+A list of statements (
+\begin_inset Quotes eld
+\end_inset
+
+many statements
+\begin_inset Quotes erd
+\end_inset
+
+) can also perform a chain of transforms.
+ 
+\begin_inset Quotes eld
+\end_inset
+
+For
+\begin_inset Quotes erd
+\end_inset
+
+ is a preposition, and since prepositions herald a parameter, Complish allows
+ adding 
+\begin_inset Quotes eld
+\end_inset
+
+for <many X>
+\begin_inset Quotes erd
+\end_inset
+
+ to any invocation which doesn't already use 
+\begin_inset Quotes eld
+\end_inset
+
+for
+\begin_inset Quotes erd
+\end_inset
+
+ for its own purposes.
+ The parameter which is being iterated over is 
+\begin_inset Quotes eld
+\end_inset
+
+each X
+\begin_inset Quotes erd
+\end_inset
+
+, but perhaps that parameter can be dropped when 
+\begin_inset Quotes eld
+\end_inset
+
+for
+\begin_inset Quotes erd
+\end_inset
+
+ comes to visit.
+\end_layout
+
+\begin_layout Subsection*
+Generics.
+\end_layout
+
+\begin_layout Standard
+A type can be passed to a function, but usually when that's done it is considere
+d partial application: the other parameters have arguments, and the one(s)
+ that got the type don't yet, so the resulting function still accepts that
+ parameter.
+\end_layout
+
+\begin_layout Standard
+There's no distinction between returned values (output) and arguments to
+ parameters (input) in Complish, because a relation can be 
+\begin_inset Quotes eld
+\end_inset
+
+called
+\begin_inset Quotes erd
+\end_inset
+
+ in multiple combinations.
+\end_layout
+
+\begin_layout Standard
+If at least one of those params/returns isn't generic, then in a referentially
+ transparent language, there's no possible way for the function/relation
+ to be generic.
+\end_layout
+
+\begin_layout Standard
+So, syntax: how to specify a generic function? How about the function's
+ declaration has a parameter, that looks like most of the parameters, be
+ of type 
+\noun on
+type
+\noun default
+? All parameters of type 
+\noun on
+type
+\noun default
+ are type-parameters, not actual parameters.
+ Can any meaningful constraint be placed on it?
+\end_layout
+
+\begin_layout Standard
+The best use case for generics, list of X, English already has special syntax
+ for via determiners.
+ Visual Basic uses 
+\begin_inset Quotes eld
+\end_inset
+
+of <type>
+\begin_inset Quotes erd
+\end_inset
+
+ for generics, though Complish already uses 
+\begin_inset Quotes eld
+\end_inset
+
+of
+\begin_inset Quotes erd
+\end_inset
+
+ for properties in 
+\begin_inset Quotes eld
+\end_inset
+
+of <objvar>
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsection*
+From the Ground Up.
+\end_layout
+
+\begin_layout Standard
+BNF Grammar for Complish:
+\end_layout
+
+\begin_layout Standard
+
+\noun on
+singular article ::= a | an 
+\end_layout
+
+\begin_layout Standard
+
+\noun on
+mass noun article ::= some
+\end_layout
+
+\begin_layout Standard
+
+\noun on
+list article ::= many | several
+\end_layout
+
+\begin_layout Standard
+
+\noun on
+article ::= <singular article> | <mass noun article>
+\end_layout
+
+\begin_layout Standard
+
+\noun on
+determiner ::= <a> | <list article>
+\end_layout
+
+\begin_layout Standard
+
+\noun on
+preposition ::= 
+\noun default
+// there are over 300 of these //
+\end_layout
+
+\begin_layout Standard
+
+\noun on
+list1<x> ::= (<x> , )* (<x> ,? and)? <x>
+\end_layout
+
+\begin_layout Standard
+
+\noun on
+list2<x> ::= (<x> ; )* (<x> ;? and)? <x>
+\end_layout
+
+\begin_layout Standard
+
+\noun on
+list<x> ::= list1<x> | list2<x>
+\end_layout
+
+\begin_layout Standard
+
+\noun on
+basictype ::= number | text | bool | money | time | ordinal | percent |
+ type
+\end_layout
+
+\begin_layout Standard
+
+\noun on
+objecttype ::= <article> <new name noun> is always? <list<slot>>
+\end_layout
+
+\begin_layout Standard
+
+\noun on
+objvar ::= the <objecttype>
+\end_layout
+
+\begin_layout Standard
+
+\noun on
+type ::= basictype | objecttype
+\end_layout
+
+\begin_layout Standard
+
+\noun on
+var ::= the <type>
+\end_layout
+
+\begin_layout Standard
+
+\noun on
+null bottom ::= no <type>
+\end_layout
+
+\begin_layout Standard
+
+\noun on
+property ::= the <slot.name> of the <objvar>
+\noun default
+ 
+\end_layout
+
+\begin_layout Standard
+
+\noun on
+expression ::= <math> | <bool-algebra> | <property> | <relative clause>
+ | <literal> | <var>
+\end_layout
+
+\begin_layout Standard
+
+\noun on
+noun ::= <expression>
+\end_layout
+
+\begin_layout Standard
+
+\noun on
+prepositional slot ::= <preposition> <slot>
+\end_layout
+
+\begin_layout Standard
+
+\noun on
+function body ::=
+\noun default
+ 
+\noun on
+prepositional slot 
+\noun default
+wherein
+\noun on
+ preposition = by | via 
+\noun default
+and
+\noun on
+ slot = <list<invocation>>
+\end_layout
+
+\begin_layout Standard
+Note: one function body per relation please.
+\end_layout
+
+\begin_layout Standard
+
+\noun on
+relation ::= <slot>? <new name verb> <slot>? <prepositional slot>*
+\noun default
+ 
+\end_layout
+
+\begin_layout Standard
+Note: comma'd slots are accessed via property syntax.
+ Preposition'd slots are accessed by parameter auto-naming syntax.
+ If the verb is also a noun, like 
+\noun on
+to purchase
+\noun default
+, then either syntax works nicely.
+\end_layout
+
+\begin_layout Standard
+
+\noun on
+function ::= relation 
+\noun default
+wherein one slot is a
+\noun on
+ function body
+\end_layout
+
+\begin_layout Standard
+
+\noun on
+struct ::= relation 
+\noun default
+wherein no slots are a
+\noun on
+ function body
+\end_layout
+
+\begin_layout Standard
+
+\noun on
+invocation ::= <noun>? <verb> <noun>? (<preposition> <noun>)*
+\end_layout
+
+\begin_layout Standard
+
+\noun on
+past participle ::= <function>
+\noun default
+ wherein one type is inputted and one type is outputted and the verbform
+ is past tense
+\end_layout
+
+\begin_layout Standard
+
+\noun on
+slot ::= <determiner> (<past participle>)* (<new name adjective>? <type.nounname>
+ | <type.adjectivename> <new name noun>)
+\end_layout
+
+\begin_layout Standard
+
+\noun on
+relative clause ::= the <slot.type> which <invocation sans that slot>
+\end_layout
+
+\begin_layout Standard
+
+\noun on
+temporal conjunction ::= before | after
+\end_layout
+
+\begin_layout Standard
+
+\noun on
+temporal constraint ::= <relation description> 
+\noun default
+<
+\noun on
+temporal conjunction
+\noun default
+> 
+\noun on
+<relation description>
+\end_layout
+
+\begin_layout Standard
+
+\noun on
+invariant constraint ::= <expression> is always? <expression>
+\end_layout
+
+\begin_layout Standard
+
+\noun on
+function body extended ::= function .
+ (<invocation> .)*
+\end_layout
+
+\begin_layout Standard
+
+\noun on
+sentence ::= (<relation> | <objecttype> | <invocation> | <temporal constraint>
+ | <invariant constraint>) .
+\end_layout
+
+\begin_layout Standard
+
+\noun on
+relation description ::= 
+\noun default
+?like Zarfian?
+\end_layout
+
+\begin_layout Standard
+.
+\end_layout
+
+\begin_layout Standard
+.
+\end_layout
+
+\end_body
+\end_document

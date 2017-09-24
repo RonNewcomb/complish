@@ -1,0 +1,87 @@
+Think of a semicolon as a “period lite”.  If statements end at a period, then only ‘inner’ statements end at a semicolon.  How is a statement ‘inner’ without being a function?  In a lambda expression.
+
+A period that ends a statement also ends a lambda, but if the lambda isn’t the last parameter then the lambda definition must be put onto its own line, assigned to a var, and the var is passed to the higher-order function. This is because we only have the semicolon to say that the lambda body continues, but nothing that states the lambda ends other than the period which also states that the outer statement ends as well. So,
+
+	objs = GetExpiredDates(today, (x,d) => x.Date.AddDays(d));
+ 
+Could be a one-liner in Complish, but
+ 
+	objs = GetExpiredDates((x,d) => x.Date.AddDays(d), today);
+ 
+would have to be split up like
+ 
+	lam = (x,d) => x.Date.AddDays(d);
+	objs = GetExpiredDates(lam, today);
+ 
+because where a lambda ends the outer statement also ends. Of course, the order of arguments in complish isn’t strict. Since they are “named parameters” in the sense that the leading preposition clearly indicates which slot is being bound, the invocation of most any higher order function can be rearranged in such a way that the lamda appears at the end.
+
+The semicolon does NOT help with the question of parameters to the lambda, but I think complish’es usual method would work.
+
+	A record has a date, a unique identifier, and a textual description.
+
+	Get dates after (today) for a record and a numeric days such that add the date of the records to the days. 
+
+	objs is getting all records such that the date of the record is after today.
+	objs is getting every record for which the date of the record is after today.
+	objs is getting every record for which its date follows today.
+	objs is getting every record for which its date comes after today.
+	Get every record whose date comes after today. // retval is in “it” and “the records [gotten]”
+ 
+Higher order functions accepting multiple lambdas, however, must be split into several sentences regardless.
+
+--------------- 
+“whose” means “of which” or “belonging to which”; it needn’t be used to refer to a person: “We saw several houses whose roofs are falling off.”
+ 
+"There were three books, of which the blue one was the thickest"?
+"There were three books, the blue one of which was the thickest"
+ 
+“Ron liked to play word games, of which he found crossword puzzles particularly satisfying.”?
+“Ron liked to play word games, the crossword puzzles of which he found particularly satisfying.”
+ 
+ 
+--------------- 
+
+This distinction criterion is very simple and always works: 'such that' expresses consequence; 'so that', purpose.
+ 
+"Such that" is a description of HOW something is to be done.
+"So that" is a description of WHY something is to be done.
+ 
+I would say “The image will be sheared such that the x-axis goes through (1,1)” but would keep the other construct to express some higher-level aim: “The image will be sheared so that it is clearer”.
+ 
+I think 'such that' should refer to a subject noun or pronoun, while ‘so that’ should refer to a verb.
+ 
+‘So that’ means ‘in order that’. 
+‘Such that’ means ‘of a kind’
+ 
+--------------- 
+ 
+Such (determiner, predeterminer, & pronoun)
+1.       of the type previously mentioned.
+"I have been involved in many such courses" (determiner)
+2.       of the type about to be mentioned.
+"there is no such thing as a free lunch"  (determiner)
+3.       as a pronoun, in “such that” , meaning “of a kind / of a type”
+
+--------------- 
+Common kinds of determiners include definite (the) and indefinite (a, an) articles, demonstratives (this that these those), possessive determiners (my, their, etc.), quantifiers (many, few, several), numerals, distributive determiners (each, any), and interrogative determiners (which).
+
+Determiners
+	definite
+		singular (the)
+		possessive determiners (my, their...)
+		demonstratives (this that these those)
+		quantifiers (1, 2, 56...)
+		distributive (each ["pronoun" use])
+	indefinite
+		singular (a, an, any)
+		mass singular (some)
+		quantifiers (many, few, several, any, no, all)
+		distributive (each ["adjective" use], every)
+
+
+definite pronouns
+	he, she...
+indefinite pronouns
+	one, few, many...
+	each ["pronoun" usage]
+
