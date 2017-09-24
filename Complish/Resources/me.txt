@@ -1,0 +1,321 @@
+To give nothing to a number,
+<SPLIT>  declaring a parameter which must be nothing
+  declaring a parameter of type number called 'number'
+
+<SPLIT>To give nothing to a number,
+  verb 'give'
+  parameter 'the nothing given'
+  keywords 'to'
+  parameter 'the number given to'
+
+<SPLIT>To give something to anything,
+<SPLIT>  declaring a parameter which mustn't be nothing
+  declaring a parameter which could be anything
+
+<SPLIT>To give something to anything,
+  verb 'give'
+  parameter 'the something given'
+  keywords 'to'
+  parameter 'the anything given to'
+
+<SPLIT>A car is many wheels, several percentages.
+<SPLIT>  assuming 'car' is a new type
+  parsed the subject of a sentence, 'car'
+  a list of wheels
+  a list of percentages
+
+<SPLIT>A car is many wheels, several percentages.
+  parameter 'the car'
+  verb 'are'
+  parameter 'the wheels'
+  parameter 'the percentages'
+
+<SPLIT>To give asap a numeric rank to just a percent boldly, 
+<SPLIT>  declaring a parameter of type number called 'rank'
+  declaring a parameter of type percent called 'percent'
+
+<SPLIT>To give asap a numeric rank to just a percent boldly,
+  verb 'give'
+  keywords 'asap'
+  parameter 'the rank given asap'
+  keywords 'to'
+  parameter 'the percent given to'
+  keywords 'boldly'
+
+<SPLIT>Numeric horses are a charismatic number and a car. 
+<SPLIT>  plural(?) parameter of type number called the horses
+  parsed the subject of a sentence, 'horses'
+  declaring a parameter of type number called 'charismatic'
+  declaring a parameter of type car called 'car'
+  ERROR: trying to re-define the type 'number'
+
+<SPLIT>Numeric horses are a charismatic number and a car. (problematic)
+  parameter 'the horses'
+  verb 'are'
+  parameter 'the charismatic number'
+  parameter 'the car'
+
+<SPLIT>Toby MacGuire is a charismatic number and a car,
+<SPLIT>ERROR: verb is 'is' but I don't know what to do with the subject: toby macguire 
+
+<SPLIT>Toby MacGuire is a charismatic number and a car, (problematic)
+  verb 'are'
+
+<SPLIT>A car is a textual make, a textual model, and a numeric year.
+<SPLIT>  declaring a parameter of type car called 'car'
+  parsed the subject of a sentence, 'car'
+  declaring a parameter of type text called 'make'
+  declaring a parameter of type text called 'model'
+  declaring a parameter of type number called 'year'
+  ERROR: trying to re-define the type 'car'
+
+<SPLIT>A car is a textual make, a textual model, and a numeric year. (problematic)
+  parameter 'the car'
+  verb 'are'
+  parameter 'the make'
+  parameter 'the model'
+  parameter 'the year'
+
+<SPLIT>To give a numeric rank to a percent,
+<SPLIT>  declaring a parameter of type number called 'rank'
+  declaring a parameter of type percent called 'percent'
+
+<SPLIT>To give a numeric rank to a percent,
+  verb 'give'
+  parameter 'the rank given'
+  keywords 'to'
+  parameter 'the percent given to'
+
+<SPLIT>To throw a numeric rank at a percent,
+<SPLIT>  declaring a parameter of type number called 'rank'
+  declaring a parameter of type percent called 'percent'
+
+<SPLIT>To throw a numeric rank at a percent,
+  verb 'throw'
+  parameter 'the rank thrown'
+  keywords 'at'
+  parameter 'the percent thrown at'
+
+<SPLIT>To give a numeric rank to a percent, know the percent, then know 12%.
+<SPLIT>  declaring a parameter of type number called 'rank'
+  declaring a parameter of type percent called 'percent'
+
+<SPLIT>To give a numeric rank to a percent, know the percent, then know 12%.
+  verb 'give'
+  parameter 'the rank given'
+  keywords 'to'
+  parameter 'the percent given to'
+
+<SPLIT>To give a percent a numeric rank a position,
+<SPLIT>  declaring a parameter of type percent called 'percent'
+  declaring a parameter of type number called 'rank'
+  declaring a parameter of type position called 'position'
+  ERROR: I require those parameters to be separated by prepositions or commas.
+
+<SPLIT>To give a percent a numeric rank a position, (problematic)
+  verb 'give'
+  parameter 'the percent given to'
+  parameter 'the rank given'
+  parameter 'the position given'
+
+<SPLIT>To give a percent a numeric rank,
+<SPLIT>  declaring a parameter of type percent called 'percent'
+  declaring a parameter of type number called 'rank'
+
+<SPLIT>To give a percent a numeric rank,
+  verb 'give'
+  parameter 'the percent given'
+  parameter 'the rank given'
+
+<SPLIT>A numeric power level gives a numeric rank to a percent,
+<SPLIT>  declaring a parameter of type number called 'power level gives'
+  parsed the subject of a sentence, 'power level gives'
+  oops; verb is 'gives' and subject is 'power level'
+  declaring a parameter of type number called 'rank'
+  declaring a parameter of type percent called 'percent'
+
+<SPLIT>A numeric power level gives a numeric rank to a percent,
+  parameter 'the power level giving'
+  verb 'give'
+  parameter 'the rank given'
+  keywords 'to'
+  parameter 'the percent given to'
+
+<SPLIT>A numeric charisma is a numeric rank and a percent,
+<SPLIT>  declaring a parameter of type number called 'charisma'
+  parsed the subject of a sentence, 'charisma'
+  declaring a parameter of type number called 'rank'
+  declaring a parameter of type percent called 'percent'
+
+<SPLIT>A numeric charisma is a numeric rank and a percent,
+  parameter 'the charisma'
+  verb 'are'
+  parameter 'the rank'
+  parameter 'the percent'
+
+<SPLIT>fe fi fo fum.
+<SPLIT>ERROR: I couldn't find a verb in: fe fi fo fum . 
+
+<SPLIT>fe fi fo fum. (problematic)
+  keywords '...'
+
+<SPLIT>a buggy is many wheels and a numeric rank.
+<SPLIT>  assuming 'buggy' is a new type
+  parsed the subject of a sentence, 'buggy'
+  another 'wheels' (a list of wheels)
+  declaring a parameter of type number called 'rank'
+
+<SPLIT>a buggy is many wheels and a numeric rank.
+  parameter 'the buggy'
+  verb 'are'
+  parameter 'the wheels'
+  parameter 'the rank'
+
+<SPLIT>A person knows many people.
+<SPLIT>  assuming 'person knows' is a new type
+  parsed the subject of a sentence, 'person knows'
+  oops; verb is 'knows' and subject is 'person'
+  a list of people
+
+<SPLIT>A person knows many people.
+  parameter 'the person knowing'
+  verb 'know'
+  parameter 'the people known'
+
+<SPLIT>To know a percent, know the percent.
+<SPLIT>  declaring a parameter of type percent called 'percent'
+
+<SPLIT>To know a percent, know the percent.
+  verb 'know'
+  parameter 'the percent known'
+
+<SPLIT>To draw a percent toward a percent,
+<SPLIT>  declaring a parameter of type percent called 'percent'
+  declaring a parameter of type percent called 'percent'
+
+<SPLIT>To draw a percent toward a percent,
+  verb 'draw'
+  parameter 'the percent drawn'
+  keywords 'toward'
+  parameter 'the percent drawn toward'
+
+<SPLIT>To draw, say "Hello World!".
+<SPLIT>
+<SPLIT>To draw, say "Hello World!".
+  verb 'draw'
+
+<SPLIT>To say a text, say the text.
+<SPLIT>  declaring a parameter of type text called 'text'
+
+<SPLIT>To say a text, say the text.
+  verb 'say'
+  parameter 'the text said'
+
+<SPLIT>To draw twice, say "Hello ""World""!".
+<SPLIT>
+<SPLIT>To draw twice, say "Hello ""World""!".
+  verb 'draw'
+  keywords 'twice'
+
+<SPLIT>To draw thrice, say """Hello"" world!".
+<SPLIT>
+<SPLIT>To draw thrice, say """Hello"" world!".
+  verb 'draw'
+  keywords 'thrice'
+
+<SPLIT>To say nothing, say "".
+<SPLIT>  declaring a parameter which must be nothing
+
+<SPLIT>To say nothing, say "".
+  verb 'say'
+  parameter 'the nothing said'
+
+<SPLIT>To say trouble, give 10% to 21, give anything to anything.
+<SPLIT>
+<SPLIT>To say trouble, give 10% to 21, give anything to anything.
+  verb 'say'
+  keywords 'trouble'
+
+<SPLIT>To say, give 10% to 21
+<SPLIT>
+<SPLIT>To say, give 10% to 21
+  verb 'say'
+
+<SPLIT>To give a number to a number,
+<SPLIT>  declaring a parameter of type number called 'number'
+  declaring a parameter of type number called 'number'
+
+<SPLIT>To give a number to a number,
+  verb 'give'
+  parameter 'the number given'
+  keywords 'to'
+  parameter 'the number given to'
+
+<SPLIT>To know, draw.
+<SPLIT>
+<SPLIT>To know, draw.
+  verb 'know'
+
+<SPLIT>To do: say nothing.
+<SPLIT>
+<SPLIT>To do: say nothing.
+  verb 'do'
+
+<SPLIT>To choose, know the percent which was given to 5.
+<SPLIT>
+<SPLIT>To choose, know the percent which was given to 5.
+  verb 'choose'
+
+<SPLIT>To choose, know the percent which 5 gave to 7.
+<SPLIT>
+<SPLIT>To choose, know the percent which 5 gave to 7.
+  verb 'choose'
+
+<SPLIT>To choose, know the percent to which 5 gave 7.
+<SPLIT>
+<SPLIT>To choose, know the percent to which 5 gave 7.
+  verb 'choose'
+
+<SPLIT>The Corvette is a car.
+<SPLIT>  parsed the subject of a sentence, 'corvette'
+  declaring a parameter of type car called 'car'
+  global variable or singleton instance 'corvette' created
+<SPLIT>The Corvette is a car.
+  parameter 'the corvette'
+  verb 'are'
+  parameter 'the car'
+
+<SPLIT>To draw giving a number to a number,
+<SPLIT>declaring a parameter of type number called 'number'
+  declaring a parameter of type number called 'number'
+<SPLIT>To draw giving a number to a number,
+  verb 'draw'
+  parameter 'giving'
+
+<SPLIT>To draw giving,
+<SPLIT>
+<SPLIT>To draw giving,
+  verb 'draw'
+  parameter 'giving'
+
+<SPLIT>To throw, draw giving 3 to 2.
+<SPLIT>
+<SPLIT>To throw, draw giving 3 to 2.
+  verb 'throw'
+
+<SPLIT>To weave, draw giving a number to 2.
+<SPLIT>
+<SPLIT>To weave, draw giving a number to 2.
+  verb 'weave'
+
+<SPLIT>Giving a number to a number is an activity.
+<SPLIT>  declaring a parameter of type number called 'number'
+  declaring a parameter of type number called 'number'
+  parsed the subject of a sentence, 'giving'
+
+  TODO: is 'activity' textual? Numeric? Or something more complex?
+  assuming 'activity' categorizes verbs
+<SPLIT>Giving a number to a number is an activity.
+  parameter 'giving'
+  verb 'are'
+  parameter 'the activity'

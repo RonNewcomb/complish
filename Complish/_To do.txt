@@ -1,0 +1,30 @@
+
+DECISION: Imperative function bodies end at the first statement that isn't imperative. 
+
+I'd like a "parenthetical aside" to define stuff mid-function, perhaps leaving room for anonymous functions. Since there's no way to explicitly state a function has ended. 
+
+DECISION: Global variables: turn them into implicitly passed & returned arguments through the functions that need them. 
+
+Add enums, bools. 
+
+Relative clauses parse fine, but add them as a separate line preceding their use, putting the result into a temp var. (auto-named, even if not human-readable name) 
+
+Scope issue with temporal constraints.  How does it work?  For now assume global?  It shouldn't add anything to scope, just check that the clauses are valid... somehow.
+
+Would like to unify symbol-definition ("is" statements) with the rest of the system, as if new-symbol was a Type. Makes "mynamespace begins here" possible.
+
+Higher order functions. 
+
+Partially-applied functions.
+
+IDEA: use paF (partially applied functions) to implemente temporal constraints only because a paF allows determinate & indeterminate NPs to mix.
+
+Can gerund phrases nest? Should they? To find where a gerund's signature ends and the outer function's signature begins again, 
+	we use an example: if the gerund verb is Xing, then look for all functions To X and it should match one of them.
+
+NEXT STEPS: 
+	invoke a higher-order function, type-safely
+	move the special-case "is it a gerund" code from the leaf functions to.. a common place more suited? 
+		(The issue is a gerund phrase is an aNP, and aNP are supposed to go there. )
+
+
