@@ -1,0 +1,9 @@
+Correct Restrictive Use: 
+ 
+	The store honored the complaints that were less than 60 days old.
+
+Correct Nonrestrictive Use: 
+ 
+	The store honored the complaints, which were less than 60 days old.
+
+These sentences have different meanings as well as different punctuation. In the restrictive sentence, the store honored only those complaints less than 60 days old, but not those over 60 days old. In the nonrestrictive sentence, the store honored all the complaints, all of which were less than 60 days old.
