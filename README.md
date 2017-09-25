@@ -1,5 +1,5 @@
-# complish
-a controlled natural language partly inspired by Inform 7
+# Complish
+*A controlled natural language partly inspired by Inform 7*
 
 Go read [Defining 'Declarative'](https://awelonblue.wordpress.com/2012/01/12/defining-declarative/) at David Barbour's blog Awelon Blue. He explains what a declarative programming language should be better than I can. 
 
@@ -29,10 +29,11 @@ There's also some differences.
 
 Anyway, I'd like to marry Barbour's "declarative" with an English-like syntax.  
 
-Other stuff I found.
+Other stuff.
 
 * I'd like to have explicit temporal operators like *before*, *after*, and *during* since I think they're necessary for 'declarative'
 * OO inheritance and polymorphism seems natural in a lot of places
 * But multi-methods seem like a better default than OO's usual "object-owned" methods, and reduces the [Kingdom of Nouns](https://steve-yegge.blogspot.com/2006/03/execution-in-kingdom-of-nouns.html) problem
+* Because declarative, I don't want to have to order statements.  I should never get an order-of-operations error like "variable used before initialization", but instead I should get circular logic errors
 
 
