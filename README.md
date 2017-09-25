@@ -13,7 +13,7 @@ English grammar and programming language grammer have some basic similarities.
 * Higher-order functions: the function being passed is a gerundial phrase. 
 * Plurals are lists/arrays/collections
 * All natural languages specify which of a verb's "slots" each noun goes.  Either by placement (i.e., the subject always precedes the verb in English) or by inflection (usually a suffix on each noun to indicate if it's subject or direct object, etc.)  So passing nouns to verbs is no problem.
-* Prepositions allow for more parameters that are normal. (English verbs have three slots, Russian has four. The fourth is, in English, usually specified by adding a 'with' prepositional phrase.)
+* Prepositions allow for more parameters than are normal. (English verbs have three slots, Russian has four. The fourth is, in English, usually specified by adding a 'with' prepositional phrase.)
 * Indefinite noun phrases are parameters; definite noun phrases are the arguments
 * Partially applied function is a gerundial phrase with both definite and indefinite noun phrases
 * Relative clauses are very SQL-like or Prolog-like: "the car which/that/where <SELECT criteria>"
