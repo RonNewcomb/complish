@@ -16,7 +16,7 @@ English grammar and programming language grammer have some basic similarities.
 * Prepositions allow for more parameters than are normal. (English verbs have three slots, Russian has four. The fourth is, in English, usually specified by adding a 'with' prepositional phrase.)
 * Indefinite noun phrases are parameters; definite noun phrases are the arguments
 * Partially applied function is a gerundial phrase with both definite and indefinite noun phrases
-* Relative clauses are very SQL-like or Prolog-like: "the car which/that/where <SELECT criteria>"
+* Relative clauses are very SQL-like or Prolog-like: "the car which/that/where (SELECT criteria)"
 
 There's also some differences.
 
