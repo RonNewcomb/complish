@@ -1,16 +1,119 @@
-<table border=1 width=100%>
+<style>
+
+tr {
+  font-size: .6rem;
+}
+
+.normal {
+  font-size: 1rem;
+}
+
+.NP {
+  font-size: .6rem;
+  background-color: green;
+  color: white;
+}
+
+.aNP {
+  font-size: .6rem;
+  background-color: lightgreen;
+  color: white;
+}
+
+.aPP {
+  font-size: .6rem;
+  background-color: pink;
+  color: white;
+}
+
+.V {
+  font-size: .6rem;
+  background-color: red;
+  color: white;
+}
+
+.P {
+  font-size: .5rem;
+  background-color: pink;
+  color: white;
+}
+
+.PP {
+  font-size: .5rem;
+  background-color: #EEEE66;
+  color: white;
+}
+
+.IV {
+  font-size: .5rem;
+  background-color: #FF6666;
+  color: white;
+}
+
+.G {
+  font-size: .6rem;
+  background-color: blue;
+  color: white;
+}
+
+.SConj {
+  font-size: .6rem;
+  background-color: black;
+  color: white;
+  font-weight: bold;
+}
+
+.DeFun {
+  font-size: .6rem;
+  background-color: teal;
+  color: white;
+}
+
+.Ops {
+  font-size: .6rem;
+  background-color: #115555;
+  color: white;
+}
+
+.VO {
+  font-size: .6rem;
+  background-color: #22CCCC;
+  color: white;
+}
+
+.tVO {
+  font-size: .6rem;
+  background-color: #88CCCC;
+  color: white;
+}
+
+.aVO {
+  font-size: .6rem;
+  background-color: #33FFFF;
+  color: white;
+}
+
+.Conj {
+  font-size: .5rem;
+  background-color: grey;
+  color: white;
+}
+
+</style>
+
+<table >
 <tr><td>13</td><td align=center colspan=13 border=0>&nbsp;</td></tr>
 <tr><td>12</td><td align=center colspan=12>&nbsp;</td></tr>
 <tr><td>11</td><td align=center colspan=11>&nbsp;</td></tr>
-<tr><td>10</td><td align=center colspan=10>DeFun</td></tr>
-<tr><td>9</td><td></td><td align=center colspan=9>Ops</td></tr>
-<tr><td>8</td><td align=center colspan=1>DeFun</td><td></td><td align=center colspan=8>Ops</td></tr>
-<tr><td>7</td><td></td><td align=center colspan=1>Ops</td><td></td><td align=center colspan=7>*</td></tr>
-<tr><td>6</td><td align=center colspan=1>DeFun</td><td></td><td align=center colspan=1>Ops</td><td></td><td align=center colspan=6>Ops</td></tr>
-<tr><td>5</td><td align=center colspan=1>DeFun</td><td align=center colspan=1>Ops</td><td></td><td align=center colspan=5>*</td><td></td></tr>
-<tr><td>4</td><td align=center colspan=1>tVO</td><td align=center colspan=1>Ops</td><td align=center colspan=1>Ops</td><td></td><td align=center colspan=4>VO</td><td></td><td align=center colspan=4>aVO </td></tr>
-<tr><td>3</td><td align=center colspan=1>IV</td><td></td><td align=center colspan=1>Ops</td><td align=center colspan=1>*</td><td></td><td align=center colspan=3>NPPP</td><td></td><td></td><td align=center colspan=3>aNPPP </td></tr>
-<tr><td>2</td><td align=center colspan=1>IV</td><td align=center colspan=2>V</td><td align=center colspan=1>*</td><td align=center colspan=2>VO</td><td align=center colspan=2>PP</td><td align=center colspan=1>*</td><td align=center colspan=2>aVO</td><td align=center colspan=2>aPP </td></tr>
-<tr><td>1</td><td align=center colspan=1>P,To</td><td align=center colspan=1>V</td><td align=center colspan=1>*</td><td align=center colspan=1>Conj,:</td><td align=center colspan=1>V</td><td align=center colspan=1>NP</td><td align=center colspan=1>P,To</td><td align=center colspan=1>NP</td><td align=center colspan=1>Conj,:</td><td align=center colspan=1>V</td><td align=center colspan=1>aNP</td><td align=center colspan=1>P,To</td><td align=center colspan=1>aNP </td></tr>
-<tr><td>0</td><td align=center colspan=1>to</td><td align=center colspan=1>say</td><td align=center colspan=1>trouble</td><td align=center colspan=1>,</td><td align=center colspan=1>give</td><td align=center colspan=1>10%</td><td align=center colspan=1>to</td><td align=center colspan=1>21</td><td align=center colspan=1>,</td><td align=center colspan=1>give</td><td align=center colspan=1>anything</td><td align=center colspan=1>to</td><td align=center colspan=1>anything </td></tr>
+<tr><td>10</td><td align=center colspan=10 class="DeFun">DeFun</td></tr>
+<tr><td>9</td><td></td><td align=center colspan=9 class="Ops">Ops</td></tr>
+<tr><td>8</td><td align=center colspan=1 class="DeFun">DeFun</td><td></td><td align=center colspan=8 class="Ops">Ops</td></tr>
+<tr><td>7</td><td></td><td align=center colspan=1 class="Ops">Ops</td><td></td><td align=center colspan=7>*</td></tr>
+<tr><td>6</td><td align=center colspan=1 class="DeFun">DeFun</td><td></td><td align=center colspan=1 class="Ops">Ops</td><td></td><td align=center colspan=6 class="Ops">Ops</td></tr>
+<tr><td>5</td><td align=center colspan=1 class="DeFun">DeFun</td><td align=center colspan=1 class="Ops">Ops</td><td></td><td align=center colspan=5>*</td><td></td></tr>
+<tr><td>4</td><td align=center colspan=1 class="tVO">tVO</td><td align=center colspan=1 class="Ops">Ops</td><td align=center colspan=1 class="Ops">Ops</td><td></td><td align=center colspan=4 class="VO">VO</td><td></td><td align=center colspan=4 class="aVO">aVO </td></tr>
+<tr><td>3</td><td align=center colspan=1 class="IV">IV</td><td></td><td align=center colspan=1 class="Ops">Ops</td><td align=center colspan=1>*</td><td></td><td align=center colspan=3 class="NP">NPPP</td><td></td><td></td><td align=center colspan=3 class="aNP">aNPPP </td></tr>
+<tr><td>2</td><td align=center colspan=1 class="IV">IV</td><td align=center colspan=2 class='V'>V</td><td align=center colspan=1>*</td><td align=center colspan=2 class="VO">VO</td><td align=center colspan=2 class="PP">PP</td><td align=center colspan=1>*</td><td align=center colspan=2 class="aVO">aVO</td><td align=center colspan=2 class="aPP">aPP </td></tr>
+<tr><td>1</td><td align=center colspan=1 class="P">P,To</td><td align=center colspan=1 class='V'>V</td><td align=center colspan=1>*</td><td align=center colspan=1 class="Conj">Conj,:</td><td align=center colspan=1 class='V'>V</td><td align=center colspan=1 class='NP'>NP</td><td align=center colspan=1 class="P">P,To</td><td align=center colspan=1 class='NP'>NP</td><td align=center colspan=1 class="Conj">Conj,:</td><td align=center colspan=1 class="V">V</td><td align=center colspan=1 class='aNP'>aNP</td><td align=center colspan=1 class="P">P,To</td><td align=center colspan=1 class='aNP'>aNP </td></tr>
+<tr class="normal"><td>0</td><td align=center colspan=1>to</td><td align=center colspan=1>say</td><td align=center colspan=1>trouble</td><td align=center colspan=1>,</td><td align=center colspan=1>give</td><td align=center colspan=1>10%</td><td align=center colspan=1>to</td><td align=center colspan=1>21</td><td align=center colspan=1>,</td><td align=center colspan=1>give</td><td align=center colspan=1>anything</td><td align=center colspan=1>to</td><td align=center colspan=1>anything </td></tr>
 </table>
