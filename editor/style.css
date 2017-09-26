@@ -1,0 +1,60 @@
+
+.NP {
+  color: green;
+}
+
+.aNP {
+  color: lightgreen;
+}
+
+.V {
+  color: red;
+}
+
+.P {
+  color: pink;
+}
+
+.G {
+  color: blue;
+}
+
+.SConj {
+  color: black;
+  font-weight: bold;
+}
+
+/*
+// noun, preposition, gerund, verb, adjective, adverb, conjunction, subordinating conjunction, relative pronoun
+N, P, G, V, Adj, Adv, Conj, SConj, Rp,
+
+// phrases, determinate and indeterminate sets
+ NP,  PP,  GP, VP,
+aNP, aPP, aGP,
+
+// adjective-noun combo, NP-PP combos, partially-applied function (combination of 1+ aNP/aPP with 1+ NP/PP)
+AdN, NPPP, aNPPP, paF,
+
+// lists: list of NPs, list of Operations, an "an X, a Y and a Z" list, list delimiter
+NPs, ConjNP,
+Ops, ConjOp,
+XYZ,
+comma,
+
+// infinitive and helping verbs
+To, IV, IsHas, HV,
+
+// relative clause, dependent (subordinate) clause 
+RC, DC,
+
+// Subject-Verb, Subject-Verb-Object(s), Verb-Object(s)  (determinate and indeterminate)
+SV, SVO, VO,
+aSV, aSVO, aVO,
+
+// "to verb (params)", "by/via/:/,", imperative function body 
+tVO, colon, body,
+
+// temporal relation (whole sentence), define object, define function, define variable/instance
+TR, DeObj, DeFun, DeVar,
+
+*/
