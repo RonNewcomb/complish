@@ -309,15 +309,15 @@ function traverseParseTable2(parseTable, left, right, rootIndex) {
 var input = 'The woman eats the fish with the chopsticks before eating the fish with a fork'
 
 var ghmp = grammarToHashMap(grammar);
-console.log(ghmp);
+//console.log(ghmp);
 var parseTable = parse(ghmp, input.toLowerCase().split(' '));
-console.log(JSON.stringify(parseTable));
+//console.log(JSON.stringify(parseTable));
 
 if (parseTable[0][parseTable.length - 1].length == 0) 
-  document.body.innerHTML += "Error.";
+  document.getElementById("main").innerHTML += "Error.";
 else
   for (var i in parseTable[0][parseTable.length - 1]) {
-      document.body.innerHTML += '<div class="tree" id="displayTree"><span class="sentence">' + traverseParseTable2(parseTable, 0, parseTable.length - 1, i) + '</span></div><br/>';
+    document.getElementById("main").innerHTML += '<div class="tree" id="displayTree"><span class="sentence">' + traverseParseTable2(parseTable, 0, parseTable.length - 1, i) + '</span></div><br/>';
   }
 
 }

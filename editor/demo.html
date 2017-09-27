@@ -2,7 +2,66 @@
 <head>
     <link rel="stylesheet" type="text/css" href="style.css" media="screen" />
     <script type="text/javascript" src="cyk.js"></script>
+
+    <script>
+        window.onclick = function(event) {
+            if (!event.target.matches('.dropbtn')) {
+                var dropdowns = document.getElementsByClassName("dropdown-content");
+                var i;
+                for (i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                    if (openDropdown.classList.contains('show')) {
+                        openDropdown.classList.remove('show');
+                    }
+                }
+            }
+        }
+    </script>
 </head>
 <body onLoad="init()">
+
+    <ul>
+        <li class="dropdown">
+            <a href="javascript:void(0)" class="dropbtn">File</a>
+            <div class="dropdown-content">
+            <a href="#">New</a>
+            <a href="#">Open...</a>
+            <a href="#">Save</a>
+            <a href="#">Save As...</a>
+            <a href="#">Exit</a>
+            </div>
+        </li>
+        <li class="dropdown">
+                <a href="javascript:void(0)" class="dropbtn">Edit</a>
+                <div class="dropdown-content">
+                <a href="#">Cut</a>
+                <a href="#">Copy</a>
+                <a href="#">Paste</a>
+                </div>
+            </li>
+        <li class="dropdown">
+            <a href="javascript:void(0)" class="dropbtn">Run</a>
+            <div class="dropdown-content">
+            <a href="#">Build</a>
+            <a href="#">Rebuild</a>
+            <a href="#">Clean</a>
+            <hr/>
+            <a href="#">Walkthrough</a>
+            </div>
+        </li>
+        <li class="dropdown">
+            <a href="javascript:void(0)" class="dropbtn">Help</a>
+            <div class="dropdown-content">
+                <a href="#">Reference</a>
+                <a href="#">Tutorial</a>
+                <a href="#">About</a>
+            </div>
+        </li>
+    </ul>
+
+              
+    <div id="main">
+    </div>
+
 </body>
 </html>
