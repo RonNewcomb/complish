@@ -1,8 +1,6 @@
 <html>
 <head>
     <link rel="stylesheet" type="text/css" href="style.css" media="screen" />
-    <script type="text/javascript" src="cyk.js"></script>
-
     <script>
         window.onclick = function(event) {
             if (!event.target.matches('.dropbtn')) {
@@ -18,35 +16,39 @@
         }
     </script>
 </head>
-<body onLoad="init()">
+<body >
 
     <ul>
         <li class="dropdown">
             <a href="javascript:void(0)" class="dropbtn">File</a>
             <div class="dropdown-content">
-            <a href="#">New</a>
-            <a href="#">Open...</a>
-            <a href="#">Save</a>
-            <a href="#">Save As...</a>
-            <a href="#">Exit</a>
+                <a href="#">New</a>
+                <a href="#">Open...</a>
+                <a href="#">Save</a>
+                <a href="#">Save As...</a>
+                <a href="#">Close</a>
+                <hr/>
+                <a href="#">Exit</a>
             </div>
         </li>
         <li class="dropdown">
-                <a href="javascript:void(0)" class="dropbtn">Edit</a>
-                <div class="dropdown-content">
+            <a href="javascript:void(0)" class="dropbtn">Edit</a>
+            <div class="dropdown-content">
                 <a href="#">Cut</a>
                 <a href="#">Copy</a>
                 <a href="#">Paste</a>
-                </div>
-            </li>
+                <hr/>
+                <a href="#">Preferences...</a>
+            </div>
+        </li>
         <li class="dropdown">
             <a href="javascript:void(0)" class="dropbtn">Run</a>
             <div class="dropdown-content">
-            <a href="#">Build</a>
-            <a href="#">Rebuild</a>
-            <a href="#">Clean</a>
-            <hr/>
-            <a href="#">Walkthrough</a>
+                <a href="#">Build</a>
+                <a href="#">Rebuild</a>
+                <a href="#">Clean</a>
+                <hr/>
+                <a href="#">Walkthrough</a>
             </div>
         </li>
         <li class="dropdown">
@@ -54,6 +56,7 @@
             <div class="dropdown-content">
                 <a href="#">Reference</a>
                 <a href="#">Tutorial</a>
+                <hr/>
                 <a href="#">About</a>
             </div>
         </li>
@@ -63,5 +66,7 @@
     <div id="main">
     </div>
 
+
+    <script type="text/javascript" src="cyk.js"></script>
 </body>
 </html>

@@ -9,23 +9,24 @@ English grammar and programming language grammer have some basic similarities.
 
 * Nouns are objects
 * Verbs are functions
-* Variables are antecedents (pronouns, plus constructions of the form `the` followed by a common noun)
-* Higher-order functions: the function being passed is a gerundial phrase. 
+* Antecendents are variables (pronouns, plus constructions of the form `the` followed by a common noun)
 * Plurals are lists/arrays/collections
+* Higher-order functions: the function being passed is a gerundial phrase. 
 * All natural languages specify which of a verb's "slots" each noun goes.  Either by placement (i.e., the subject always precedes the verb in English) or by inflection (usually a suffix on each noun to indicate if it's subject or direct object, etc.)  So passing nouns to verbs is no problem.
 * Prepositions allow for more parameters than are normal. (English verbs have three slots, Russian has four. The fourth is, in English, usually specified by adding a 'with' prepositional phrase.)
 * Indefinite noun phrases are parameters; definite noun phrases are the arguments
 * Partially applied function is a gerundial phrase with both definite and indefinite noun phrases
-* Relative clauses are very SQL-like or Prolog-like: "the car which/that/where (SELECT criteria)"
+* Relative clauses find/select from a list, like SQL or Prolog: "the car which (criteria...)"
+* Imperatives change state
 
 There's also some differences.
 
 * English doesn't nest more than a couple levels deep. Functional languages *hate* this!
 * Defining a verb is very rare in English while it comprises the majority of coding. 
 * Anonymous functions, where you define a new function at the same place you then use it, doesn't seem to fly in English. (And since lambdas are anonymous closures, well...)
-* And yet, functional or something like it seems a better fit than imperative, even though imperative remains an option for small tasks
-* Tense (past/present) and Aspect (past-perfect & present-perfect) don't seem to have much use. Perhaps this is because there's little to no explicit temporal operatives in most programming languages?  Inform had a rarely used feature where the past-perfect of a player action was essentially a free boolean meaning the action had been performed at least once since game start. Continuous and progressive aspects may be useful in defining things that happen while other things happen, but English doesn't make a clear distinction between continuous and progressive like, say, Mandarin does. 
-* Difficult to tell difference between definite & indefinite gerundial phrases with zero parameters, since it's the article on the noun phrases which distinguishes it, and we can't use *gerund* vs *gerund()* to specifically state indefinite or definite.
+* No single paradigm -- OO, functional, imperative, rule, constraint -- fits perfectly
+* Indistinguishable definite & indefinite gerundial phrases with zero parameters, since the article on the noun phrases decide it rather than a verb suffix (like empty parenthesis)
+* Tense and Gender seem to have little use. Aspect seems promising but English conflates the continuous with the progressive.
 
 Anyway, I'd like to marry Barbour's "declarative" with an English-like syntax.  
 

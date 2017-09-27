@@ -59,6 +59,14 @@ TR, DeObj, DeFun, DeVar,
 
 */
 
+
+/* OTHER */
+
+html {
+  font-family: Verdana, sans-serif;
+}
+
+/* MAIN MENU */
 ul {
   list-style-type: none;
   margin: 0;
