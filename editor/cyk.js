@@ -1,6 +1,6 @@
 var parser;
 (function (parser) {
-    var grammar = [
+    var grammarRules = [
         'V -> eats',
         'N -> fish | fork | chopsticks',
         'N -> woman',
@@ -221,8 +221,7 @@ var parser;
         'SConj -> whenever',
         'SConj -> while',
     ];
-    var numNonterminals = 0;
-    function arrayOfParseTreeNode(n) {
+    function new_ParseForest(n) {
         var arr = new Array(n);
         for (var i = 0; i < n; i++) {
             arr[i] = new Array(n);
@@ -239,7 +238,7 @@ var parser;
     }
     function CYK(grammar, str) {
         var n = str.length + 1;
-        var P = arrayOfParseTreeNode(n);
+        var P = new_ParseForest(n);
         for (var i = 1; i < n; i++) {
             var token = str[i - 1];
             if (token[0] >= '0' && token[0] <= '9') {
@@ -281,26 +280,24 @@ var parser;
         }
         return P;
     }
-    function grammarToHashMap(rules) {
-        var hashMap = {};
+    var numNonterminals = 0;
+    function compileGrammar(rules) {
+        var retval = {};
         numNonterminals = 0;
         for (var i in rules) {
-            var rule = rules[i];
-            var parts = rule.split('->');
-            var root = parts[0].trim();
+            var parts = rules[i].split('->');
             var productions = parts[1].split('|');
             for (var j in productions) {
-                var childs = (productions[j].trim()).split(/\s+/);
-                var key = makeKey(childs);
-                if (!hashMap[key]) {
-                    hashMap[key] = [];
+                var key = makeKey(productions[j].trim().split(/\s+/));
+                if (!retval[key]) {
+                    retval[key] = [];
                     numNonterminals++;
                 }
-                hashMap[key].push(root);
+                retval[key].push(parts[0].trim());
             }
         }
-        //console.log(hashMap);
-        return hashMap;
+        //console.log(retval);
+        return retval;
     }
     function traverseParseTable2(parseTable, left, right, rootIndex) {
         if (!parseTable[left][right][rootIndex]['middle']) {
@@ -424,13 +421,12 @@ var parser;
         "When a function reads a variable, change the variable to anything before invoking the function",
         'The woman eats the fish with the chopsticks before eating the fish with a fork',
     ];
-    var ghmp = grammarToHashMap(grammar);
+    var compiledGrammar = compileGrammar(grammarRules);
     for (var eachS = 0; eachS < sentences.length; eachS++) {
         var sentence = sentences[eachS].replace(/,/g, ' , ').replace(/  /g, ' ');
-        //console.log(ghmp);
         var pieces = sentence.split(' ');
-        var parseForest = CYK(ghmp, pieces);
-        //console.log(JSON.stringify(parseTable));
+        var parseForest = CYK(compiledGrammar, pieces);
+        //console.log(JSON.stringify(parseForest));
         if (parseForest[0][parseForest.length - 1].length == 0) {
             PrintPyramid(parseForest, numNonterminals, pieces);
         }

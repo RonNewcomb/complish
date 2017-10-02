@@ -9,16 +9,16 @@ module parser {
     interface ParseTreeNode {
         rule: GrammarRule;
         middle: number;
-        leftRootIndex: number;
-        rightRootIndex: number;
+        leftRootIndex: number | string;
+        rightRootIndex: number | string;
     }
     interface ParseForest extends Array<Array<Array<ParseTreeNode | ParseTreeLeaf>>> { }
-    interface GrammarKey extends String { }
-    interface Grammars {
+    type GrammarKey = string;
+    interface CompiledGrammar {
         [key: string/*GrammarKey*/]: Array<Token>;
     }
 
-    var grammar: GrammarRule[] = [
+    var grammarRules: GrammarRule[] = [
         'V -> eats',
         'N -> fish | fork | chopsticks',
         'N -> woman',
@@ -261,9 +261,8 @@ module parser {
         'SConj -> whenever',
         'SConj -> while',
     ];
-    var numNonterminals = 0;
 
-    function arrayOfParseTreeNode(n: number): ParseForest {
+    function new_ParseForest(n: number): ParseForest {
         var arr = new Array(n);
         for (var i = 0; i < n; i++) {
             arr[i] = new Array(n);
@@ -279,19 +278,19 @@ module parser {
         return JSON.stringify(obj, null, 0);
     }
 
-    function CYK(grammar: Grammars, str: string[]): ParseForest {
+    function CYK(grammar: CompiledGrammar, str: string[]): ParseForest {
         var n = str.length + 1;
-        var P = arrayOfParseTreeNode(n);
+        var P = new_ParseForest(n);
         for (var i = 1; i < n; i++) {
             var token = str[i - 1];
-            if (token[0] >= '0' && token[0] <= '9') {
+            if (token[0] >= '0' && token[0] <= '9') {  // quick check: is it a numeric literal?
                 P[i - 1][i].push({
                     rule: (token.indexOf('%') > -1) ? 'percentage' : 'number',
                     token: token
                 });
             }
             else {
-                var UR = grammar[<string>makeKey(token.toLowerCase())];
+                var UR = grammar[makeKey(token.toLowerCase())];
                 for (var Rj in UR) {
                     P[i - 1][i].push(<ParseTreeLeaf>{
                         rule: UR[Rj],
@@ -305,14 +304,14 @@ module parser {
                     var rightSubtreeRoots = P[k][i];
                     for (var leftRootIndx in leftSubtreeRoots) {
                         for (var rightRootIndx in rightSubtreeRoots) {
-                            var R = grammar[<string>makeKey([leftSubtreeRoots[leftRootIndx]['rule'], rightSubtreeRoots[rightRootIndx]['rule']])];
+                            var R = grammar[makeKey([leftSubtreeRoots[leftRootIndx]['rule'], rightSubtreeRoots[rightRootIndx]['rule']])];
                             if (R) {
                                 for (var Ra in R) {
                                     P[j][i].push(<ParseTreeNode>{
                                         rule: R[Ra],
                                         middle: k,
-                                        leftRootIndex: <number><any>leftRootIndx,
-                                        rightRootIndex: <number><any>rightRootIndx
+                                        leftRootIndex: leftRootIndx,
+                                        rightRootIndex: rightRootIndx
                                     });
                                 }
                             }
@@ -324,31 +323,28 @@ module parser {
         return P;
     }
 
-    function grammarToHashMap(rules: GrammarRule[]): Grammars {
-        var hashMap: Grammars = {};
+    var numNonterminals = 0;
+    function compileGrammar(rules: GrammarRule[]): CompiledGrammar {
+        var retval: CompiledGrammar = {};
         numNonterminals = 0;
         for (var i in rules) {
-            var rule = rules[i];
-            var parts = rule.split('->');
-            var root = parts[0].trim();
-
+            var parts = rules[i].split('->');
             var productions = parts[1].split('|');
             for (var j in productions) {
-                var childs = (productions[j].trim()).split(/\s+/);
-                var key = makeKey(childs);
-                if (!hashMap[<string>key]) {
-                    hashMap[<string>key] = [];
+                var key = makeKey(productions[j].trim().split(/\s+/));
+                if (!retval[key]) {
+                    retval[key] = [];
                     numNonterminals++;
                 }
-                hashMap[<string>key].push(root);
+                retval[key].push(parts[0].trim());
             }
         }
-        //console.log(hashMap);
-        return hashMap;
+        //console.log(retval);
+        return retval;
     }
 
 
-    function traverseParseTable2(parseTable: ParseForest, left: number, right: number, rootIndex: number): string {
+    function traverseParseTable2(parseTable: ParseForest, left: number, right: number, rootIndex: number | string): string {
         if (!parseTable[left][right][rootIndex]['middle']) {
             return '<span class="' + parseTable[left][right][rootIndex]['rule'] + '">' + parseTable[left][right][rootIndex]['token'] + ' </span>';
         }
@@ -475,15 +471,14 @@ module parser {
         'The woman eats the fish with the chopsticks before eating the fish with a fork',
     ];
 
-    var ghmp = grammarToHashMap(grammar);
+    var compiledGrammar = compileGrammar(grammarRules);
 
     for (var eachS = 0; eachS < sentences.length; eachS++) {
         var sentence = sentences[eachS].replace(/,/g, ' , ').replace(/  /g, ' ');
 
-        //console.log(ghmp);
         var pieces = sentence.split(' ');
-        var parseForest = CYK(ghmp, pieces);
-        //console.log(JSON.stringify(parseTable));
+        var parseForest = CYK(compiledGrammar, pieces);
+        //console.log(JSON.stringify(parseForest));
 
         if (parseForest[0][parseForest.length - 1].length == 0) {
             PrintPyramid(parseForest, numNonterminals, pieces);
@@ -491,12 +486,12 @@ module parser {
         else if (parseForest[0][parseForest.length - 1].length > 1) {
             document.getElementById("main").innerHTML += "Error -- multiple interpretations match.";
             for (var i in parseForest[0][parseForest.length - 1]) {
-                document.getElementById("main").innerHTML += '<span class="sentence">' + traverseParseTable2(parseForest, 0, parseForest.length - 1, <number><any>i) + '</span>';
+                document.getElementById("main").innerHTML += '<span class="sentence">' + traverseParseTable2(parseForest, 0, parseForest.length - 1, i) + '</span>';
             }
         }
         else {
             for (var i in parseForest[0][parseForest.length - 1]) {
-                document.getElementById("main").innerHTML += '<span class="sentence">' + traverseParseTable2(parseForest, 0, parseForest.length - 1, <number><any>i) + '.&nbsp;&nbsp;&nbsp;</span>';
+                document.getElementById("main").innerHTML += '<span class="sentence">' + traverseParseTable2(parseForest, 0, parseForest.length - 1, i) + '.&nbsp;&nbsp;&nbsp;</span>';
             }
         }
     }
