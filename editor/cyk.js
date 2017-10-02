@@ -222,14 +222,13 @@ var parser;
         'SConj -> while',
     ];
     function new_ParseForest(n) {
-        var arr = new Array(n);
+        var pf = new Array(n);
         for (var i = 0; i < n; i++) {
-            arr[i] = new Array(n);
-            for (var j = 0; j < n; j++) {
-                arr[i][j] = [];
-            }
+            pf[i] = new Array(n);
+            for (var j = 0; j < n; j++)
+                pf[i][j] = [];
         }
-        return arr;
+        return pf;
     }
     function makeKey(obj) {
         if (typeof obj === 'string')

@@ -263,14 +263,13 @@ module parser {
     ];
 
     function new_ParseForest(n: number): ParseForest {
-        var arr = new Array(n);
+        var pf = new Array(n);
         for (var i = 0; i < n; i++) {
-            arr[i] = new Array(n);
-            for (var j = 0; j < n; j++) {
-                arr[i][j] = [/*to be size r*/];
-            }
+            pf[i] = new Array(n);
+            for (var j = 0; j < n; j++) 
+                pf[i][j] = [/*to be size r*/];
         }
-        return arr;
+        return pf;
     }
 
     function makeKey(obj: GrammarRule | GrammarRule[]): GrammarKey {
