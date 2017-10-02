@@ -1,17 +1,32 @@
 
+.Def {
+  color: green;
+}
+.Det {
+  color: lightgreen;
+}
+
+.N {
+  color: #42A142;
+}
+
 .NP {
   color: green;
 }
 
-.aNP {
+.aNP, .aNPPP {
   color: lightgreen;
+}
+
+.Adj {
+  color: blueviolet;
 }
 
 .V {
   color: red;
 }
 
-.P {
+.P, .To {
   color: pink;
 }
 
@@ -21,8 +36,164 @@
 
 .SConj {
   color: black;
+  font-style: italic;
+}
+
+
+/* cell background */
+
+tr .cellback {
+  font-size: .6rem;
+}
+
+.unknownWord {
+  border-bottom: dotted red;
+}
+
+.unknownGrammar {
+  border-bottom: dotted blue;
+}
+
+.normal {
+  font-size: 1rem;
+}
+
+.Def_cellback {
+  font-size: .6rem;
+  background-color: green;
+  color: white;
+}
+
+.Det_cellback {
+  font-size: .6rem;
+  background-color: lightgreen;
+  color: white;
+}
+
+.Adj_cellback {
+  font-size: .6rem;
+  background-color: blueviolet;
+  color: white;
+}
+
+
+.N_cellback, .number_cellback, .percentage_cellback {
+  font-size: .6rem;
+  background-color: #42A142;
+  color: white;
+}
+
+.NP_cellback {
+  font-size: .6rem;
+  background-color: green;
+  color: white;
+}
+
+.aNP_cellback, .aNPPP_cellback {
+  font-size: .6rem;
+  background-color: lightgreen;
+  color: white;
+}
+
+.aPP_cellback{
+  font-size: .6rem;
+  background-color: pink;
+  color: white;
+}
+
+.SV_cellback{
+  font-size: .6rem;
+  background-color: silver;
+  color: white;
+}
+
+
+.V_cellback{
+  font-size: .6rem;
+  background-color: red;
+  color: white;
+}
+
+.P_cellback, .To_cellback {
+  font-size: .5rem;
+  background-color: pink;
+  color: white;
+}
+
+.PP_cellback{
+  font-size: .5rem;
+  background-color: #EEEE66;
+  color: white;
+}
+
+.IV_cellback{
+  font-size: .5rem;
+  background-color: #FF6666;
+  color: white;
+}
+
+.G_cellback{
+  font-size: .6rem;
+  background-color: blue;
+  color: white;
+}
+
+.SConj_cellback{
+  font-size: .6rem;
+  background-color: black;
+  color: white;
   font-weight: bold;
 }
+
+.paF_cellback{
+  font-size: .6rem;
+  background-color: rgb(126, 97, 19);
+  color: white;
+}
+
+.DeFun_cellback{
+  font-size: .6rem;
+  background-color: teal;
+  color: white;
+}
+
+.Ops_cellback{
+  font-size: .6rem;
+  background-color: #115555;
+  color: white;
+}
+
+.VO_cellback{
+  font-size: .6rem;
+  background-color: #22CCCC;
+  color: white;
+}
+
+.tVO_cellback{
+  font-size: .6rem;
+  background-color: #88CCCC;
+  color: white;
+}
+
+.aVO_cellback{
+  font-size: .6rem;
+  background-color: #33FFFF;
+  color: white;
+}
+
+.Conj_cellback{
+  font-size: .5rem;
+  background-color: grey;
+  color: white;
+}
+
+.DC_cellback{
+  font-size: .5rem;
+  background-color: #3B3B3B;
+  color: white;
+}
+
+
 
 /*
 // noun, preposition, gerund, verb, adjective, adverb, conjunction, subordinating conjunction, relative pronoun
@@ -66,10 +237,24 @@ html {
   font-family: Verdana, sans-serif;
 }
 
+body {
+    margin-top: 0;
+}
+
+.main {
+  line-height: 1.7em;
+}
+
+.leftsidebar { 
+  width: 178px; 
+  min-height: 500px;
+  float:left; 
+}
+
 /* MAIN MENU */
 ul {
   list-style-type: none;
-  margin: 0;
+  margin: 0 -10;
   padding: 0;
   overflow: hidden;
   background-color: #333;
@@ -117,3 +302,54 @@ li.dropdown {
 .dropdown:hover .dropdown-content {
   display: block;
 }
+
+
+/* tooltips */
+
+.hasGrammarPopup {
+    position: relative;
+    display: inline-block;
+/*    border-bottom: 1px dotted red; */
+}
+
+.hasGrammarPopup .grammarPopup {
+    visibility: hidden;
+    border-style: solid;
+    border-radius: 6px;
+    border-width: 5px;
+    border-color: #E8E5FA;
+    background-color: #E8E5FA;
+    position: absolute;
+    z-index: 1;
+    top: 100%;
+    left: 50%;
+}
+
+.hasGrammarPopup:hover .grammarPopup {
+    visibility: visible;
+}
+
+
+.hasTooltip {
+    position: relative;
+    display: inline-block;
+/*    border-bottom: 1px dotted red; */
+}
+
+.hasTooltip .tooltip {
+    visibility: hidden;
+    border-style: solid;
+    border-radius: 6px;
+    border-width: 5px;
+    border-color: darkgray;
+    background-color: darkgray;
+    position: absolute;
+    z-index: 1;
+    top: 100%;
+    left: 50%;
+}
+
+.hasTooltip:hover .tooltip {
+    visibility: visible;
+}
+

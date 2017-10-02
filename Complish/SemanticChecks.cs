@@ -14,13 +14,16 @@ namespace Complish
 			public string prepFound = ""; // a prep is always followed by NP or aNP
 		}
 
-		// Semantic Rules that could be broken
-		// 1) "a noun" or an "adjective-noun" combo doesn't mention a type
-		// 2) "the noun which" isn't a type. 
-		// Not all nouns are types; a property and an instance and a variable are all nouns.
+        protected readonly Rs[] AnInvokedImperative = new Rs[] { Rs.ImperativeInvocationVO, Rs.ImperativeInvocationSV, Rs.ImperativeInvocationSVO, Rs.ImperativeInvocationV, 0 };
 
-		/// <summary> The return value, a function being defined, needs to be passed back in on the next call. </summary>
-		public Symbol CreateTypes(ParseForest forest, Symbol functionBeingDefined)
+
+        // Semantic Rules that could be broken
+        // 1) "a noun" or an "adjective-noun" combo doesn't mention a type
+        // 2) "the noun which" isn't a type. 
+        // Not all nouns are types; a property and an instance and a variable are all nouns.
+
+        /// <summary> The return value, a function being defined, needs to be passed back in on the next call. </summary>
+        public Symbol CreateTypes(ParseForest forest, Symbol functionBeingDefined)
 		{
 			return CreateTypes(forest, new SemanticContext {FunctionBeingDefined = functionBeingDefined});
 		}
@@ -32,20 +35,12 @@ namespace Complish
 				if (forest.SentenceType == 0 && forest.Count == 2 && forest.SentenceTypes().Aggregate("", (a, b) => a + " " + b) == " aSVO DeObj")
 					forest.SentenceType = Rs.ObjectDefinition;
 
-				// Imperative functions span multiple sentences. Here, if the new sentence isn't an imperative, end any previous function body. 
-				switch (forest.SentenceType)
-				{
-					case Rs.ImperativeInvocationVO:
-					case Rs.ImperativeInvocationSV:
-					case Rs.ImperativeInvocationSVO:
-					case Rs.ImperativeInvocationV:
-					case 0:
-						break;
-					default:
-						EndPreviousFunctionBody(context);
-						string.Join(" ", forest.a).Log();
-						break;
-				}
+                // Imperative functions span multiple sentences. Here, if the new sentence isn't an imperative, end any previous function body. 
+                if (AnInvokedImperative.Contains(forest.SentenceType))
+                {
+                    EndPreviousFunctionBody(context);
+                    string.Join(" ", forest.a).Log();
+                }
 
 				// ok, start parsing based on sentence type
 				switch (forest.SentenceType)
