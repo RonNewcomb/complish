@@ -288,6 +288,12 @@ module parser {
                     token: token
                 });
             }
+            else if (token[0] === "_" && token.indexOf(DataSegment.LitStringPlaceholderPrefix) > -1) { 
+                P[i - 1][i].push({
+                    rule: 'N',
+                    token: token
+                });
+            }
             else {
                 var UR = grammar[makeKey(token.toLowerCase())];
                 for (var Rj in UR) {
@@ -473,9 +479,10 @@ module parser {
     var compiledGrammar = compileGrammar(grammarRules);
 
     for (var eachS = 0; eachS < sentences.length; eachS++) {
-        var sentence = sentences[eachS].replace(/,/g, ' , ').replace(/  /g, ' ');
+        var sentence2 = DataSegment.LiftLiteralStrings(sentences[eachS]);
+        var sentence = sentence2.replace(/,/g, ' , ').replace(/:/g, ' : ');//.replace(/  /g, ' ');
 
-        var pieces = sentence.split(' ');
+        var pieces = sentence.split(' ').filter(each => !each.match(/^\s*$/));
         var parseForest = CYK(compiledGrammar, pieces);
         //console.log(JSON.stringify(parseForest));
 
