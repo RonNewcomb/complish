@@ -1,22 +1,26 @@
 <html>
+
 <head>
-    <link rel="stylesheet" type="text/css" href="style.css" media="screen" />
+    <script type="module" src="script/main.js" defer></script>
+    <link rel="stylesheet" type="text/css" href="css/layout.css" />
+    <link rel="stylesheet" type="text/css" href="css/mainMenu.css" />
+    <link rel="stylesheet" type="text/css" href="css/tooltips.css" />
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
     <script>
-        window.onclick = function(event) {
+        window.onclick = event => {
             if (!event.target.matches('.dropbtn')) {
-                var dropdowns = document.getElementsByClassName("dropdown-content");
-                var i;
-                for (i = 0; i < dropdowns.length; i++) {
-                    var openDropdown = dropdowns[i];
-                    if (openDropdown.classList.contains('show')) {
+                const dropdowns = document.getElementsByClassName("dropdown-content");
+                for (let i = 0; i < dropdowns.length; i++) {
+                    const openDropdown = dropdowns[i];
+                    if (openDropdown.classList.contains('show'))
                         openDropdown.classList.remove('show');
-                    }
                 }
             }
         }
     </script>
 </head>
-<body >
+
+<body>
 
     <ul>
         <li class="dropdown">
@@ -27,7 +31,7 @@
                 <a href="#">Save</a>
                 <a href="#">Save As...</a>
                 <a href="#">Close</a>
-                <hr/>
+                <hr />
                 <a href="#">Exit</a>
             </div>
         </li>
@@ -37,7 +41,7 @@
                 <a href="#">Cut</a>
                 <a href="#">Copy</a>
                 <a href="#">Paste</a>
-                <hr/>
+                <hr />
                 <a href="#">Preferences...</a>
             </div>
         </li>
@@ -47,7 +51,7 @@
                 <a href="#">Build</a>
                 <a href="#">Rebuild</a>
                 <a href="#">Clean</a>
-                <hr/>
+                <hr />
                 <a href="#">Walkthrough</a>
             </div>
         </li>
@@ -56,7 +60,7 @@
             <div class="dropdown-content">
                 <a href="#">Reference</a>
                 <a href="#">Tutorial</a>
-                <hr/>
+                <hr />
                 <a href="#">About</a>
             </div>
         </li>
@@ -67,7 +71,6 @@
         <div id="main" class="main"></div>
     </div>
 
-    <script type="text/javascript" src="dataSegment.js"></script>
-    <script type="text/javascript" src="cyk.js"></script>
 </body>
+
 </html>

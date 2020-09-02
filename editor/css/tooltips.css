@@ -1,0 +1,49 @@
+/* tooltips */
+
+.hasGrammarPopup {
+    position: relative;
+    display: inline-block;
+/*    border-bottom: 1px dotted red; */
+}
+
+.hasGrammarPopup .grammarPopup {
+    display: none;
+    border-style: solid;
+    border-radius: 6px;
+    border-width: 5px;
+    border-color: #E8E5FA;
+    background-color: #E8E5FA;
+    position: absolute;
+    z-index: 1;
+    top: 100%;
+    left: 50%;
+}
+
+.hasGrammarPopup:hover .grammarPopup {
+    display: block;
+}
+
+
+.hasTooltip {
+    position: relative;
+    display: inline-block;
+/*    border-bottom: 1px dotted red; */
+}
+
+.hasTooltip .tooltip {
+    display: none;
+    border-style: solid;
+    border-radius: 6px;
+    border-width: 5px;
+    border-color: darkgray;
+    background-color: darkgray;
+    position: absolute;
+    z-index: 1;
+    top: 100%;
+    left: 50%;
+}
+
+.hasTooltip:hover .tooltip {
+    display: block;
+}
+

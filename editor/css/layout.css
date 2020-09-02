@@ -1,0 +1,22 @@
+/* layout */
+
+html {
+    font-family: Verdana, sans-serif;
+  }
+  
+  body {
+      margin-top: 0;
+  }
+  
+  .main {
+    line-height: 1.7em;
+  }
+  
+  .leftsidebar { 
+    width: 178px; 
+    min-height: 500px;
+    float:left; 
+  }
+  
+  
+  
