@@ -1,76 +1,85 @@
 <html>
-
-<head>
+  <head>
     <script type="module" src="script/main.js" defer></script>
     <link rel="stylesheet" type="text/css" href="css/layout.css" />
     <link rel="stylesheet" type="text/css" href="css/mainMenu.css" />
     <link rel="stylesheet" type="text/css" href="css/tooltips.css" />
     <link rel="stylesheet" type="text/css" href="css/style.css" />
     <script>
-        window.onclick = event => {
-            if (!event.target.matches('.dropbtn')) {
-                const dropdowns = document.getElementsByClassName("dropdown-content");
-                for (let i = 0; i < dropdowns.length; i++) {
-                    const openDropdown = dropdowns[i];
-                    if (openDropdown.classList.contains('show'))
-                        openDropdown.classList.remove('show');
-                }
-            }
+      window.onclick = event => {
+        if (!event.target.matches(".dropbtn")) {
+          const dropdowns = document.getElementsByClassName("dropdown-content");
+          for (let i = 0; i < dropdowns.length; i++) {
+            const openDropdown = dropdowns[i];
+            if (openDropdown.classList.contains("show"))
+              openDropdown.classList.remove("show");
+          }
         }
+      };
     </script>
-</head>
+  </head>
 
-<body>
-
+  <body>
     <ul>
-        <li class="dropdown">
-            <a href="javascript:void(0)" class="dropbtn">File</a>
-            <div class="dropdown-content">
-                <a href="#">New</a>
-                <a href="#">Open...</a>
-                <a href="#">Save</a>
-                <a href="#">Save As...</a>
-                <a href="#">Close</a>
-                <hr />
-                <a href="#">Exit</a>
-            </div>
-        </li>
-        <li class="dropdown">
-            <a href="javascript:void(0)" class="dropbtn">Edit</a>
-            <div class="dropdown-content">
-                <a href="#">Cut</a>
-                <a href="#">Copy</a>
-                <a href="#">Paste</a>
-                <hr />
-                <a href="#">Preferences...</a>
-            </div>
-        </li>
-        <li class="dropdown">
-            <a href="javascript:void(0)" class="dropbtn">Run</a>
-            <div class="dropdown-content">
-                <a href="#">Build</a>
-                <a href="#">Rebuild</a>
-                <a href="#">Clean</a>
-                <hr />
-                <a href="#">Walkthrough</a>
-            </div>
-        </li>
-        <li class="dropdown">
-            <a href="javascript:void(0)" class="dropbtn">Help</a>
-            <div class="dropdown-content">
-                <a href="#">Reference</a>
-                <a href="#">Tutorial</a>
-                <hr />
-                <a href="#">About</a>
-            </div>
-        </li>
+      <li class="dropdown">
+        <a href="javascript:void(0)" class="dropbtn">File</a>
+        <div class="dropdown-content">
+          <a href="#">New</a>
+          <a href="#">Open...</a>
+          <a href="#">Save</a>
+          <a href="#">Save As...</a>
+          <a href="#">Close</a>
+          <hr />
+          <a href="#">Exit</a>
+        </div>
+      </li>
+      <li class="dropdown">
+        <a href="javascript:void(0)" class="dropbtn">Edit</a>
+        <div class="dropdown-content">
+          <a href="#">Cut</a>
+          <a href="#">Copy</a>
+          <a href="#">Paste</a>
+          <hr />
+          <a href="#">Preferences...</a>
+        </div>
+      </li>
+      <li class="dropdown">
+        <a href="javascript:void(0)" class="dropbtn">Run</a>
+        <div class="dropdown-content">
+          <a href="#">Build</a>
+          <a href="#">Rebuild</a>
+          <a href="#">Clean</a>
+          <hr />
+          <a href="#">Walkthrough</a>
+        </div>
+      </li>
+      <li class="dropdown">
+        <a href="javascript:void(0)" class="dropbtn">Help</a>
+        <div class="dropdown-content">
+          <a href="#">Reference</a>
+          <a href="#">Tutorial</a>
+          <hr />
+          <a href="#">About</a>
+        </div>
+      </li>
     </ul>
 
+    <load-html>html/hello.html</load-html>
+
     <div class="wrapper">
-        <div class="leftsidebar"></div>
-        <div id="main" class="main"></div>
+      <div class="leftsidebar"></div>
+      <div id="main" class="main"></div>
     </div>
 
-</body>
-
+    <script>
+      function loadHtml(element) {
+        Array.from(element.querySelectorAll("load-html")).map(each =>
+          fetch(each.innerHTML)
+            .then(r => r.text())
+            .then(html => (each.innerHTML = html) && loadHtml(each))
+        );
+      }
+      loadHtml(document);
+    </script>
+  </body>
 </html>
