@@ -45,9 +45,6 @@
 
 <script>
   window.onclick = event => {
-    if (!event.target.matches(".dropbtn")) {
-      Array.from(document.getElementsByClassName("dropdown-content")).forEach(ddc => ddc.classList.remove("show"));
-      console.log("mainmenu js");
-    }
+    if (!event.target.matches(".dropbtn")) Array.from(document.getElementsByClassName("dropdown-content")).forEach(ddc => ddc.classList.remove("show"));
   };
 </script>

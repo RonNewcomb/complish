@@ -11,20 +11,23 @@
   </head>
 
   <body>
-    <load-html src="html/main menu.html"></load-html>
+    <main-menu></main-menu>
 
-    <load-html src="html/flex-row.html">
-      <div class="leftsidebar"></div>
-      <div id="main" class="main"></div>
-    </load-html>
+    <flex-row>
+      <div class="panel leftsidebar"></div>
+      <div class="panel" id="main"></div>
+    </flex-row>
 
     <script>
       /* tiniest UI framework ever */
 
-      const loadHtml = el => Array.from(el.querySelectorAll("load-html")).map(load1Html);
+      const loadHtml = element =>
+        Array.from(element.querySelectorAll("*"))
+          .filter(el => el.tagName.includes("-"))
+          .map(load1Html);
 
       const load1Html = el =>
-        fetch(el.attributes.src.value)
+        fetch("html/" + el.tagName + ".html")
           .then(response => response.text())
           .then(html => (el.innerHTML = html.replace(/{{innerHTML}}/g, el.innerHTML)))
           .then(_ => Array.from(el.querySelectorAll("script")).map(s => eval(s.innerHTML)))
