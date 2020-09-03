@@ -3,20 +3,23 @@
 
 .hasGrammarPopup {
   position: relative;
-  display: inline-block;
 }
 
 .hasGrammarPopup .grammarPopup {
   display: none;
-  border-style: solid;
-  border-radius: 6px;
-  border-width: 5px;
-  border-color: #e8e5fa;
-  background-color: #e8e5fa;
   position: absolute;
   z-index: 1;
   top: 100%;
   left: 50%;
+  transform: translateX(-70%);
+
+  /* cosmetic */
+  background-color: hsl(39deg 77% 90%); /* "light wheat" */
+  border-radius: 10px;
+  border: 2px solid white;
+  box-shadow: 2px 2px 7px 2px tan;
+  margin: 0px;
+  padding: 5px;
 }
 
 .hasGrammarPopup:hover .grammarPopup {

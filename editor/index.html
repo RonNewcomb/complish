@@ -4,7 +4,6 @@
     <meta name="Description" content="An online editor for Complish" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <script type="module" src="script/main.js" defer></script>
     <link rel="stylesheet" type="text/css" href="css/layout.css" />
     <link rel="stylesheet" type="text/css" href="css/tooltips.css" />
     <link rel="stylesheet" type="text/css" href="css/style.css" />
@@ -18,7 +17,8 @@
       <div class="panel" id="main"></div>
     </flex-row>
 
-    <script>
+    <script type="module">
+      import "./script/main.js";
       /* tiniest UI framework ever */
 
       const loadHtml = element =>

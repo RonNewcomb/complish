@@ -281,13 +281,18 @@ function CYK(grammar, str) {
     }
     return P;
 }
-function traverseParseTable2(parseTable, left, right, rootIndex) {
-    if (!parseTable[left][right][rootIndex]['middle']) {
-        return '<span class="' + parseTable[left][right][rootIndex]['rule'] + '">' + parseTable[left][right][rootIndex]['token'] + ' </span>';
+function traverseParseTable(parseTable, left, right, rootIndex) {
+    let retval = ' <span class="' + parseTable[left][right][rootIndex]['rule'] + '">';
+    if (parseTable[left][right][rootIndex]['middle']) {
+        retval += traverseParseTable(parseTable, left, parseTable[left][right][rootIndex]['middle'], parseTable[left][right][rootIndex]['leftRootIndex']);
+        retval += traverseParseTable(parseTable, parseTable[left][right][rootIndex]['middle'], right, parseTable[left][right][rootIndex]['rightRootIndex']);
     }
-    return '<span class="' + parseTable[left][right][rootIndex]['rule'] + '">' + traverseParseTable2(parseTable, left, parseTable[left][right][rootIndex]['middle'], parseTable[left][right][rootIndex]['leftRootIndex']) + traverseParseTable2(parseTable, parseTable[left][right][rootIndex]['middle'], right, parseTable[left][right][rootIndex]['rightRootIndex']) + ' </span>';
+    else {
+        retval += parseTable[left][right][rootIndex]['token'];
+    }
+    return retval + '</span>';
 }
-function PrintPyramid(P, r, pieces, element) {
+function PrintPyramid(P, r, pieces) {
     const n = pieces.length;
     let out = "";
     let hasUnknownWord = false;
@@ -300,9 +305,9 @@ function PrintPyramid(P, r, pieces, element) {
         }
         if (!classes)
             hasUnknownWord = true;
-        out += "<span class='" + (classes || 'unknownWord') + "'> " + pieces[col] + "</span>";
+        out += " <span class='" + (classes || 'unknownWord') + "'>" + pieces[col] + "</span>";
     }
-    out += ".&nbsp;&nbsp;&nbsp;</span>";
+    out += ".</span>  ";
     if (!hasUnknownWord)
         out = out.replace('knownGrammar', 'unknownGrammar');
     out += "<table class='grammarPopup'><tr>";
@@ -338,8 +343,8 @@ function PrintPyramid(P, r, pieces, element) {
         }
         out += "</tr>";
     }
-    out += "</table></span>";
-    element.innerHTML += out;
+    out += "</table></span> ";
+    return out;
 }
 export function Complish(sentences, element) {
     for (let eachS = 0; eachS < sentences.length; eachS++) {
@@ -347,18 +352,19 @@ export function Complish(sentences, element) {
         const sentence = sentence2.replace(/,/g, ' , ').replace(/:/g, ' : ');
         const pieces = sentence.split(' ').filter(each => !each.match(/^\s*$/));
         const parseForest = CYK(compiledGrammar, pieces);
-        if (parseForest[0][parseForest.length - 1].length == 0) {
-            PrintPyramid(parseForest, numNonterminals, pieces, element);
+        const interpretations = parseForest[0][parseForest.length - 1];
+        if (interpretations.length == 0) {
+            element.innerHTML += PrintPyramid(parseForest, numNonterminals, pieces);
         }
-        else if (parseForest[0][parseForest.length - 1].length > 1) {
+        else if (interpretations.length > 1) {
             element.innerHTML += "Error -- multiple interpretations match.";
-            for (let i in parseForest[0][parseForest.length - 1]) {
-                element.innerHTML += '<span class="sentence">' + traverseParseTable2(parseForest, 0, parseForest.length - 1, i) + '</span>';
+            for (let i in interpretations) {
+                element.innerHTML += '<span class="sentence">' + traverseParseTable(parseForest, 0, parseForest.length - 1, i) + '</span>';
             }
         }
         else {
-            for (let i in parseForest[0][parseForest.length - 1]) {
-                element.innerHTML += '<span class="sentence">' + traverseParseTable2(parseForest, 0, parseForest.length - 1, i) + '.&nbsp;&nbsp;&nbsp;</span>';
+            for (let i in interpretations) {
+                element.innerHTML += '<span class="sentence">' + traverseParseTable(parseForest, 0, parseForest.length - 1, i) + '.</span>  ';
             }
         }
     }

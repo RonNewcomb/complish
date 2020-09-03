@@ -350,14 +350,18 @@ function CYK(grammar: CompiledGrammar, str: string[]): ParseForest {
     return P;
 }
 
-function traverseParseTable2(parseTable: ParseForest, left: number, right: number, rootIndex: number | string): string {
-    if (!parseTable[left][right][rootIndex]['middle']) {
-        return '<span class="' + parseTable[left][right][rootIndex]['rule'] + '">' + parseTable[left][right][rootIndex]['token'] + ' </span>';
+function traverseParseTable(parseTable: ParseForest, left: number, right: number, rootIndex: number | string): string {
+    let retval = ' <span class="' + parseTable[left][right][rootIndex]['rule'] + '">';
+    if (parseTable[left][right][rootIndex]['middle']) {
+        retval += traverseParseTable(parseTable, left, parseTable[left][right][rootIndex]['middle'], parseTable[left][right][rootIndex]['leftRootIndex']);
+        retval += traverseParseTable(parseTable, parseTable[left][right][rootIndex]['middle'], right, parseTable[left][right][rootIndex]['rightRootIndex']);
+    } else {
+        retval += parseTable[left][right][rootIndex]['token'];
     }
-    return '<span class="' + parseTable[left][right][rootIndex]['rule'] + '">' + traverseParseTable2(parseTable, left, parseTable[left][right][rootIndex]['middle'], parseTable[left][right][rootIndex]['leftRootIndex']) + traverseParseTable2(parseTable, parseTable[left][right][rootIndex]['middle'], right, parseTable[left][right][rootIndex]['rightRootIndex']) + ' </span>';
+    return retval + '</span>';
 }
 
-function PrintPyramid(P: ParseForest, r: number, pieces: string[], element: HTMLElement): void {
+function PrintPyramid(P: ParseForest, r: number, pieces: string[]): string {
     const n = pieces.length;
     let out = "";
 
@@ -371,9 +375,9 @@ function PrintPyramid(P: ParseForest, r: number, pieces: string[], element: HTML
                 classes += (classes == "" ? "" : " ") + P[col][col + 1][nonterminals].rule;
         }
         if (!classes) hasUnknownWord = true;
-        out += "<span class='" + (classes || 'unknownWord') + "'> " + pieces[col] + "</span>";
+        out += " <span class='" + (classes || 'unknownWord') + "'>" + pieces[col] + "</span>";
     }
-    out += ".&nbsp;&nbsp;&nbsp;</span>";
+    out += ".</span>  ";
     if (!hasUnknownWord) out = out.replace('knownGrammar', 'unknownGrammar');
 
     out += "<table class='grammarPopup'><tr>";
@@ -411,8 +415,8 @@ function PrintPyramid(P: ParseForest, r: number, pieces: string[], element: HTML
         }
         out += "</tr>";
     }
-    out += "</table></span>";
-    element.innerHTML += out;
+    out += "</table></span> ";
+    return out;
 }
 
 export function Complish(sentences: string[], element: HTMLElement) {
@@ -422,20 +426,21 @@ export function Complish(sentences: string[], element: HTMLElement) {
 
         const pieces = sentence.split(' ').filter(each => !each.match(/^\s*$/));
         const parseForest = CYK(compiledGrammar, pieces);
-        //console.log(JSON.stringify(parseForest));
+        // console.log(JSON.stringify(parseForest));
 
-        if (parseForest[0][parseForest.length - 1].length == 0) {
-            PrintPyramid(parseForest, numNonterminals, pieces, element);
+        const interpretations = parseForest[0][parseForest.length - 1];
+        if (interpretations.length == 0) {
+            element.innerHTML += PrintPyramid(parseForest, numNonterminals, pieces);
         }
-        else if (parseForest[0][parseForest.length - 1].length > 1) {
+        else if (interpretations.length > 1) {
             element.innerHTML += "Error -- multiple interpretations match.";
-            for (let i in parseForest[0][parseForest.length - 1]) {
-                element.innerHTML += '<span class="sentence">' + traverseParseTable2(parseForest, 0, parseForest.length - 1, i) + '</span>';
+            for (let i in interpretations) {
+                element.innerHTML += '<span class="sentence">' + traverseParseTable(parseForest, 0, parseForest.length - 1, i) + '</span>';
             }
         }
         else {
-            for (let i in parseForest[0][parseForest.length - 1]) {
-                element.innerHTML += '<span class="sentence">' + traverseParseTable2(parseForest, 0, parseForest.length - 1, i) + '.&nbsp;&nbsp;&nbsp;</span>';
+            for (let i in interpretations) {
+                element.innerHTML += '<span class="sentence">' + traverseParseTable(parseForest, 0, parseForest.length - 1, i) + '.</span>  ';
             }
         }
     }

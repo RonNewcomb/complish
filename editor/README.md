@@ -4,7 +4,9 @@ An IDE for Complish
 
 I'm trying to keep this project very lightweight. No UI framework, for instance. Typescript is always kind of a must, though. 
 
-I do miss the structure that web components inflict, though.  Recently split up the CSS file into individual "per component" files because it was already unmaintainable.
+But I do miss the structure that web components enforce.  I recently split up the CSS file into individual "per component" files because it was already unmaintainable.
+
+Then I made a render-once fake UI framework in 3 lines of code.
 
 ## Try it out
 
