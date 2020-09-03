@@ -1,8 +1,11 @@
 <html>
   <head>
+    <title>Complish IDE</title>
+    <meta name="Description" content="An online editor for Complish" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
     <script type="module" src="script/main.js" defer></script>
     <link rel="stylesheet" type="text/css" href="css/layout.css" />
-    <link rel="stylesheet" type="text/css" href="css/mainMenu.css" />
     <link rel="stylesheet" type="text/css" href="css/tooltips.css" />
     <link rel="stylesheet" type="text/css" href="css/style.css" />
   </head>
@@ -10,16 +13,10 @@
   <body>
     <load-html src="html/main menu.html"></load-html>
 
-    <load-html src="html/hello.html"></load-html>
-
-    <load-html src="html/hello.html" id="reloadable"></load-html>
-
-    <button onclick="load1Html(document.getElementById('reloadable'))">Rerender</button>
-
-    <div class="wrapper">
+    <load-html src="html/flex-row.html">
       <div class="leftsidebar"></div>
       <div id="main" class="main"></div>
-    </div>
+    </load-html>
 
     <script>
       /* tiniest UI framework ever */
@@ -29,7 +26,7 @@
       const load1Html = el =>
         fetch(el.attributes.src.value)
           .then(response => response.text())
-          .then(html => (el.innerHTML = html))
+          .then(html => (el.innerHTML = html.replace(/{{innerHTML}}/g, el.innerHTML)))
           .then(_ => Array.from(el.querySelectorAll("script")).map(s => eval(s.innerHTML)))
           .then(_ => loadHtml(el));
 

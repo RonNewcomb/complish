@@ -1,3 +1,4 @@
+<link rel="stylesheet" type="text/css" href="css/mainMenu.css" />
 <ul>
   <li class="dropdown">
     <a href="javascript:void(0)" class="dropbtn">File</a>
@@ -44,6 +45,9 @@
 
 <script>
   window.onclick = event => {
-    if (!event.target.matches(".dropbtn")) Array.from(document.getElementsByClassName("dropdown-content")).forEach(ddc => ddc.classList.remove("show"));
+    if (!event.target.matches(".dropbtn")) {
+      Array.from(document.getElementsByClassName("dropdown-content")).forEach(ddc => ddc.classList.remove("show"));
+      console.log("mainmenu js");
+    }
   };
 </script>
