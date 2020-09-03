@@ -5,66 +5,16 @@
     <link rel="stylesheet" type="text/css" href="css/mainMenu.css" />
     <link rel="stylesheet" type="text/css" href="css/tooltips.css" />
     <link rel="stylesheet" type="text/css" href="css/style.css" />
-    <script>
-      window.onclick = event => {
-        if (!event.target.matches(".dropbtn")) {
-          const dropdowns = document.getElementsByClassName("dropdown-content");
-          for (let i = 0; i < dropdowns.length; i++) {
-            const openDropdown = dropdowns[i];
-            if (openDropdown.classList.contains("show"))
-              openDropdown.classList.remove("show");
-          }
-        }
-      };
-    </script>
   </head>
 
   <body>
-    <ul>
-      <li class="dropdown">
-        <a href="javascript:void(0)" class="dropbtn">File</a>
-        <div class="dropdown-content">
-          <a href="#">New</a>
-          <a href="#">Open...</a>
-          <a href="#">Save</a>
-          <a href="#">Save As...</a>
-          <a href="#">Close</a>
-          <hr />
-          <a href="#">Exit</a>
-        </div>
-      </li>
-      <li class="dropdown">
-        <a href="javascript:void(0)" class="dropbtn">Edit</a>
-        <div class="dropdown-content">
-          <a href="#">Cut</a>
-          <a href="#">Copy</a>
-          <a href="#">Paste</a>
-          <hr />
-          <a href="#">Preferences...</a>
-        </div>
-      </li>
-      <li class="dropdown">
-        <a href="javascript:void(0)" class="dropbtn">Run</a>
-        <div class="dropdown-content">
-          <a href="#">Build</a>
-          <a href="#">Rebuild</a>
-          <a href="#">Clean</a>
-          <hr />
-          <a href="#">Walkthrough</a>
-        </div>
-      </li>
-      <li class="dropdown">
-        <a href="javascript:void(0)" class="dropbtn">Help</a>
-        <div class="dropdown-content">
-          <a href="#">Reference</a>
-          <a href="#">Tutorial</a>
-          <hr />
-          <a href="#">About</a>
-        </div>
-      </li>
-    </ul>
+    <load-html src="html/main menu.html"></load-html>
 
-    <load-html>html/hello.html</load-html>
+    <load-html src="html/hello.html"></load-html>
+
+    <load-html src="html/hello.html" id="reloadable"></load-html>
+
+    <button onclick="load1Html(document.getElementById('reloadable'))">Rerender</button>
 
     <div class="wrapper">
       <div class="leftsidebar"></div>
@@ -72,14 +22,18 @@
     </div>
 
     <script>
-      function loadHtml(element) {
-        Array.from(element.querySelectorAll("load-html")).map(each =>
-          fetch(each.innerHTML)
-            .then(r => r.text())
-            .then(html => (each.innerHTML = html) && loadHtml(each))
-        );
-      }
-      loadHtml(document);
+      /* tiniest UI framework ever */
+
+      const loadHtml = el => Array.from(el.querySelectorAll("load-html")).map(load1Html);
+
+      const load1Html = el =>
+        fetch(el.attributes.src.value)
+          .then(response => response.text())
+          .then(html => (el.innerHTML = html))
+          .then(_ => Array.from(el.querySelectorAll("script")).map(s => eval(s.innerHTML)))
+          .then(_ => loadHtml(el));
+
+      loadHtml(document.body);
     </script>
   </body>
 </html>
