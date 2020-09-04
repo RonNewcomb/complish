@@ -59,4 +59,4 @@ const sentences = [
     'The woman eats the fish with the chopsticks before eating the fish with a fork',
 ];
 
-document.getElementById("main")!.innerHTML = Complish(sentences);
+onmessage = e => postMessage(Complish(sentences));

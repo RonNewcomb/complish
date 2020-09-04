@@ -53,4 +53,4 @@ const sentences = [
     "When a function reads a variable, change the variable to anything before invoking the function",
     'The woman eats the fish with the chopsticks before eating the fish with a fork',
 ];
-document.getElementById("main").innerHTML = Complish(sentences);
+onmessage = e => postMessage(Complish(sentences));

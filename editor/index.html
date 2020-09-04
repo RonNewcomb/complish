@@ -18,7 +18,8 @@
     </flex-row>
 
     <script type="module">
-      import "./script/main.js";
+      const worker = new Worker("./script/main.js", { type: "module" }); // modules in workers only for Chrome right now
+      worker.onmessage = e => (document.getElementById("main").innerHTML = e.data);
       /* the "render once" UI framework */
 
       const loadHtml = element =>
@@ -47,7 +48,7 @@
             })
           );
 
-      loadHtml(document.body);
+      loadHtml(document.body).then(_ => worker.postMessage("lkj"));
     </script>
   </body>
 </html>
