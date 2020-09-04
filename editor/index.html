@@ -22,25 +22,30 @@
       /* the "render once" UI framework */
 
       const loadHtml = element =>
-        Array.from(element.querySelectorAll("*"))
-          .filter(el => el.tagName.includes("-"))
-          .map(load1Html);
+        Promise.allSettled(
+          Array.from(element.querySelectorAll("*"))
+            .filter(el => el.tagName.includes("-"))
+            .map(load1Html)
+        );
 
       const load1Html = el =>
         fetch("html/" + el.tagName + ".html")
           .then(response => response.text())
           .then(html => {
-            for (let i = 0; i < el.attributes.length; i++) {
-              const attr = el.attributes[i];
-              html = html.replace(new RegExp("{{" + attr.name + "}}", "g"), attr.value);
-            }
+            Array.from(el.attributes).forEach(attr => (html = html.replace(new RegExp("{{" + attr.name + "}}", "g"), attr.value)));
             if (html.match(/{{innerHTML}}/)) html = html.replace(/{{innerHTML}}/g, el.innerHTML);
             el.innerHTML = html;
             const missingArgument = html.match(/{{[a-zA-Z-]+}}/);
             if (missingArgument) console.error("Missing argument for", missingArgument[0], "in", el.tagName);
           })
-          .then(_ => Array.from(el.querySelectorAll("script")).map(s => eval(s.innerHTML)))
-          .then(_ => loadHtml(el));
+          .then(_ => loadHtml(el))
+          .then(_ =>
+            Array.from(el.querySelectorAll("script")).forEach(old => {
+              const replacement = document.createElement("script");
+              replacement.appendChild(document.createTextNode(old.innerHTML));
+              old.replaceWith(replacement);
+            })
+          );
 
       loadHtml(document.body);
     </script>

@@ -4,7 +4,7 @@
     <div class="submenu">
       <div>New</div>
       <div>Open...</div>
-      <div onclick="console.log(event)">Save</div>
+      <div>Save</div>
       <div>Save As...</div>
       <div>Close</div>
       <hr />
@@ -37,15 +37,12 @@
       <div>Reference</div>
       <div>Tutorial</div>
       <hr />
-      <div>About</div>
+      <div id="about">About</div>
     </div>
   </div>
 </flex-row>
-<script>
-  Array.from(document.querySelectorAll(".topbar .submenu > div")).forEach(el => {
-    console.log("adding to ", el);
-    el.addEventListener("click", e => console.log(e));
-  });
+<script type="module">
+  Array.from(document.querySelectorAll(".topbar .submenu > div")).forEach(el => el.addEventListener("click", e => console.log(e.target.innerText), false));
 </script>
 <style>
   .topbar > * {
@@ -53,6 +50,9 @@
     padding: 0 10px;
     background-color: #333;
     color: white;
+    position: sticky;
+    top: 0;
+    z-index: 1;
   }
 
   .mainMenuItem {
@@ -65,7 +65,7 @@
     background-color: #f9f9f9;
     min-width: 160px;
     box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-    z-index: 1;
+    z-index: 2;
     margin-top: 14px;
     margin-left: -16px;
   }
