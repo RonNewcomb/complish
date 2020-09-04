@@ -12,7 +12,7 @@
   <body>
     <main-menu></main-menu>
 
-    <flex-row>
+    <flex-row flex-wrap="nowrap">
       <div class="panel leftsidebar"></div>
       <div class="panel" id="main"></div>
     </flex-row>
@@ -29,7 +29,16 @@
       const load1Html = el =>
         fetch("html/" + el.tagName + ".html")
           .then(response => response.text())
-          .then(html => (el.innerHTML = html.replace(/{{innerHTML}}/g, el.innerHTML)))
+          .then(html => {
+            for (let i = 0; i < el.attributes.length; i++) {
+              const attr = el.attributes[i];
+              html = html.replace(new RegExp("{{" + attr.name + "}}", "g"), attr.value);
+            }
+            if (html.match(/{{innerHTML}}/)) html = html.replace(/{{innerHTML}}/g, el.innerHTML);
+            el.innerHTML = html;
+            const missingArgument = html.match(/{{[a-zA-Z-]+}}/);
+            if (missingArgument) console.error("Missing argument for", missingArgument[0], "in", el.tagName);
+          })
           .then(_ => Array.from(el.querySelectorAll("script")).map(s => eval(s.innerHTML)))
           .then(_ => loadHtml(el));
 
