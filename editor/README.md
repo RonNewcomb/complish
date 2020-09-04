@@ -4,9 +4,9 @@ An IDE for Complish
 
 I'm trying to keep this project very lightweight. No UI framework, for instance. Typescript is always kind of a must, though. 
 
-But I do miss the structure that web components enforce.  I recently split up the CSS file into individual "per component" files because it was already unmaintainable.
+But I do miss the structure that web components enforce.  I recently split up the CSS file into individual "per component" files because it was already unmaintainable. I ended up making a render-once fake UI framework in 3 lines of code.
 
-Then I made a render-once fake UI framework in 3 lines of code.
+Am considering adding SASS, but then I really would have to add either a `package.json` or at least a VSCode-specific `tasks.json` so I'll pass for now.
 
 ## Try it out
 

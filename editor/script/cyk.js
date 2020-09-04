@@ -307,7 +307,7 @@ function PrintPyramid(P, r, pieces) {
             hasUnknownWord = true;
         out += " <span class='" + (classes || 'unknownWord') + "'>" + pieces[col] + "</span>";
     }
-    out += ".</span>  ";
+    out += ".  ";
     if (!hasUnknownWord)
         out = out.replace('knownGrammar', 'unknownGrammar');
     out += "<table class='grammarPopup'><tr>";
@@ -343,10 +343,10 @@ function PrintPyramid(P, r, pieces) {
         }
         out += "</tr>";
     }
-    out += "</table></span> ";
-    return out;
+    return out + "</table></span></span> ";
 }
-export function Complish(sentences, element) {
+export function Complish(sentences) {
+    let retval = "";
     for (let eachS = 0; eachS < sentences.length; eachS++) {
         const sentence2 = DataSegment.LiftLiteralStrings(sentences[eachS]);
         const sentence = sentence2.replace(/,/g, ' , ').replace(/:/g, ' : ');
@@ -354,18 +354,19 @@ export function Complish(sentences, element) {
         const parseForest = CYK(compiledGrammar, pieces);
         const interpretations = parseForest[0][parseForest.length - 1];
         if (interpretations.length == 0) {
-            element.innerHTML += PrintPyramid(parseForest, numNonterminals, pieces);
+            retval += PrintPyramid(parseForest, numNonterminals, pieces);
         }
         else if (interpretations.length > 1) {
-            element.innerHTML += "Error -- multiple interpretations match.";
+            retval += "Error -- multiple interpretations match.";
             for (let i in interpretations) {
-                element.innerHTML += '<span class="sentence">' + traverseParseTable(parseForest, 0, parseForest.length - 1, i) + '</span>';
+                retval += '<span class="sentence">' + traverseParseTable(parseForest, 0, parseForest.length - 1, i) + '</span>';
             }
         }
         else {
             for (let i in interpretations) {
-                element.innerHTML += '<span class="sentence">' + traverseParseTable(parseForest, 0, parseForest.length - 1, i) + '.</span>  ';
+                retval += '<span class="sentence">' + traverseParseTable(parseForest, 0, parseForest.length - 1, i) + '.</span>  ';
             }
         }
     }
+    return retval;
 }
