@@ -25,3 +25,9 @@
 .unknownWord:hover ~ .grammarPopup {
   display: block;
 }
+
+/* highlight the problem sentence that the popover is about */
+.unknownGrammar:hover,
+.knownGrammar:hover {
+  background-color: white;
+}

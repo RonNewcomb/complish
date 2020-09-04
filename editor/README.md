@@ -10,4 +10,4 @@ Am considering adding SASS, but then I really would have to add either a `packag
 
 ## Try it out
 
-After git cloning, `tsc` and point IIS to index.html.  This does assume you have Typescript installed globally.  If `tsc` is not a recognized command, first `npm install -g typescript`.  No need to run `npm install` because there's no package.json file and no dependencies.  I'm going for vanilla JS here.
+After git cloning, `tsc` and point IIS to index.html.  This assumes you have Typescript installed globally so if `tsc` is not a recognized command, first `npm install -g typescript`.  No need to run `npm install` because there's no package.json file and no dependencies.  I'm going for vanilla TS here.

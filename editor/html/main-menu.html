@@ -1,50 +1,89 @@
-<link rel="stylesheet" type="text/css" href="css/main-menu.css" />
-<ul>
-  <li class="dropdown">
-    <a href="javascript:void(0)" class="dropbtn">File</a>
-    <div class="dropdown-content">
-      <a href="#">New</a>
-      <a href="#">Open...</a>
-      <a href="#">Save</a>
-      <a href="#">Save As...</a>
-      <a href="#">Close</a>
+<flex-row flex-wrap="wrap" class="topbar">
+  <div class="mainMenuItem">
+    File
+    <div class="submenu">
+      <div>New</div>
+      <div>Open...</div>
+      <div onclick="console.log(event)">Save</div>
+      <div>Save As...</div>
+      <div>Close</div>
       <hr />
-      <a href="#">Exit</a>
+      <div>Exit</div>
     </div>
-  </li>
-  <li class="dropdown">
-    <a href="javascript:void(0)" class="dropbtn">Edit</a>
-    <div class="dropdown-content">
-      <a href="#">Cut</a>
-      <a href="#">Copy</a>
-      <a href="#">Paste</a>
+  </div>
+  <div class="mainMenuItem">
+    Edit
+    <div class="submenu">
+      <div>Cut</div>
+      <div>Copy</div>
+      <div>Paste</div>
       <hr />
-      <a href="#">Preferences...</a>
+      <div>Preferences...</div>
     </div>
-  </li>
-  <li class="dropdown">
-    <a href="javascript:void(0)" class="dropbtn">Run</a>
-    <div class="dropdown-content">
-      <a href="#">Build</a>
-      <a href="#">Rebuild</a>
-      <a href="#">Clean</a>
+  </div>
+  <div class="mainMenuItem">
+    Run
+    <div class="submenu">
+      <div>Build</div>
+      <div>Rebuild</div>
+      <div>Clean</div>
       <hr />
-      <a href="#">Walkthrough</a>
+      <div>Walkthrough</div>
     </div>
-  </li>
-  <li class="dropdown">
-    <a href="javascript:void(0)" class="dropbtn">Help</a>
-    <div class="dropdown-content">
-      <a href="#">Reference</a>
-      <a href="#">Tutorial</a>
+  </div>
+  <div class="mainMenuItem">
+    Help
+    <div class="submenu">
+      <div>Reference</div>
+      <div>Tutorial</div>
       <hr />
-      <a href="#">About</a>
+      <div>About</div>
     </div>
-  </li>
-</ul>
-
+  </div>
+</flex-row>
 <script>
-  window.onclick = event => {
-    if (!event.target.matches(".dropbtn")) Array.from(document.getElementsByClassName("dropdown-content")).forEach(ddc => ddc.classList.remove("show"));
-  };
+  Array.from(document.querySelectorAll(".topbar .submenu > div")).forEach(el => {
+    console.log("adding to ", el);
+    el.addEventListener("click", e => console.log(e));
+  });
 </script>
+<style>
+  .topbar > * {
+    margin: 0;
+    padding: 0 10px;
+    background-color: #333;
+    color: white;
+  }
+
+  .mainMenuItem {
+    padding: 14px 16px;
+  }
+
+  .submenu {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    margin-top: 14px;
+    margin-left: -16px;
+  }
+
+  .submenu > div {
+    display: block;
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .mainMenuItem:hover,
+  .submenu > div:hover {
+    background-color: tan;
+  }
+
+  .mainMenuItem:hover .submenu {
+    display: block;
+  }
+</style>
