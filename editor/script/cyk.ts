@@ -351,7 +351,7 @@ function CYK(grammar: CompiledGrammar, str: string[]): ParseForest {
 }
 
 function traverseParseTable(parseTable: ParseForest, left: number, right: number, rootIndex: number | string): string {
-    let retval = ' <span class="' + parseTable[left][right][rootIndex]['rule'] + '">';
+    let retval = ` <span class="${parseTable[left][right][rootIndex]['rule']}">`;
     if (parseTable[left][right][rootIndex]['middle']) {
         retval += traverseParseTable(parseTable, left, parseTable[left][right][rootIndex]['middle'], parseTable[left][right][rootIndex]['leftRootIndex']);
         retval += traverseParseTable(parseTable, parseTable[left][right][rootIndex]['middle'], right, parseTable[left][right][rootIndex]['rightRootIndex']);
@@ -375,7 +375,7 @@ function PrintPyramid(P: ParseForest, r: number, pieces: string[]): string {
                 classes += (classes == "" ? "" : " ") + P[col][col + 1][nonterminals].rule;
         }
         if (!classes) hasUnknownWord = true;
-        out += " <span class='" + (classes || 'unknownWord') + "'>" + pieces[col] + "</span>";
+        out += ` <span class='${classes || 'unknownWord'}'>${pieces[col]}</span>`;
     }
     out += ".  ";
     if (!hasUnknownWord) out = out.replace('knownGrammar', 'unknownGrammar');
@@ -388,7 +388,7 @@ function PrintPyramid(P: ParseForest, r: number, pieces: string[]): string {
             if (P[col][col + 1][nonterminals])
                 classes += (classes == "" ? "" : " ") + P[col][col + 1][nonterminals].rule;
         }
-        out += "<td class='" + classes + "'>" + pieces[col] + "</td>";
+        out += `<td class='${classes}'>${pieces[col]}</td>`;
     }
     out += "</tr>";
     // inverted pyramid
@@ -405,9 +405,9 @@ function PrintPyramid(P: ParseForest, r: number, pieces: string[]): string {
             }
             if (retval) {
                 if (retval.length <= 10)
-                    out += "<td align=center colspan=" + (n - row) + " class='" + classes + "'>" + retval + "</td>";
+                    out += `<td align=center colspan=${n - row} class='${classes}'>${retval}</td>`;
                 else
-                    out += "<td align=center colspan=" + (n - row) + " class='" + classes + " hasTooltip'>*<span class='tooltip'>" + retval + "</span></td>";
+                    out += `<td align=center colspan=${n - row} class='${classes}' title='${retval}'>*</td>`;
                 col += n - row - 1;
             }
             else
@@ -435,12 +435,12 @@ export function Complish(sentences: string[]): string {
         else if (interpretations.length > 1) {
             retval += "Error -- multiple interpretations match.";
             for (let i in interpretations) {
-                retval += '<span class="sentence">' + traverseParseTable(parseForest, 0, parseForest.length - 1, i) + '</span>';
+                retval += `<span class="sentence">${traverseParseTable(parseForest, 0, parseForest.length - 1, i)}</span>`;
             }
         }
         else {
             for (let i in interpretations) {
-                retval += '<span class="sentence">' + traverseParseTable(parseForest, 0, parseForest.length - 1, i) + '.</span>  ';
+                retval += `<span class="sentence">${traverseParseTable(parseForest, 0, parseForest.length - 1, i)}.</span>  `;
             }
         }
     }

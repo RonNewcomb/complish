@@ -282,7 +282,7 @@ function CYK(grammar, str) {
     return P;
 }
 function traverseParseTable(parseTable, left, right, rootIndex) {
-    let retval = ' <span class="' + parseTable[left][right][rootIndex]['rule'] + '">';
+    let retval = ` <span class="${parseTable[left][right][rootIndex]['rule']}">`;
     if (parseTable[left][right][rootIndex]['middle']) {
         retval += traverseParseTable(parseTable, left, parseTable[left][right][rootIndex]['middle'], parseTable[left][right][rootIndex]['leftRootIndex']);
         retval += traverseParseTable(parseTable, parseTable[left][right][rootIndex]['middle'], right, parseTable[left][right][rootIndex]['rightRootIndex']);
@@ -305,7 +305,7 @@ function PrintPyramid(P, r, pieces) {
         }
         if (!classes)
             hasUnknownWord = true;
-        out += " <span class='" + (classes || 'unknownWord') + "'>" + pieces[col] + "</span>";
+        out += ` <span class='${classes || 'unknownWord'}'>${pieces[col]}</span>`;
     }
     out += ".  ";
     if (!hasUnknownWord)
@@ -317,7 +317,7 @@ function PrintPyramid(P, r, pieces) {
             if (P[col][col + 1][nonterminals])
                 classes += (classes == "" ? "" : " ") + P[col][col + 1][nonterminals].rule;
         }
-        out += "<td class='" + classes + "'>" + pieces[col] + "</td>";
+        out += `<td class='${classes}'>${pieces[col]}</td>`;
     }
     out += "</tr>";
     for (let row = n - 1; row >= 0; row--) {
@@ -333,9 +333,9 @@ function PrintPyramid(P, r, pieces) {
             }
             if (retval) {
                 if (retval.length <= 10)
-                    out += "<td align=center colspan=" + (n - row) + " class='" + classes + "'>" + retval + "</td>";
+                    out += `<td align=center colspan=${n - row} class='${classes}'>${retval}</td>`;
                 else
-                    out += "<td align=center colspan=" + (n - row) + " class='" + classes + " hasTooltip'>*<span class='tooltip'>" + retval + "</span></td>";
+                    out += `<td align=center colspan=${n - row} class='${classes}' title='${retval}'>*</td>`;
                 col += n - row - 1;
             }
             else
@@ -359,12 +359,12 @@ export function Complish(sentences) {
         else if (interpretations.length > 1) {
             retval += "Error -- multiple interpretations match.";
             for (let i in interpretations) {
-                retval += '<span class="sentence">' + traverseParseTable(parseForest, 0, parseForest.length - 1, i) + '</span>';
+                retval += `<span class="sentence">${traverseParseTable(parseForest, 0, parseForest.length - 1, i)}</span>`;
             }
         }
         else {
             for (let i in interpretations) {
-                retval += '<span class="sentence">' + traverseParseTable(parseForest, 0, parseForest.length - 1, i) + '.</span>  ';
+                retval += `<span class="sentence">${traverseParseTable(parseForest, 0, parseForest.length - 1, i)}.</span>  `;
             }
         }
     }

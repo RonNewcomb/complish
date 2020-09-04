@@ -1,7 +1,4 @@
 /* "grammar popup" is the very large hovering panel that shows a sentence diagram.  */
-/* "tooltip" is the more traditional small, single-line, no-HTML hovering panel */
-
-/* sentence diagram popover */
 
 .hasGrammarPopup {
   position: relative;
@@ -26,29 +23,5 @@
 
 .unknownGrammar:hover .grammarPopup,
 .unknownWord:hover ~ .grammarPopup {
-  display: block;
-}
-
-/* traditional tooltip */
-
-.hasTooltip {
-  position: relative;
-  display: inline-block;
-}
-
-.hasTooltip .tooltip {
-  display: none;
-  border-style: solid;
-  border-radius: 6px;
-  border-width: 5px;
-  border-color: darkgray;
-  background-color: darkgray;
-  position: absolute;
-  z-index: 1;
-  top: 100%;
-  left: 50%;
-}
-
-.hasTooltip:hover .tooltip {
   display: block;
 }
