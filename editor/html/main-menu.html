@@ -1,4 +1,4 @@
-<flex-row flex-wrap="wrap" class="topbar">
+<flex-row wrap="wrap" class="topbar">
   <div class="mainMenuItem">
     File
     <div class="submenu">
@@ -41,8 +41,11 @@
     </div>
   </div>
 </flex-row>
-<script type="module">
-  Array.from(document.querySelectorAll(".topbar .submenu > div")).forEach(el => el.addEventListener("click", e => console.log(e.target.innerText), false));
+<script>
+  import { ask } from "./code/modal-dialog.js";
+  Array.from(document.querySelectorAll(".topbar .submenu > div")).forEach(el =>
+    el.addEventListener("click", e => ask(e.target.innerText, ["OK", "Cancel"]).then(result => console.log("You chose", result)), false)
+  );
 </script>
 <style>
   .topbar > * {

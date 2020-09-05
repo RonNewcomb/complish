@@ -4,6 +4,7 @@
     <meta name="Description" content="An online editor for Complish" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
+    <script type="module" src="code/modal-dialog.js"></script>
     <link rel="stylesheet" type="text/css" href="css/index.css" />
     <link rel="stylesheet" type="text/css" href="css/tooltips.css" />
     <link rel="stylesheet" type="text/css" href="css/parts-of-speech.css" />
@@ -12,7 +13,7 @@
   <body>
     <main-menu></main-menu>
 
-    <flex-row flex-wrap="nowrap">
+    <flex-row wrap="nowrap">
       <titled-panel name="GLOSSARY" classes="leftsidebar"></titled-panel>
       <titled-panel name="THE TEXT" classes="">
         <div id="main"></div>
@@ -20,13 +21,13 @@
     </flex-row>
 
     <script type="module">
-      const worker = new Worker("./script/main.js", { type: "module" }); // modules in workers only for Chrome right now
+      const worker = new Worker("./workers/main.js", { type: "module" }); // modules in workers only for Chrome right now
       worker.onmessage = e => (document.getElementById("main").innerHTML = e.data);
       /* the "render once" UI framework */
 
-      const loadHtml = element => Promise.allSettled(Array.from(element.children).map(child => (child.tagName.includes("-") ? load1Html : scan)(child)));
+      const loadHtmls = element => Promise.allSettled(Array.from(element.children).map(child => (child.tagName.includes("-") ? loadHtml : loadHtmls)(child)));
 
-      const load1Html = el =>
+      const loadHtml = el =>
         fetch("html/" + el.tagName + ".html")
           .then(response => response.text())
           .then(html => {
@@ -36,16 +37,21 @@
             const missingArgument = html.match(/{{[a-zA-Z-]+}}/);
             if (missingArgument) console.error("Missing argument for", missingArgument[0], "in", el.tagName);
           })
-          .then(_ => loadHtml(el))
+          .then(_ => loadHtmls(el))
           .then(_ =>
             Array.from(el.querySelectorAll("script")).forEach(old => {
               const replacement = document.createElement("script");
+              replacement.setAttribute("type", "module");
               replacement.appendChild(document.createTextNode(old.innerHTML));
               old.replaceWith(replacement);
             })
-          );
+          )
+          .then(_ => el);
 
-      loadHtml(document.body).then(_ => worker.postMessage("GO!"));
+      loadHtmls(document.body).then(_ => worker.postMessage("GO!"));
+
+      window.loadHtmls = loadHtmls;
+      window.loadHtml = loadHtml;
     </script>
   </body>
 </html>

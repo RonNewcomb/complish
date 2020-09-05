@@ -1,0 +1,41 @@
+{
+    "compilerOptions": {
+        "baseUrl": ".",
+        "target": "ES2020",
+        "module": "ESNext",
+        "lib": [
+            "ES2020",
+            "WebWorker",
+            "ScriptHost"
+        ],
+        "moduleResolution": "node",
+        "sourceMap": false,
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        //"outDir": "dist", // only .js files not .html or .css would be in /dist/
+        "keyofStringsOnly": false,
+        "forceConsistentCasingInFileNames": true,
+        "removeComments": true, // but if we use webpackIgnore:true on import(...
+        "alwaysStrict": true,
+        "allowJs": false,
+        "allowSyntheticDefaultImports": true,
+        "noImplicitAny": true,
+        "noImplicitReturns": true,
+        "noImplicitThis": true,
+        "noUnusedLocals": false,
+        "noUnusedParameters": false,
+        "noFallthroughCasesInSwitch": true,
+        "suppressImplicitAnyIndexErrors": true, // important
+        "strictNullChecks": true,
+        "strictBindCallApply": true,
+        "strictFunctionTypes": true,
+        "strictPropertyInitialization": true,
+        "declaration": false,
+    },
+    "include": [
+        "./**/*"
+    ],
+    "exclude": [
+        "node_modules"
+    ]
+}

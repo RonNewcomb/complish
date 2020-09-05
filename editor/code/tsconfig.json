@@ -3,11 +3,6 @@
         "baseUrl": ".",
         "target": "ES2020",
         "module": "ESNext",
-        "lib": [
-            "ES2020",
-            "WebWorker",
-            "ScriptHost"
-        ],
         "moduleResolution": "node",
         "sourceMap": false,
         "emitDecoratorMetadata": true,
@@ -33,7 +28,7 @@
         "declaration": false,
     },
     "include": [
-        "script/**/*"
+        "./**/*"
     ],
     "exclude": [
         "node_modules"
