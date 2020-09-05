@@ -429,20 +429,16 @@ export function Complish(sentences: string[]): string {
         // console.log(JSON.stringify(parseForest));
 
         const interpretations = parseForest[0][parseForest.length - 1];
-        if (interpretations.length == 0) {
+        if (interpretations.length == 0)
             retval += PrintPyramid(parseForest, numNonterminals, pieces);
-        }
         else if (interpretations.length > 1) {
             retval += "Error -- multiple interpretations match.";
-            for (let i in interpretations) {
+            for (let i in interpretations)
                 retval += `<span class="sentence">${traverseParseTable(parseForest, 0, parseForest.length - 1, i)}</span>`;
-            }
         }
-        else {
-            for (let i in interpretations) {
+        else
+            for (let i in interpretations)
                 retval += `<span class="sentence">${traverseParseTable(parseForest, 0, parseForest.length - 1, i)}.</span>  `;
-            }
-        }
     }
     return retval;
 }

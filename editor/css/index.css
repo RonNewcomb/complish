@@ -18,11 +18,3 @@ body {
   min-width: 178px;
   min-height: 500px;
 }
-
-.panel {
-  background-color: hsl(39deg 77% 90%); /* "light wheat" */
-  border-radius: 10px;
-  border: 2px solid white;
-  margin: 10px;
-  padding: 14px;
-}

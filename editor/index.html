@@ -13,8 +13,10 @@
     <main-menu></main-menu>
 
     <flex-row flex-wrap="nowrap">
-      <div class="panel leftsidebar"></div>
-      <div class="panel" id="main"></div>
+      <titled-panel name="GLOSSARY" classes="leftsidebar"></titled-panel>
+      <titled-panel name="THE TEXT" classes="">
+        <div id="main"></div>
+      </titled-panel>
     </flex-row>
 
     <script type="module">
@@ -33,8 +35,9 @@
         fetch("html/" + el.tagName + ".html")
           .then(response => response.text())
           .then(html => {
-            Array.from(el.attributes).forEach(attr => (html = html.replace(new RegExp("{{" + attr.name + "}}", "g"), attr.value)));
+            console.log("replacing ", el.tagName, el.attributes?.name?.value);
             if (html.match(/{{innerHTML}}/)) html = html.replace(/{{innerHTML}}/g, el.innerHTML);
+            Array.from(el.attributes).forEach(attr => (html = html.replace(new RegExp("{{" + attr.name + "}}", "g"), attr.value)));
             el.innerHTML = html;
             const missingArgument = html.match(/{{[a-zA-Z-]+}}/);
             if (missingArgument) console.error("Missing argument for", missingArgument[0], "in", el.tagName);
