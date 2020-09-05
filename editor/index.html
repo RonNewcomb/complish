@@ -24,18 +24,12 @@
       worker.onmessage = e => (document.getElementById("main").innerHTML = e.data);
       /* the "render once" UI framework */
 
-      const loadHtml = element =>
-        Promise.allSettled(
-          Array.from(element.querySelectorAll("*"))
-            .filter(el => el.tagName.includes("-"))
-            .map(load1Html)
-        );
+      const loadHtml = element => Promise.allSettled(Array.from(element.children).map(child => (child.tagName.includes("-") ? load1Html : scan)(child)));
 
       const load1Html = el =>
         fetch("html/" + el.tagName + ".html")
           .then(response => response.text())
           .then(html => {
-            console.log("replacing ", el.tagName, el.attributes?.name?.value);
             if (html.match(/{{innerHTML}}/)) html = html.replace(/{{innerHTML}}/g, el.innerHTML);
             Array.from(el.attributes).forEach(attr => (html = html.replace(new RegExp("{{" + attr.name + "}}", "g"), attr.value)));
             el.innerHTML = html;
@@ -51,7 +45,7 @@
             })
           );
 
-      loadHtml(document.body).then(_ => worker.postMessage("lkj"));
+      loadHtml(document.body).then(_ => worker.postMessage("GO!"));
     </script>
   </body>
 </html>
