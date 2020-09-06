@@ -282,21 +282,22 @@ function CYK(grammar, str) {
     return P;
 }
 function traverseParseTable(parseTable, left, right, rootIndex) {
-    let retval = ` <span class="${parseTable[left][right][rootIndex]['rule']}">`;
+    const retval = [' <span class="', parseTable[left][right][rootIndex]['rule'], '">'];
     if (parseTable[left][right][rootIndex]['middle']) {
-        retval += traverseParseTable(parseTable, left, parseTable[left][right][rootIndex]['middle'], parseTable[left][right][rootIndex]['leftRootIndex']);
-        retval += traverseParseTable(parseTable, parseTable[left][right][rootIndex]['middle'], right, parseTable[left][right][rootIndex]['rightRootIndex']);
+        retval.push(traverseParseTable(parseTable, left, parseTable[left][right][rootIndex]['middle'], parseTable[left][right][rootIndex]['leftRootIndex']));
+        retval.push(traverseParseTable(parseTable, parseTable[left][right][rootIndex]['middle'], right, parseTable[left][right][rootIndex]['rightRootIndex']));
     }
     else {
-        retval += parseTable[left][right][rootIndex]['token'];
+        retval.push(parseTable[left][right][rootIndex]['token']);
     }
-    return retval + '</span>';
+    retval.push('</span>');
+    return retval.join('');
 }
 function PrintPyramid(P, r, pieces) {
     const n = pieces.length;
-    let out = "";
+    const retval = [];
     let hasUnknownWord = false;
-    out += "<span class='hasGrammarPopup'><span class='knownGrammar'>";
+    retval.push("<span class='hasGrammarPopup'><span class='knownGrammar'>");
     for (let col = 0; col < n; col++) {
         let classes = "";
         for (let nonterminals = 0; nonterminals < r; nonterminals++) {
@@ -305,48 +306,51 @@ function PrintPyramid(P, r, pieces) {
         }
         if (!classes)
             hasUnknownWord = true;
-        out += ` <span class='${classes || 'unknownWord'}'>${pieces[col]}</span>`;
+        retval.push(" <span class='", classes || 'unknownWord', "'>", pieces[col], "</span>");
     }
-    out += ".  ";
+    retval.push(".  ");
     if (!hasUnknownWord)
-        out = out.replace('knownGrammar', 'unknownGrammar');
-    out += "<table class='grammarPopup'><tr>";
+        retval[0] = retval[0].replace('knownGrammar', 'unknownGrammar');
+    retval.push("<table class='grammarPopup'><tr>");
     for (let col = 0; col < n; col++) {
         let classes = "";
         for (let nonterminals = 0; nonterminals < r; nonterminals++) {
             if (P[col][col + 1][nonterminals])
                 classes += (classes == "" ? "" : " ") + P[col][col + 1][nonterminals].rule;
         }
-        out += `<td class='${classes}'>${pieces[col]}</td>`;
+        retval.push("<td class='", classes, "'>", pieces[col], "</td>");
     }
-    out += "</tr>";
+    retval.push("</tr>");
     for (let row = n - 1; row >= 0; row--) {
-        out += "<tr class='cellback'>";
+        retval.push("<tr class='cellback'>");
         for (let col = 0; col <= row; col++) {
-            let retval = "";
+            let partsOfSpeechAbbreviations = "";
             let classes = "";
             for (let nonterminals = 0; nonterminals < r; nonterminals++) {
                 if (P[col][n - row + col][nonterminals]) {
                     classes += (classes == "" ? "" : " ") + P[col][n - row + col][nonterminals].rule + "_cellback";
-                    retval += (retval == "" ? "" : ",") + P[col][n - row + col][nonterminals].rule;
+                    partsOfSpeechAbbreviations += (partsOfSpeechAbbreviations == "" ? "" : ",") + P[col][n - row + col][nonterminals].rule;
                 }
             }
-            if (retval) {
-                if (retval.length <= 10)
-                    out += `<td align=center colspan=${n - row} class='${classes}'>${retval}</td>`;
+            if (partsOfSpeechAbbreviations) {
+                const colspan = n - row;
+                retval.push("<td align=center colspan=", colspan.toString(), " class='", classes);
+                if (partsOfSpeechAbbreviations.length <= 10)
+                    retval.push("'>", partsOfSpeechAbbreviations, "</td>");
                 else
-                    out += `<td align=center colspan=${n - row} class='${classes}' title='${retval}'>*</td>`;
-                col += n - row - 1;
+                    retval.push("' title='", partsOfSpeechAbbreviations, "'>*</td>");
+                col += colspan - 1;
             }
             else
-                out += "<td></td>";
+                retval.push("<td></td>");
         }
-        out += "</tr>";
+        retval.push("</tr>");
     }
-    return out + "</table></span></span> ";
+    retval.push("</table></span></span> ");
+    return retval.join('');
 }
 export function Complish(sentences) {
-    let retval = "";
+    const retval = [];
     for (let eachS = 0; eachS < sentences.length; eachS++) {
         const sentence2 = DataSegment.LiftLiteralStrings(sentences[eachS]);
         const sentence = sentence2.replace(/,/g, ' , ').replace(/:/g, ' : ');
@@ -354,15 +358,15 @@ export function Complish(sentences) {
         const parseForest = CYK(compiledGrammar, pieces);
         const interpretations = parseForest[0][parseForest.length - 1];
         if (interpretations.length == 0)
-            retval += PrintPyramid(parseForest, numNonterminals, pieces);
+            retval.push(PrintPyramid(parseForest, numNonterminals, pieces));
         else if (interpretations.length > 1) {
-            retval += "Error -- multiple interpretations match.";
+            retval.push("Error -- multiple interpretations match.");
             for (let i in interpretations)
-                retval += `<span class="sentence">${traverseParseTable(parseForest, 0, parseForest.length - 1, i)}</span>`;
+                retval.push('<span class="sentence">', traverseParseTable(parseForest, 0, parseForest.length - 1, i), '</span>');
         }
         else
             for (let i in interpretations)
-                retval += `<span class="sentence">${traverseParseTable(parseForest, 0, parseForest.length - 1, i)}.</span>  `;
+                retval.push('<span class="sentence">', traverseParseTable(parseForest, 0, parseForest.length - 1, i), '.</span>  ');
     }
-    return retval;
+    return retval.join('');
 }
