@@ -30,10 +30,11 @@
 
       /* worker */
       const worker = new Worker("./workers/main.js", { type: "module" }); // modules in workers only for Chrome right now
-      const sendToWorker = input => {
-        worker.postMessage(input);
-        return new Promise(r => (worker.onmessage = r));
-      };
+      const sendToWorker = message =>
+        new Promise(resolve => {
+          worker.onmessage = resolve;
+          worker.postMessage(message);
+        });
 
       /* the "render once" UI framework */
 

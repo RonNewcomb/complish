@@ -379,7 +379,7 @@ function PrintPyramid(P: ParseForest, r: number, pieces: string[]): string {
         retval.push(" <span class='", classes || 'unknownWord', "'>", pieces[col], "</span>");
     }
     retval.push(".  ");
-    if (!hasUnknownWord) retval[0] = retval[0].replace('knownGrammar', 'unknownGrammar');
+    if (hasUnknownWord) retval[0] = retval[0].replace('knownGrammar', 'unknownGrammar');
 
     retval.push("<table class='grammarPopup'><tr>");
     // reprint sentence

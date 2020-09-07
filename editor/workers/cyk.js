@@ -309,7 +309,7 @@ function PrintPyramid(P, r, pieces) {
         retval.push(" <span class='", classes || 'unknownWord', "'>", pieces[col], "</span>");
     }
     retval.push(".  ");
-    if (!hasUnknownWord)
+    if (hasUnknownWord)
         retval[0] = retval[0].replace('knownGrammar', 'unknownGrammar');
     retval.push("<table class='grammarPopup'><tr>");
     for (let col = 0; col < n; col++) {
