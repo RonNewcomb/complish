@@ -9,9 +9,9 @@ const modals = document.createElement('div');
 modals.id = 'modals';
 document.body.appendChild(modals);
 
-export const ask = (message: string, buttonLabels: string[]) =>
+export const ask = (message: string, buttonLabels?: string[]) =>
     new Promise<string>(async resolve => {
-        if (!buttonLabels.length) buttonLabels = ["OK"];
+        if (!buttonLabels || !buttonLabels.length) buttonLabels = ["OK"];
         const modal = document.createElement('modal-dialog');
         modal.setAttribute('message', message);
         modal.innerHTML = `<div>${buttonLabels.map(label => `<button>${label}</button>`).join(' ')}</div>`;
@@ -22,5 +22,5 @@ export const ask = (message: string, buttonLabels: string[]) =>
             modalDialogElement.remove();
         };
         for (let button of modalDialogElement.getElementsByTagName('button'))
-            button.addEventListener('click', resolveAndRemove, { once: true });
+            button.addEventListener('click', resolveAndRemove);
     })

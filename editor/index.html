@@ -23,8 +23,18 @@
     </flex-row>
 
     <script type="module">
+      import { findDefinitions } from "./code/find-definitions.js";
+
+      /* worker */
+
       const worker = new Worker("./workers/main.js", { type: "module" }); // modules in workers only for Chrome right now
-      worker.onmessage = e => (document.getElementById("main").innerHTML = e.data);
+      let worked = data => void 0;
+      worker.onmessage = e => worked(e.data);
+      function working(input) {
+        worker.postMessage(input);
+        return new Promise(r => (worked = r));
+      }
+
       /* the "render once" UI framework */
 
       const loadHtmls = element => Promise.allSettled(Array.from(element.children).map(child => (child.tagName.includes("-") ? loadHtml : loadHtmls)(child)));
@@ -50,7 +60,12 @@
           )
           .then(_ => el);
 
-      loadHtmls(document.body).then(_ => worker.postMessage("GO!"));
+      loadHtmls(document.body)
+        .then(_ => working("this should be the source code here"))
+        .then(data => {
+          document.getElementById("main").innerHTML = data;
+          findDefinitions();
+        });
 
       window.loadHtmls = loadHtmls;
       window.loadHtml = loadHtml;
