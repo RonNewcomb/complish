@@ -25,4 +25,9 @@ body {
 
 .term {
   font-weight: bold;
+  cursor: default ;
+}
+
+.term:hover {
+  text-decoration: underline;
 }
