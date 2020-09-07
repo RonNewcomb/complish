@@ -16,14 +16,16 @@
     <main-menu></main-menu>
 
     <flex-row wrap="nowrap">
-      <titled-panel name="GLOSSARY" classes="leftsidebar"></titled-panel>
+      <titled-panel name="GLOSSARY" classes="leftsidebar">
+        <div id="glossary"></div>
+      </titled-panel>
       <titled-panel name="THE TEXT" classes="">
         <div id="main"></div>
       </titled-panel>
     </flex-row>
 
     <script type="module">
-      import { findDefinitions } from "./code/find-definitions.js";
+      import { findDefinitions, formatForDisplay } from "./code/find-definitions.js";
 
       /* worker */
 
@@ -64,7 +66,8 @@
         .then(_ => working("this should be the source code here"))
         .then(data => {
           document.getElementById("main").innerHTML = data;
-          findDefinitions();
+          const glossary = findDefinitions();
+          document.getElementById("glossary").innerHTML = formatForDisplay(glossary);
         });
 
       window.loadHtmls = loadHtmls;

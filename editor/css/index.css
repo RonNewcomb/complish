@@ -14,7 +14,15 @@ body {
   font-size: smaller;
 }
 
+#glossary {
+  font-size: smaller;
+}
+
 .leftsidebar {
   min-width: 178px;
   min-height: 500px;
+}
+
+.term {
+  font-weight: bold;
 }
