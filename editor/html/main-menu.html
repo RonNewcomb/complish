@@ -42,7 +42,7 @@
   </div>
 </flex-row>
 <script>
-  import { ask } from "./code/modal-dialog.js";
+  import { ask } from "./html/modal-dialogs.js";
   Array.from(document.querySelectorAll(".topbar .submenu > div")).forEach(el =>
     el.addEventListener("click", e => ask(e.target.innerText, ["OK", "Cancel"]).then(result => console.log("You chose", result)), false)
   );
