@@ -23,6 +23,10 @@
       </titled-panel>
     </flex-row>
 
+    <for-each message='["foo","bar"]'>
+      <div>{{message}}</div>
+    </for-each>
+
     <modal-dialogs></modal-dialogs>
 
     <script type="module">
@@ -44,11 +48,9 @@
         fetch("html/" + el.tagName + ".html")
           .then(response => response.text())
           .then(html => {
-            if (html.match(/{{innerHTML}}/)) html = html.replace(/{{innerHTML}}/g, el.innerHTML);
             Array.from(el.attributes).forEach(attr => (html = html.replace(new RegExp("{{" + attr.name + "}}", "g"), attr.value)));
+            if (html.match(/{{innerHTML}}/)) html = html.replace(/{{innerHTML}}/g, el.innerHTML);
             el.innerHTML = html;
-            const missingArgument = html.match(/{{[a-zA-Z-]+}}/);
-            if (missingArgument) console.error("Missing argument for", missingArgument[0], "in", el.tagName);
           })
           .then(_ => loadHtmls(el))
           .then(_ =>
@@ -57,6 +59,7 @@
               replacement.setAttribute("for", el.tagName);
               replacement.setAttribute("type", "module");
               replacement.appendChild(document.createTextNode(old.innerHTML));
+              window.currentComponentScript = replacement; // actually only works for te last one.
               old.replaceWith(replacement);
             })
           )
@@ -66,8 +69,7 @@
         .then(_ => sendToWorker("this should be the source code here"))
         .then(e => {
           document.getElementById("main").innerHTML = e.data;
-          const glossary = findDefinitions();
-          document.getElementById("glossary").innerHTML = formatForDisplay(glossary);
+          document.getElementById("glossary").innerHTML = formatForDisplay(findDefinitions());
         });
     </script>
   </body>

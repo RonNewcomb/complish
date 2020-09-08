@@ -1,0 +1,9 @@
+<script>
+  const me = window.currentComponentScript.parentElement;
+  const html = `{{innerHTML}}`;
+  const command = me.attributes[0];
+  const varRegex = new RegExp("{{" + command.name + "}}", "g");
+  const array = JSON.parse(command.value);
+  const rendered = array.map(item => html.replace(varRegex, item));
+  me.insertAdjacentHTML("beforeend", rendered.join(""));
+</script>
