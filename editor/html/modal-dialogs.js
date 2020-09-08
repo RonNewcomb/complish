@@ -8,7 +8,6 @@ export const ask = (message, buttonLabels) => new Promise(async (resolve) => {
                 <button>{{iter}}</button>
             </for-each>
         </modal-dialog>`);
-    console.log("going to ", container.lastElementChild);
     const modalDialogElement = await window.loadHtml(container.lastElementChild);
     for (let button of modalDialogElement.getElementsByTagName('button'))
         button.addEventListener('click', e => {

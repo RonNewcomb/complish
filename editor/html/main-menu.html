@@ -1,51 +1,54 @@
-<flex-row wrap="wrap" class="topbar">
-  <div class="mainMenuItem">
-    File
-    <div class="submenu">
-      <div>New</div>
-      <div>Open...</div>
-      <div>Save</div>
-      <div>Save As...</div>
-      <div>Close</div>
-      <hr />
-      <div>Exit</div>
+<template>
+  <flex-row wrap="wrap" class="topbar">
+    <div class="mainMenuItem">
+      File
+      <div class="submenu">
+        <div>New</div>
+        <div>Open...</div>
+        <div>Save</div>
+        <div>Save As...</div>
+        <div>Close</div>
+        <hr />
+        <div>Exit</div>
+      </div>
     </div>
-  </div>
-  <div class="mainMenuItem">
-    Edit
-    <div class="submenu">
-      <div>Cut</div>
-      <div>Copy</div>
-      <div>Paste</div>
-      <hr />
-      <div>Preferences...</div>
+    <div class="mainMenuItem">
+      Edit
+      <div class="submenu">
+        <div>Cut</div>
+        <div>Copy</div>
+        <div>Paste</div>
+        <hr />
+        <div>Preferences...</div>
+      </div>
     </div>
-  </div>
-  <div class="mainMenuItem">
-    Run
-    <div class="submenu">
-      <div>Build</div>
-      <div>Rebuild</div>
-      <div>Clean</div>
-      <hr />
-      <div>Walkthrough</div>
+    <div class="mainMenuItem">
+      Run
+      <div class="submenu">
+        <div>Build</div>
+        <div>Rebuild</div>
+        <div>Clean</div>
+        <hr />
+        <div>Walkthrough</div>
+      </div>
     </div>
-  </div>
-  <div class="mainMenuItem">
-    Help
-    <div class="submenu">
-      <div>Reference</div>
-      <div>Tutorial</div>
-      <hr />
-      <div id="about">About</div>
+    <div class="mainMenuItem">
+      Help
+      <div class="submenu">
+        <div>Reference</div>
+        <div>Tutorial</div>
+        <hr />
+        <div id="about">About</div>
+      </div>
     </div>
-  </div>
-</flex-row>
+  </flex-row>
+</template>
 <script>
-  import { ask } from "./html/modal-dialogs.js";
+  import { ask } from "./modal-dialogs.js";
   Array.from(document.querySelectorAll(".topbar .submenu > div")).forEach(el =>
     el.addEventListener("click", e => ask(e.target.innerText, ["OK", "Cancel"]).then(result => console.log("You chose", result)), false)
   );
+  export default {};
 </script>
 <style>
   .topbar > * {

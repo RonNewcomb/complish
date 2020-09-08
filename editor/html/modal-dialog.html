@@ -1,7 +1,13 @@
-<div>
-  <div class="overlay"></div>
-  <div class="panel modal-dialog">
-    <div>{{message}}</div>
-    <div style="text-align: right">{{innerHTML}}</div>
+<template>
+  <div>
+    <div class="overlay"></div>
+    <div class="panel modal-dialog">
+      <div>{{message}}</div>
+      <div style="text-align: right">
+        <slot></slot>
+      </div>
+    </div>
   </div>
-</div>
+</template>
+<style></style>
+<script>  export default {};</script>

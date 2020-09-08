@@ -28,9 +28,16 @@
     transform: scaleY(1);
   }
 </style>
-<div class="panel">
-  <div class="hitbox">
-    <div class="peekaboo">{{name}}</div>
+<template>
+  <div class="panel">
+    <div class="hitbox">
+      <div class="peekaboo">{{name}}</div>
+    </div>
+    <div class="{{classes}}">
+      <slot></slot>
+    </div>
   </div>
-  <div class="{{classes}}">{{innerHTML}}</div>
-</div>
+</template>
+<script>
+  export default {};
+</script>

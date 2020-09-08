@@ -1,6 +1,13 @@
 "use strict";
+const attach = (element, comp) => {
+    console.log("Componanet", element.tagName, "template", comp.template.content);
+    const shadow = element.attachShadow({ mode: 'open' });
+    shadow.appendChild(comp.style.cloneNode(true));
+    shadow.appendChild(document.importNode(comp.template.content, true));
+    Object.entries(comp.listeners).forEach(([event, listener]) => element.addEventListener(event, listener, false));
+};
 const loadHtmls = (element) => Promise.allSettled(Array.from(element.children).map(child => (child.tagName.includes("-") ? loadHtml : loadHtmls)(child)));
-const loadHtml = (element) => fetch("html/" + element.tagName + ".html")
+const loadHtml = (element) => fetch("html/" + element.tagName.replace(/--/g, "/") + ".html")
     .then(response => response.text())
     .then(html => new DOMParser().parseFromString(html, 'text/html').head)
     .then(head => ({
@@ -8,9 +15,9 @@ const loadHtml = (element) => fetch("html/" + element.tagName + ".html")
     style: head.querySelector('style'),
     script: head.querySelector('script')
 }))
-    .then(comp => import(URL.createObjectURL(new Blob([comp.script?.textContent || ""], { type: 'application/javascript' })))
+    .then(comp => import(URL.createObjectURL(new Blob([comp.script.textContent || ""], { type: 'application/javascript' })))
+    .catch(console.error)
     .then(module => ({
-    name: module.default.name,
     template: comp.template,
     style: comp.style,
     listeners: Object.entries(module.default).reduce((listeners, [setting, value]) => {
@@ -19,18 +26,9 @@ const loadHtml = (element) => fetch("html/" + element.tagName + ".html")
         return listeners;
     }, {}),
 })))
-    .then(comp => customElements.define(comp.name, class extends HTMLElement {
+    .then(comp => customElements.define(element.tagName.toLowerCase(), class extends HTMLElement {
     connectedCallback() {
-        this._upcast();
-        this._attachListeners();
-    }
-    _upcast() {
-        const shadow = this.attachShadow({ mode: 'open' });
-        shadow.appendChild(comp.style.cloneNode(true));
-        shadow.appendChild(document.importNode(comp.template.content, true));
-    }
-    _attachListeners() {
-        Object.entries(comp.listeners).forEach(([event, listener]) => this.addEventListener(event, listener, false));
+        attach(this, comp);
     }
 }));
 loadHtmls(document.body);
