@@ -12,7 +12,17 @@
   </head>
 
   <body>
-    <main-menu></main-menu>
+    <hello-world>Comandeer</hello-world>
+    <button onclick="another()">Add new component instance</button>
+
+    <script src="code/loader.js"></script>
+    <script>
+      function another() {
+        document.body.insertAdjacentHTML("beforeend", "<hello-world>General</hello-world>");
+      }
+    </script>
+
+    <!-- <main-menu></main-menu>
 
     <flex-row wrap="nowrap">
       <titled-panel name="GLOSSARY" classes="leftsidebar">
@@ -44,26 +54,45 @@
 
       const loadHtmls = element => Promise.allSettled(Array.from(element.children).map(child => (child.tagName.includes("-") ? loadHtml : loadHtmls)(child)));
 
-      window.loadHtml = el =>
-        fetch("html/" + el.tagName + ".html")
+      const loadHtml = element =>
+        fetch("html/" + element.tagName + ".html")
           .then(response => response.text())
-          .then(html => {
-            Array.from(el.attributes).forEach(attr => (html = html.replace(new RegExp("{{" + attr.name + "}}", "g"), attr.value)));
-            if (html.match(/{{innerHTML}}/)) html = html.replace(/{{innerHTML}}/g, el.innerHTML);
-            el.innerHTML = html;
-          })
-          .then(_ => loadHtmls(el))
-          .then(_ =>
-            Array.from(el.querySelectorAll("script")).forEach(old => {
-              const replacement = document.createElement("script");
-              replacement.setAttribute("for", el.tagName);
-              replacement.setAttribute("type", "module");
-              replacement.appendChild(document.createTextNode(old.innerHTML));
-              window.currentComponentScript = replacement; // actually only works for te last one.
-              old.replaceWith(replacement);
-            })
+          .then(html => new DOMParser().parseFromString(html, "text/html").head)
+          .then(head => ({
+            template: head.querySelector("template"),
+            style: head.querySelector("style"),
+            script: head.querySelector("script"),
+          }))
+          .then(comp =>
+            import(URL.createObjectURL(new Blob([comp.script?.textContent || ""], { type: "application/javascript" }))).then(module => ({
+              name: module.default.name,
+              template: comp.template,
+              style: comp.style,
+              listeners: Object.entries(module.default).reduce((listeners, [setting, value]) => {
+                if (setting.startsWith("on")) listeners[setting[2].toLowerCase() + setting.substr(3)] = value;
+                return listeners;
+              }, {}),
+            }))
           )
-          .then(_ => el);
+          .then(comp =>
+            customElements.define(
+              comp.name,
+              class extends HTMLElement {
+                connectedCallback() {
+                  this._upcast();
+                  this._attachListeners();
+                }
+                _upcast() {
+                  const shadow = this.attachShadow({ mode: "open" });
+                  shadow.appendChild(comp.style.cloneNode(true));
+                  shadow.appendChild(document.importNode(comp.template.content, true));
+                }
+                _attachListeners() {
+                  Object.entries(comp.listeners).forEach(([event, listener]) => this.addEventListener(event, listener, false));
+                }
+              }
+            )
+          );
 
       loadHtmls(document.body)
         .then(_ => sendToWorker("this should be the source code here"))
@@ -72,5 +101,6 @@
           document.getElementById("glossary").innerHTML = formatForDisplay(findDefinitions());
         });
     </script>
+   -->
   </body>
 </html>
