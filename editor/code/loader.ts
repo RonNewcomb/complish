@@ -9,42 +9,38 @@ interface Component {
     listeners: Listeners;
 }
 
-const attach = (element: Element, comp: Component) => {
-    console.log("Componanet", element.tagName, "template", comp.template.content);
-    const shadow = element.attachShadow({ mode: 'open' });
-    shadow.appendChild(comp.style.cloneNode(true));
-    shadow.appendChild(document.importNode(comp.template.content, true));
-    Object.entries(comp.listeners).forEach(([event, listener]) => element.addEventListener(event, listener, false));
-}
-
 const loadHtmls = (element: Element): Promise<any> =>
     Promise.allSettled(Array.from(element.children).map(child => (child.tagName.includes("-") ? loadHtml : loadHtmls)(child)));
 
 const loadHtml = (element: Element): Promise<any> =>
     fetch("html/" + element.tagName.replace(/--/g, "/") + ".html")
         .then(response => response.text())
-        .then(html => new DOMParser().parseFromString(html, 'text/html').head)
-        .then(head => <Component>{
-            template: head.querySelector('template'),
-            style: head.querySelector('style'),
-            script: head.querySelector('script')
-        })
-        .then(comp => import(URL.createObjectURL(new Blob([comp.script.textContent || ""], { type: 'application/javascript' })))
-            .catch(console.error)
-            .then(module => <Component>{
-                template: comp.template,
-                style: comp.style,
-                listeners: Object.entries(module.default).reduce((listeners, [setting, value]) => {
-                    if (setting.startsWith('on')) listeners[setting[2].toLowerCase() + setting.substr(3)] = value;
-                    return listeners;
-                }, {}),
-            }))
-        .then(comp =>
+        .then(async html => {
+            const head = new DOMParser().parseFromString(html, 'text/html').head;
+            const comp = <Component>{
+                template: head.querySelector('template'),
+                style: head.querySelector('style'),
+                script: head.querySelector('script'),
+            };
+            if (comp.script && comp.script.textContent) {
+                const blob = new Blob([comp.script.textContent], { type: "application/javascript" });
+                const url = URL.createObjectURL(blob);
+                const module = await import(url).catch(e => console.error(element.tagName, e));
+                if (module && module.default)
+                    comp.listeners = Object.entries(module.default).reduce((listeners, [setting, value]) => {
+                        if (setting.startsWith("on")) listeners[setting[2].toLowerCase() + setting.substr(3)] = value;
+                        return listeners;
+                    }, {});
+            }
             customElements.define(element.tagName.toLowerCase(), class extends HTMLElement {
                 connectedCallback() {
-                    attach(this, comp);
+                    const shadow = this.attachShadow({ mode: 'open' });
+                    if (comp.style) shadow.appendChild(comp.style.cloneNode(true));
+                    if (comp.template?.content) shadow.appendChild(document.importNode(comp.template.content, true));
+                    if (comp.listeners) Object.entries(comp.listeners).forEach(([event, listener]) => this.addEventListener(event, listener, false));
                 }
-            })
-        );
+            });
+            loadHtmls(element);
+        });
 
 loadHtmls(document.body);
