@@ -9,10 +9,10 @@ interface Component {
     listeners: Listeners;
 }
 
-const loadHtmls = (element: Element): Promise<any> =>
-    Promise.allSettled(Array.from(element.children).map(child => (child.tagName.includes("-") ? loadHtml : loadHtmls)(child)));
+const loadHtmls = (element: Element, parentCustomElement: Element): Promise<any> =>
+    Promise.allSettled(Array.from(element.children).map(child => child.tagName.includes("-") ? loadHtml(child, element) : loadHtmls(child, parentCustomElement)));
 
-const loadHtml = (element: Element): Promise<any> =>
+const loadHtml = (element: Element, parentCustomElement: Element): Promise<any> =>
     fetch("html/" + element.tagName.replace(/--/g, "/") + ".html")
         .then(response => response.text())
         .then(async html => {
@@ -33,6 +33,7 @@ const loadHtml = (element: Element): Promise<any> =>
                     }, {});
             }
             customElements.define(element.tagName.toLowerCase(), class extends HTMLElement {
+                parentCustomElement: Element = parentCustomElement;
                 connectedCallback() {
                     const shadow = this.attachShadow({ mode: 'open' });
                     if (comp.style) shadow.appendChild(comp.style.cloneNode(true));
@@ -40,7 +41,7 @@ const loadHtml = (element: Element): Promise<any> =>
                     if (comp.listeners) Object.entries(comp.listeners).forEach(([event, listener]) => this.addEventListener(event, listener, false));
                 }
             });
-            loadHtmls(element);
+            loadHtmls(element, element);
         });
 
-loadHtmls(document.body);
+loadHtmls(document.body, document.body);

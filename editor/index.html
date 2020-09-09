@@ -42,8 +42,11 @@
 
       /* the "render once" UI framework */
 
-      const loadHtmls = element => Promise.allSettled(Array.from(element.children).map(child => (child.tagName.includes("-") ? loadHtml : loadHtmls)(child)));
-      const loadHtml = element =>
+      const loadHtmls = (element, parentCustomElement) =>
+        Promise.allSettled(
+          Array.from(element.children).map(child => (child.tagName.includes("-") ? loadHtml(child, element) : loadHtmls(child, parentCustomElement)))
+        );
+      const loadHtml = (element, parentCustomElement) =>
         fetch("html/" + element.tagName.replace(/--/g, "/") + ".html")
           .then(response => response.text())
           .then(async html => {
@@ -66,6 +69,10 @@
             customElements.define(
               element.tagName.toLowerCase(),
               class extends HTMLElement {
+                constructor() {
+                  super(...arguments);
+                  this.parentCustomElement = parentCustomElement;
+                }
                 connectedCallback() {
                   const shadow = this.attachShadow({ mode: "open" });
                   if (comp.style) shadow.appendChild(comp.style.cloneNode(true));
@@ -74,10 +81,9 @@
                 }
               }
             );
-            loadHtmls(element);
+            loadHtmls(element, element);
           });
-
-      loadHtmls(document.body)
+      loadHtmls(document.body, document.body)
         .then(_ => sendToWorker("this should be the source code here"))
         .then(e => {
           document.getElementById("main").innerHTML = e.data;

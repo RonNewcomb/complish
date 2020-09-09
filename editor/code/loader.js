@@ -1,6 +1,6 @@
 "use strict";
-const loadHtmls = (element) => Promise.allSettled(Array.from(element.children).map(child => (child.tagName.includes("-") ? loadHtml : loadHtmls)(child)));
-const loadHtml = (element) => fetch("html/" + element.tagName.replace(/--/g, "/") + ".html")
+const loadHtmls = (element, parentCustomElement) => Promise.allSettled(Array.from(element.children).map(child => child.tagName.includes("-") ? loadHtml(child, element) : loadHtmls(child, parentCustomElement)));
+const loadHtml = (element, parentCustomElement) => fetch("html/" + element.tagName.replace(/--/g, "/") + ".html")
     .then(response => response.text())
     .then(async (html) => {
     const head = new DOMParser().parseFromString(html, 'text/html').head;
@@ -13,13 +13,18 @@ const loadHtml = (element) => fetch("html/" + element.tagName.replace(/--/g, "/"
         const blob = new Blob([comp.script.textContent], { type: "application/javascript" });
         const url = URL.createObjectURL(blob);
         const module = await import(url).catch(e => console.error(element.tagName, e));
-        comp.listeners = Object.entries(module.default).reduce((listeners, [setting, value]) => {
-            if (setting.startsWith("on"))
-                listeners[setting[2].toLowerCase() + setting.substr(3)] = value;
-            return listeners;
-        }, {});
+        if (module && module.default)
+            comp.listeners = Object.entries(module.default).reduce((listeners, [setting, value]) => {
+                if (setting.startsWith("on"))
+                    listeners[setting[2].toLowerCase() + setting.substr(3)] = value;
+                return listeners;
+            }, {});
     }
     customElements.define(element.tagName.toLowerCase(), class extends HTMLElement {
+        constructor() {
+            super(...arguments);
+            this.parentCustomElement = parentCustomElement;
+        }
         connectedCallback() {
             const shadow = this.attachShadow({ mode: 'open' });
             if (comp.style)
@@ -30,5 +35,6 @@ const loadHtml = (element) => fetch("html/" + element.tagName.replace(/--/g, "/"
                 Object.entries(comp.listeners).forEach(([event, listener]) => this.addEventListener(event, listener, false));
         }
     });
+    loadHtmls(element, element);
 });
-loadHtmls(document.body);
+loadHtmls(document.body, document.body);

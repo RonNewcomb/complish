@@ -1,5 +1,5 @@
 <script>
-  const me = window.currentComponentScript.parentElement;
+  const me = this.parentCustomElement;
   const html = `{{innerHTML}}`;
   const command = me.attributes[0];
   const varRegex = new RegExp("{{" + command.name + "}}", "g");
