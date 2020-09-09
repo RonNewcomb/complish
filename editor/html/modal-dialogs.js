@@ -15,3 +15,6 @@ export const ask = (message, buttonLabels) => new Promise(async (resolve) => {
             modalDialogElement.remove();
         });
 });
+export default class extends HTMLElement {
+    constructor() { super(); }
+}

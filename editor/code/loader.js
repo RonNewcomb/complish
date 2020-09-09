@@ -1,40 +1,24 @@
-"use strict";
-const loadHtmls = (element, parentCustomElement) => Promise.allSettled(Array.from(element.children).map(child => child.tagName.includes("-") ? loadHtml(child, element) : loadHtmls(child, parentCustomElement)));
-const loadHtml = (element, parentCustomElement) => fetch("html/" + element.tagName.replace(/--/g, "/") + ".html")
-    .then(response => response.text())
-    .then(async (html) => {
+export const loadHtmls = (element) => Promise.allSettled(Array.from(element.children).map(child => (child.tagName.includes("-") ? loadHtml : loadHtmls)(child)));
+export const loadHtml = (element) => Promise.allSettled([
+    fetch("html/" + element.tagName.replace(/--/g, "/") + ".html").then(res => res.text()).catch(err => ""),
+    import("../html/" + element.tagName.replace(/--/g, "/") + ".js").catch(console.log),
+]).then(async (responses) => {
+    const [htmlP, codeP] = responses;
+    const html = (htmlP.status === 'fulfilled') ? htmlP.value : "";
+    const code = (codeP.status === 'fulfilled') ? codeP.value : undefined;
     const head = new DOMParser().parseFromString(html, 'text/html').head;
-    const comp = {
-        template: head.querySelector('template'),
-        style: head.querySelector('style'),
-        script: head.querySelector('script'),
-    };
-    if (comp.script && comp.script.textContent) {
-        const blob = new Blob([comp.script.textContent], { type: "application/javascript" });
-        const url = URL.createObjectURL(blob);
-        const module = await import(url).catch(e => console.error(element.tagName, e));
-        if (module && module.default)
-            comp.listeners = Object.entries(module.default).reduce((listeners, [setting, value]) => {
-                if (setting.startsWith("on"))
-                    listeners[setting[2].toLowerCase() + setting.substr(3)] = value;
-                return listeners;
-            }, {});
-    }
-    customElements.define(element.tagName.toLowerCase(), class extends HTMLElement {
+    const template = head.querySelector('template');
+    const style = head.querySelector('style');
+    const module = Object.assign(class extends HTMLElement {
         constructor() {
-            super(...arguments);
-            this.parentCustomElement = parentCustomElement;
-        }
-        connectedCallback() {
+            super();
             const shadow = this.attachShadow({ mode: 'open' });
-            if (comp.style)
-                shadow.appendChild(comp.style.cloneNode(true));
-            if (comp.template?.content)
-                shadow.appendChild(document.importNode(comp.template.content, true));
-            if (comp.listeners)
-                Object.entries(comp.listeners).forEach(([event, listener]) => this.addEventListener(event, listener, false));
+            if (template?.content)
+                shadow.appendChild(document.importNode(template.content, true));
+            if (style)
+                shadow.appendChild(style.cloneNode(true));
         }
-    });
-    loadHtmls(element, element);
-});
-loadHtmls(document.body, document.body);
+    }, code || {});
+    customElements.define(element.tagName.toLowerCase(), module);
+    loadHtmls(element);
+}).catch(console.error);

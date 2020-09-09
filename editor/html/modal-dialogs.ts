@@ -24,3 +24,7 @@ export const ask = (message: string, buttonLabels?: string[]) =>
                 modalDialogElement.remove();
             });
     })
+
+export default class extends HTMLElement {
+    constructor() { super(); }
+}
