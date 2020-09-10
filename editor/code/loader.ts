@@ -1,9 +1,20 @@
 
+const alreadyLoadingTheFirstInstance = {};
+
 export const loadHtmls = (element: Element): Promise<any> =>
     Promise.allSettled(Array.from(element.children).map(child => (child.tagName.includes("-") ? loadHtml : loadHtmls)(child)));
 
-export const loadHtml = async (element: Element): Promise<any> => {
+export const loadHtml = async (element: Element): Promise<Element> => {
     let tag = element.tagName.toLowerCase();
+    if (alreadyLoadingTheFirstInstance[tag]) {
+        await alreadyLoadingTheFirstInstance[tag];
+        return loadInstance(element, tag);
+    } // else this is the first instance
+    alreadyLoadingTheFirstInstance[tag] = loadInstance(element, tag);
+    return alreadyLoadingTheFirstInstance[tag];
+}
+
+const loadInstance = async (element: Element, tag: string): Promise<Element> => {
     let path = tag.replace(/--/g, "/");
     let template: HTMLTemplateElement | null | void = document.head.querySelector(tag) as HTMLTemplateElement;
     let module: any = null;
@@ -19,7 +30,8 @@ export const loadHtml = async (element: Element): Promise<any> => {
 
     // console.log(2, tag, "has", "module", !!module, "template", !!template);
 
-    if (!customElements.get(tag)) {
+    module = customElements.get(tag);
+    if (!module) {
         module = await import(`../html/${path}.js`).catch(console.error);
         if (!module || !module.default) module = { default: class extends HTMLElement { } };
         customElements.define(tag, module.default);
@@ -32,7 +44,7 @@ export const loadHtml = async (element: Element): Promise<any> => {
 
     // console.log(4, tag, "has", "module", !!module, "template", !!template);
 
-    loadHtmls(element);
+    return loadHtmls(element);
 }
 
 export var LoadingHTML = loadHtmls(document.body);

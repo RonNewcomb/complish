@@ -1,6 +1,15 @@
+const alreadyLoadingTheFirstInstance = {};
 export const loadHtmls = (element) => Promise.allSettled(Array.from(element.children).map(child => (child.tagName.includes("-") ? loadHtml : loadHtmls)(child)));
 export const loadHtml = async (element) => {
     let tag = element.tagName.toLowerCase();
+    if (alreadyLoadingTheFirstInstance[tag]) {
+        await alreadyLoadingTheFirstInstance[tag];
+        return loadInstance(element, tag);
+    }
+    alreadyLoadingTheFirstInstance[tag] = loadInstance(element, tag);
+    return alreadyLoadingTheFirstInstance[tag];
+};
+const loadInstance = async (element, tag) => {
     let path = tag.replace(/--/g, "/");
     let template = document.head.querySelector(tag);
     let module = null;
@@ -10,7 +19,8 @@ export const loadHtml = async (element) => {
         template.id = tag;
         document.head.appendChild(template);
     }
-    if (!customElements.get(tag)) {
+    module = customElements.get(tag);
+    if (!module) {
         module = await import(`../html/${path}.js`).catch(console.error);
         if (!module || !module.default)
             module = { default: class extends HTMLElement {
@@ -19,6 +29,6 @@ export const loadHtml = async (element) => {
     }
     if (module && template)
         element.attachShadow({ mode: 'open' }).appendChild(template.content.cloneNode(true));
-    loadHtmls(element);
+    return loadHtmls(element);
 };
 export var LoadingHTML = loadHtmls(document.body);
