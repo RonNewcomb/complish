@@ -10,7 +10,6 @@ export const ask = (message, buttonLabels) => new Promise(async (resolve) => {
             </for-each>
         </modal-dialog>`);
     const modalDialogElement = await loadHtml(container.lastElementChild);
-    console.log(modalDialogElement);
     for (let button of modalDialogElement.getElementsByTagName('button'))
         button.addEventListener('click', e => {
             resolve(e.currentTarget.innerText);
