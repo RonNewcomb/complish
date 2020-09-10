@@ -1,3 +1,4 @@
+import { loadHtml } from '../code/loader.js';
 export const ask = (message, buttonLabels) => new Promise(async (resolve) => {
     if (!buttonLabels || !buttonLabels.length)
         buttonLabels = ["OK"];
@@ -8,7 +9,8 @@ export const ask = (message, buttonLabels) => new Promise(async (resolve) => {
                 <button>{{iter}}</button>
             </for-each>
         </modal-dialog>`);
-    const modalDialogElement = await window.loadHtml(container.lastElementChild);
+    const modalDialogElement = await loadHtml(container.lastElementChild);
+    console.log(modalDialogElement);
     for (let button of modalDialogElement.getElementsByTagName('button'))
         button.addEventListener('click', e => {
             resolve(e.currentTarget.innerText);
