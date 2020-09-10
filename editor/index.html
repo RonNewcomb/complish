@@ -40,14 +40,12 @@
           worker.postMessage(message);
         });
 
-      import { loadHtmls } from "./code/loader.js";
+      import { LoadingHTML } from "./code/loader.js";
 
-      loadHtmls(document.body)
-        .then(_ => sendToWorker("this should be the source code here"))
-        .then(e => {
-          document.getElementById("main").innerHTML = e.data;
-          document.getElementById("glossary").innerHTML = formatForDisplay(findDefinitions());
-        });
+      LoadingHTML.then(_ => sendToWorker("this should be the source code here")).then(e => {
+        document.getElementById("main").innerHTML = e.data;
+        document.getElementById("glossary").innerHTML = formatForDisplay(findDefinitions());
+      });
     </script>
   </body>
 </html>

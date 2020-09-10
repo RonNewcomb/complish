@@ -2,29 +2,38 @@
 export const loadHtmls = (element: Element): Promise<any> =>
     Promise.allSettled(Array.from(element.children).map(child => (child.tagName.includes("-") ? loadHtml : loadHtmls)(child)));
 
-export const loadHtml = (element: Element): Promise<any> =>
-    Promise.allSettled([
-        fetch("html/" + element.tagName.replace(/--/g, "/") + ".html").then(res => res.text()).catch(err => ""),
-        import("../html/" + element.tagName.replace(/--/g, "/") + ".js").catch(console.log),
-    ]).then(async responses => {
-        const [htmlP, codeP] = responses;
-        const html = (htmlP.status === 'fulfilled') ? htmlP.value : "";
-        const code = (codeP.status === 'fulfilled') ? codeP.value : undefined;
-        const head = new DOMParser().parseFromString(html, 'text/html').head;
-        const template = head.querySelector('template');
-        const style = head.querySelector('style');
-        const module = Object.assign(class extends HTMLElement {
-            constructor() {
-                super();
-                const shadow = this.attachShadow({ mode: 'open' });
-                if (template?.content) shadow.appendChild(document.importNode(template.content, true));
-                if (style) shadow.appendChild(style.cloneNode(true));
-                // const module: this & { init?: Function } = this;
-                // if (typeof module.init === 'function') module.init();
-            }
-        }, code || {});
-        customElements.define(element.tagName.toLowerCase(), module);
-        loadHtmls(element);
-    }).catch(console.error);
+export const loadHtml = async (element: Element): Promise<any> => {
+    let tag = element.tagName.toLowerCase();
+    let path = tag.replace(/--/g, "/");
+    let template: HTMLTemplateElement | null | void = document.head.querySelector(tag) as HTMLTemplateElement;
+    let module: any = null;
 
-// loadHtmls(document.body);
+    // console.log(1, tag, "has", "module", !!module, "template", !!template);
+
+    if (!template) {
+        const html = await fetch(`html/${path}.html`).catch(console.error).then(r => r && r.ok ? r.text() : "<template><slot></slot></template>");
+        template = new DOMParser().parseFromString(html, 'text/html').head.querySelector('template') || new HTMLTemplateElement();
+        template.id = tag;
+        document.head.appendChild(template);
+    }
+
+    // console.log(2, tag, "has", "module", !!module, "template", !!template);
+
+    if (!customElements.get(tag)) {
+        module = await import(`../html/${path}.js`).catch(console.error);
+        if (!module || !module.default) module = { default: class extends HTMLElement { } };
+        customElements.define(tag, module.default);
+    }
+
+    // console.log(3, tag, "has", "module", !!module, "template", !!template);
+
+    if (module && template)
+        element.attachShadow({ mode: 'open' }).appendChild(template.content.cloneNode(true));
+
+    // console.log(4, tag, "has", "module", !!module, "template", !!template);
+
+    loadHtmls(element);
+}
+
+export var LoadingHTML = loadHtmls(document.body);
+
