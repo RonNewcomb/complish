@@ -13,8 +13,6 @@ export const ask = (message: string, buttonLabels?: string[]) =>
         </modal-dialog>`);
         const modalDialogElement = await loadHtml(container.lastElementChild!);
 
-        console.log(modalDialogElement);
-
         for (let button of modalDialogElement.getElementsByTagName('button'))
             button.addEventListener('click', e => {
                 resolve((e.currentTarget! as HTMLElement).innerText);
