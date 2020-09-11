@@ -3,9 +3,10 @@ export const ask = (message, buttonLabels) => new Promise(async (resolve) => {
     if (!buttonLabels || !buttonLabels.length)
         buttonLabels = ["OK"];
     const container = document.getElementsByTagName('modal-dialogs')[0];
+    container.buttons = buttonLabels;
     container.insertAdjacentHTML('beforeend', `
         <modal-dialog message=${message}>
-            <for-each iter='${JSON.stringify(buttonLabels)}'>
+            <for-each iter='buttons'>
                 <button>{{iter}}</button>
             </for-each>
         </modal-dialog>`);
@@ -16,6 +17,9 @@ export const ask = (message, buttonLabels) => new Promise(async (resolve) => {
             modalDialogElement.remove();
         });
 });
-export default class extends HTMLElement {
-    constructor() { super(); }
+export default class ModalDialogs extends HTMLElement {
+    constructor() {
+        super();
+        this.buttons = [];
+    }
 }

@@ -27,6 +27,26 @@
       <div>{{message}}</div>
     </for-each>
 
+    <for-each each="windowProperty">
+      <div>{{each}}) This is window property</div>
+    </for-each>
+
+    <for-each prop="windowObject">
+      <div>object key: {{prop}}</div>
+    </for-each>
+
+    <for-each if="windowBool">
+      <div>is true?</div>
+    </for-each>
+
+    <for-each if="windowBool2">
+      <div>is false?</div>
+    </for-each>
+
+    <for-each numtimes="2">
+      <div>{{numtimes}}) Say it twice!</div>
+    </for-each>
+
     <modal-dialogs></modal-dialogs>
 
     <script type="module">
@@ -46,6 +66,11 @@
         document.getElementById("main").innerHTML = e.data;
         document.getElementById("glossary").innerHTML = formatForDisplay(findDefinitions());
       });
+
+      window.windowProperty = 3;
+      window.windowObject = { hey: "jude", foo: "bar", age: 5 };
+      window.windowBool = true;
+      window.windowBool2 = false;
     </script>
   </body>
 </html>

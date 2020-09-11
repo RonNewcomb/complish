@@ -5,9 +5,10 @@ export const ask = (message: string, buttonLabels?: string[]) =>
         if (!buttonLabels || !buttonLabels.length) buttonLabels = ["OK"];
 
         const container = document.getElementsByTagName('modal-dialogs')[0];
+        (container as ModalDialogs).buttons = buttonLabels;
         container.insertAdjacentHTML('beforeend', `
         <modal-dialog message=${message}>
-            <for-each iter='${JSON.stringify(buttonLabels)}'>
+            <for-each iter='buttons'>
                 <button>{{iter}}</button>
             </for-each>
         </modal-dialog>`);
@@ -20,6 +21,7 @@ export const ask = (message: string, buttonLabels?: string[]) =>
             });
     })
 
-export default class extends HTMLElement {
+export default class ModalDialogs extends HTMLElement {
+    buttons: string[] = [];
     constructor() { super(); }
 }
