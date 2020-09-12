@@ -1,11 +1,19 @@
 
-customElements.define('flex-row', class extends HTMLElement {
+class FlexRow extends HTMLElement {
+  #wrap = '';
+  get wrap() { return this.#wrap; }
+  set wrap(v) { this.#wrap = v; FlexRow.render(this); };
+
   connectedCallback() {
-    const flexWrap = typeof this.getAttribute('wrap') === 'string' ? 'flex-wrap: wrap;' : typeof this.getAttribute('nowrap') === 'string' ? 'flex-wrap: nowrap' : '';
-    this.attachShadow({ mode: 'open' }).innerHTML = template(flexWrap);
+    this.wrap = typeof this.getAttribute('wrap') === 'string' ? 'wrap' : typeof this.getAttribute('nowrap') === 'string' ? 'nowrap' : '';
+    this.attachShadow({ mode: 'open' }).innerHTML = template(this.wrap);
   }
-})
+
+  static render({ shadowRoot, wrap }: FlexRow) { if (shadowRoot) shadowRoot.innerHTML = template(wrap); }
+}
 
 function template(flexWrap: string) {
-  return /*html*/`<slot style="display: flex; flex-direction: row; flex: 1 1 auto; align-items: flex-start; ${flexWrap}"></slot>`;
+  return /*html*/`<slot style="display: flex; flex-direction: row; flex: 1 1 auto; align-items: flex-start; ${flexWrap ? `flex-wrap: ${flexWrap};` : ''}"></slot>`;
 }
+
+customElements.define('flex-row', FlexRow);
