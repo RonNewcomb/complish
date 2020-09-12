@@ -1,10 +1,10 @@
 "use strict";
 customElements.define('flex-row', class extends HTMLElement {
-    constructor() {
-        super();
-        this.attachShadow({ mode: 'open' }).innerHTML = template();
+    connectedCallback() {
+        const flexWrap = typeof this.getAttribute('wrap') === 'string' ? 'flex-wrap: wrap;' : typeof this.getAttribute('nowrap') === 'string' ? 'flex-wrap: nowrap' : '';
+        this.attachShadow({ mode: 'open' }).innerHTML = template(flexWrap);
     }
 });
-function template() {
-    return `<slot style="display: flex; flex-direction: row; flex: 1 1 auto; align-items: flex-start; flex-wrap: {{wrap}}"></slot>`;
+function template(flexWrap) {
+    return `<slot style="display: flex; flex-direction: row; flex: 1 1 auto; align-items: flex-start; ${flexWrap}"></slot>`;
 }

@@ -1,11 +1,9 @@
-// import { loadHtml } from '../code/loader.js';
-
 export const ask = (message: string, buttonLabels?: string[]) =>
   new Promise<string>(async resolve => {
     if (!buttonLabels || !buttonLabels.length) buttonLabels = ["OK"];
 
-    const modalDialogs = document.getElementsByTagName('modal-dialogs')[0];
-    (modalDialogs as ModalDialogs).buttons = buttonLabels;
+    const modalDialogs = document.getElementsByTagName('modal-dialogs')[0] as ModalDialogs;
+    modalDialogs.buttons = buttonLabels;
     modalDialogs.insertAdjacentHTML('beforeend', template(message, buttonLabels));
     const modalDialog = modalDialogs.lastElementChild!;
 

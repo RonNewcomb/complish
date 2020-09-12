@@ -1,7 +1,6 @@
 import { ask } from "./modal-dialogs.js";
 customElements.define('main-menu', class extends HTMLElement {
-    constructor() {
-        super();
+    connectedCallback() {
         this.attachShadow({ mode: 'open' }).innerHTML = template();
         this.shadowRoot.querySelectorAll('.topbar .submenu > div').forEach(el => el.addEventListener("click", e => ask(e.target.innerText, ["OK", "Cancel"]).then(result => console.log("You chose", result))));
     }
@@ -9,7 +8,7 @@ customElements.define('main-menu', class extends HTMLElement {
 function template() {
     return `
 <div class="topbar">
-  <flex-row wrap="wrap">
+  <flex-row wrap>
     <div class="mainMenuItem">
       File
       <div class="submenu">
