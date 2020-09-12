@@ -68,3 +68,6 @@ const template = new DOMParser().parseFromString(/*html*/`
     transform: scaleY(1);
   }
    </style></template>`, 'text/html').querySelector('template');
+
+
+customElements.define('titled-panel', TitledPanel);

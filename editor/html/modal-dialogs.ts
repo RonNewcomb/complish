@@ -16,7 +16,7 @@ export const ask = (message: string, buttonLabels?: string[]) =>
       });
   })
 
-export default class ModalDialogs extends HTMLElement {
+class ModalDialogs extends HTMLElement {
   buttons: string[] = []; // TODO two+ dialogs will clash
 
   constructor() {
@@ -25,7 +25,8 @@ export default class ModalDialogs extends HTMLElement {
   }
 }
 
-const template = (message: string, buttonLabels: string[]) => /*html*/`
+function template(message: string, buttonLabels: string[]) {
+  return /*html*/`
 <div>
   <div class="overlay"></div>
   <div class="panel modal-dialog">
@@ -36,7 +37,7 @@ const template = (message: string, buttonLabels: string[]) => /*html*/`
       </for-each>
     </div>
   </div>
-</div> `;
+</div> `};
 
 const styles = /*html*/`<style>
 .modal-dialog {
@@ -68,5 +69,6 @@ const styles = /*html*/`<style>
   padding: 14px;
 }
 </style>
-`;
+`
 
+customElements.define('modal-dialogs', ModalDialogs);

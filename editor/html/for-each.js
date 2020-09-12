@@ -1,4 +1,5 @@
-export default class extends HTMLElement {
+"use strict";
+customElements.define('for-each', class extends HTMLElement {
     constructor() {
         try {
             super();
@@ -65,4 +66,4 @@ export default class extends HTMLElement {
             console.error(e);
         }
     }
-}
+});

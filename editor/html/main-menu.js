@@ -1,13 +1,13 @@
 import { ask } from "./modal-dialogs.js";
-export default class extends HTMLElement {
+customElements.define('main-menu', class extends HTMLElement {
     constructor() {
         super();
-        this.attachShadow({ mode: 'open' }).innerHTML = template;
+        this.attachShadow({ mode: 'open' }).innerHTML = template();
         this.shadowRoot.querySelectorAll('.topbar .submenu > div').forEach(el => el.addEventListener("click", e => ask(e.target.innerText, ["OK", "Cancel"]).then(result => console.log("You chose", result))));
     }
-}
-;
-const template = `
+});
+function template() {
+    return `
 <div class="topbar">
   <flex-row wrap="wrap">
     <div class="mainMenuItem">
@@ -97,3 +97,5 @@ const template = `
   }
 </style>
 `;
+}
+;

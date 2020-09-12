@@ -11,14 +11,15 @@ export const ask = (message, buttonLabels) => new Promise(async (resolve) => {
             modalDialog.remove();
         });
 });
-export default class ModalDialogs extends HTMLElement {
+class ModalDialogs extends HTMLElement {
     constructor() {
         super();
         this.buttons = [];
         this.innerHTML = styles;
     }
 }
-const template = (message, buttonLabels) => `
+function template(message, buttonLabels) {
+    return `
 <div>
   <div class="overlay"></div>
   <div class="panel modal-dialog">
@@ -30,6 +31,8 @@ const template = (message, buttonLabels) => `
     </div>
   </div>
 </div> `;
+}
+;
 const styles = `<style>
 .modal-dialog {
   position: fixed;
@@ -61,3 +64,4 @@ const styles = `<style>
 }
 </style>
 `;
+customElements.define('modal-dialogs', ModalDialogs);

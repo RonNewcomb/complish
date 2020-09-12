@@ -5,15 +5,7 @@ export const scanChildren = (element: Element): Promise<any> => {
 }
 
 export const loadHtml = async (element: Element): Promise<Element> => {
-    let tag = element.tagName.toLowerCase();
-    let path = tag.replace(/--/g, "/");
-
-    if (!customElements.get(tag)) {
-        let module = await import(`../html/${path}.js`).catch(console.error);
-        if (module && module.default && !customElements.get(tag))
-            customElements.define(tag, module.default);
-    }
-
+    import(`../html/${element.tagName.toLowerCase().replace(/--/g, "/")}.js`).catch(console.error);
     /* await */scanChildren(element);
     return element;
 }
