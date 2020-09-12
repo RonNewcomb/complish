@@ -1,19 +1,33 @@
+const txt = /*html*/`
+  <template>
+    <slot style="display: flex; flex-direction: row; flex: 1 1 auto; align-items: flex-start;"></slot>
+  </template>
+`;
 
-class FlexRow extends HTMLElement {
-  #wrap = '';
-  get wrap() { return this.#wrap; }
-  set wrap(v) { this.#wrap = v; FlexRow.render(this); };
+const createdTemplateNode = new DOMParser().parseFromString(txt, 'text/html').head.querySelector('template');
 
-  connectedCallback() {
-    this.wrap = typeof this.getAttribute('wrap') === 'string' ? 'wrap' : typeof this.getAttribute('nowrap') === 'string' ? 'nowrap' : '';
-    this.attachShadow({ mode: 'open' }).innerHTML = template(this.wrap);
-  }
-
-  static render({ shadowRoot, wrap }: FlexRow) { if (shadowRoot) shadowRoot.innerHTML = template(wrap); }
+const updateTemplateNode = ({ shadowRoot, wrap }: FlexRow) => {
+  const node = shadowRoot?.firstElementChild as HTMLTemplateElement;
+  if (!node) return;
+  if (wrap) node.style.setProperty('flex-wrap', wrap);
+  else node.style.removeProperty('flex-wrap');
 }
 
-function template(flexWrap: string) {
-  return /*html*/`<slot style="display: flex; flex-direction: row; flex: 1 1 auto; align-items: flex-start; ${flexWrap ? `flex-wrap: ${flexWrap};` : ''}"></slot>`;
+class FlexRow extends HTMLElement {
+  connectedCallback() {
+    this.attachShadow({ mode: 'open' }).appendChild(createdTemplateNode!.content.cloneNode(true));
+    updateTemplateNode(this);
+  }
+
+  get wrap() { return this.getAttribute('wrap'); }
+  set wrap(v) { this.setAttribute('wrap', v || ''); this.removeAttribute('nowrap'); updateTemplateNode(this); };
+
+  static get observedAttributes() { return ['wrap', 'nowrap'] }
+  attributeChangedCallback(name: string, oldValue: string, newValue: string) {
+    if (oldValue === newValue) return;              // prevent infinite loop
+    // this[name] = newValue;       // unnecessary. But does trigger the settor.
+    updateTemplateNode(this);
+  }
 }
 
 customElements.define('flex-row', FlexRow);

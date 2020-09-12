@@ -1,35 +1,32 @@
 "use strict";
-var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (receiver, privateMap) {
-    if (!privateMap.has(receiver)) {
-        throw new TypeError("attempted to get private field on non-instance");
-    }
-    return privateMap.get(receiver);
+const txt = `
+  <template>
+    <slot style="display: flex; flex-direction: row; flex: 1 1 auto; align-items: flex-start;"></slot>
+  </template>
+`;
+const createdTemplateNode = new DOMParser().parseFromString(txt, 'text/html').head.querySelector('template');
+const updateTemplateNode = ({ shadowRoot, wrap }) => {
+    const node = shadowRoot?.firstElementChild;
+    if (!node)
+        return;
+    if (wrap)
+        node.style.setProperty('flex-wrap', wrap);
+    else
+        node.style.removeProperty('flex-wrap');
 };
-var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (receiver, privateMap, value) {
-    if (!privateMap.has(receiver)) {
-        throw new TypeError("attempted to set private field on non-instance");
+class FlexRow extends HTMLElement {
+    connectedCallback() {
+        this.attachShadow({ mode: 'open' }).appendChild(createdTemplateNode.content.cloneNode(true));
+        updateTemplateNode(this);
     }
-    privateMap.set(receiver, value);
-    return value;
-};
-var _wrap, _a;
-customElements.define('flex-row', (_a = class FlexRow extends HTMLElement {
-        constructor() {
-            super(...arguments);
-            _wrap.set(this, '');
-        }
-        get wrap() { return __classPrivateFieldGet(this, _wrap); }
-        set wrap(v) { __classPrivateFieldSet(this, _wrap, v); FlexRow.render(this); }
-        ;
-        connectedCallback() {
-            this.wrap = typeof this.getAttribute('wrap') === 'string' ? 'wrap' : typeof this.getAttribute('nowrap') === 'string' ? 'nowrap' : '';
-            this.attachShadow({ mode: 'open' }).innerHTML = template(this.wrap);
-        }
-        static render({ shadowRoot, wrap }) { if (shadowRoot)
-            shadowRoot.innerHTML = template(wrap); }
-    },
-    _wrap = new WeakMap(),
-    _a));
-function template(flexWrap) {
-    return `<slot style="display: flex; flex-direction: row; flex: 1 1 auto; align-items: flex-start; ${flexWrap ? `flex-wrap: ${flexWrap};` : ''}"></slot>`;
+    get wrap() { return this.getAttribute('wrap'); }
+    set wrap(v) { this.setAttribute('wrap', v || ''); this.removeAttribute('nowrap'); updateTemplateNode(this); }
+    ;
+    static get observedAttributes() { return ['wrap', 'nowrap']; }
+    attributeChangedCallback(name, oldValue, newValue) {
+        if (oldValue === newValue)
+            return;
+        updateTemplateNode(this);
+    }
 }
+customElements.define('flex-row', FlexRow);

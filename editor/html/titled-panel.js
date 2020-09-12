@@ -1,28 +1,24 @@
-export default class TitledPanel extends HTMLElement {
+"use strict";
+class TitledPanel extends HTMLElement {
     static get observedAttributes() { return ['name', 'classes']; }
-    constructor() {
-        super();
-        this.attachShadow({ mode: "open" }).appendChild(template.content.cloneNode(true));
-    }
-    get name() { console.log('getter'); return this.getAttribute('name') || ""; }
-    set name(v) { console.log('setter'); this.setAttribute('name', v); TitledPanel.render(this); }
-    get classes() { console.log('getter'); return this.getAttribute('classes') || ""; }
-    set classes(v) { console.log('setter'); this.setAttribute('classes', v); TitledPanel.render(this); }
     connectedCallback() {
-        console.log("connectedCallback");
-        TitledPanel.render(this);
+        this.attachShadow({ mode: "open" }).appendChild(template.content.cloneNode(true));
+        render(this);
     }
+    get name() { return this.getAttribute('name') || ""; }
+    set name(v) { this.setAttribute('name', v); render(this); }
+    get classes() { return this.getAttribute('classes') || ""; }
+    set classes(v) { this.setAttribute('classes', v); render(this); }
     attributeChangedCallback(attr, oldValue, newValue) {
-        console.log("attributecanged", attr);
         if (oldValue !== newValue)
             this[attr] = newValue;
     }
-    static render({ name, classes, shadowRoot }) {
-        console.log("rendering");
-        shadowRoot.querySelector("#name").innerHTML = name;
-        shadowRoot.querySelector("#classes").className = classes;
-    }
 }
+const render = ({ name, classes, shadowRoot }) => {
+    console.log("rendering");
+    shadowRoot.querySelector("#name").innerHTML = name;
+    shadowRoot.querySelector("#classes").className = classes;
+};
 const template = new DOMParser().parseFromString(` 
 <template>
 <div class="panel">
