@@ -1,11 +1,25 @@
 export default class extends HTMLElement {
+
   constructor() {
-    super();
     try {
+      super();
       const html = this.innerHTML;
       this.innerHTML = '';
-      const variableName = new RegExp("{{" + this.attributes[0].name + "}}", "g");
-      let valueOrPropertyName = this.attributes[0].value;
+
+      // find the iteration var and val
+      let attr: Attr | null = null;
+      let a = 0;
+      do {
+        attr = this.attributes[a];
+      } while (['class', 'style'].includes(attr.name));
+      if (!attr) {
+        console.log("for-each lacks attribute that isn't class or style");
+        return;
+      }
+      const variableName = new RegExp("{{" + attr.name + "}}", "g");
+      let valueOrPropertyName = attr.value;
+
+      // is the value a literal or a property of an ancestor element?
       let value: any;
       if (valueOrPropertyName.startsWith('[') || valueOrPropertyName.startsWith('{')) { // hard-coded literal array
         value = JSON.parse(valueOrPropertyName);
@@ -15,7 +29,6 @@ export default class extends HTMLElement {
         let current: Element = this;
         let tries = 100;
         do {
-          //console.log('current', current?.tagName ?? "node?");
           current = current.parentElement || (current.parentNode as ShadowRoot)?.host;
           if (!tries--) break;
         } while (current && current[valueOrPropertyName] === undefined)
@@ -27,9 +40,11 @@ export default class extends HTMLElement {
         value = current[valueOrPropertyName];
       }
 
-      if (typeof value === 'function') // if property is function, call it to get the value
+      // if property is function, call it to get the value
+      if (typeof value === 'function')
         value = value();
 
+      // iterate on the value
       if (Array.isArray(value)) {
         const rendered = value.map(item => html.replace(variableName, item));
         this.insertAdjacentHTML("beforeend", rendered.join(""));

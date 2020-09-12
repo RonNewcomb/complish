@@ -1,31 +1,28 @@
 export default class extends HTMLElement {
+    static get observedAttributes() { return ['name', 'classes']; }
     constructor() {
         super();
-        this.value = {
-            name: "",
-            classes: "",
-        };
-        console.log("CONSTRUCTOR");
-        this.attachShadow({ mode: "open" }).append(template);
+        this.attachShadow({ mode: "open" }).innerHTML = template;
     }
-    static get observedAttributes() {
-        return ["name", "classes"];
-    }
+    get name() { console.log('getter'); return this.getAttribute('name') || ""; }
+    set name(v) { console.log('setter'); this.setAttribute('name', v); this.render(); }
+    get classes() { console.log('getter'); return this.getAttribute('classes') || ""; }
+    set classes(v) { console.log('setter'); this.setAttribute('classes', v); this.render(); }
     connectedCallback() {
         console.log("connectedCallback");
         this.render();
     }
-    attributeChangedCallback(name, oldValue, newValue) {
-        console.log("attributecanged", name);
-        if (oldValue !== newValue)
-            this.value[name] = newValue;
-        this.render();
+    attributeChangedCallback(attr, oldValue, newValue) {
+        console.log("attributecanged", attr);
+        if (oldValue === newValue)
+            return;
+        this[attr] = newValue;
     }
     render() {
         console.log("rendering");
         const r = this.shadowRoot;
-        r.querySelector("#name").innerHTML = this.value.name;
-        r.querySelector("#classes").className = this.value.classes;
+        r.querySelector("#name").innerHTML = this.name;
+        r.querySelector("#classes").className = this.classes;
     }
 }
 const template = ` 

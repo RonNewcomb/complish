@@ -1,11 +1,20 @@
 export default class extends HTMLElement {
     constructor() {
-        super();
         try {
+            super();
             const html = this.innerHTML;
             this.innerHTML = '';
-            const variableName = new RegExp("{{" + this.attributes[0].name + "}}", "g");
-            let valueOrPropertyName = this.attributes[0].value;
+            let attr = null;
+            let a = 0;
+            do {
+                attr = this.attributes[a];
+            } while (['class', 'style'].includes(attr.name));
+            if (!attr) {
+                console.log("for-each lacks attribute that isn't class or style");
+                return;
+            }
+            const variableName = new RegExp("{{" + attr.name + "}}", "g");
+            let valueOrPropertyName = attr.value;
             let value;
             if (valueOrPropertyName.startsWith('[') || valueOrPropertyName.startsWith('{')) {
                 value = JSON.parse(valueOrPropertyName);
