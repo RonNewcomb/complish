@@ -2,20 +2,16 @@
 const alreadyLoadingTheFirstInstance = {};
 
 export const scanChildren = (element: Element): Promise<any> => {
-    //console.log(element.tagName, "showing children", element.children.length + (element.shadowRoot ? element.shadowRoot.children.length : 0));
     const allChildren = Array.from(element.children).concat(Array.from(element.shadowRoot?.children || []));
     return Promise.all(allChildren.map(child => child.tagName.includes("-") ? loadHtml(child) : scanChildren(child)));
 }
 
 export const loadHtml = async (element: Element): Promise<Element> => {
     let tag = element.tagName.toLowerCase();
-    //console.log(tag, 'considering');
     if (alreadyLoadingTheFirstInstance[tag]) {
-        //console.log(tag, "2nd instance pausing");
         await alreadyLoadingTheFirstInstance[tag];
-        //console.log(tag, "2nd instance");
         return loadInstance(element, tag);
-    } // else this is the first instance
+    } // else this IS the first instance
     alreadyLoadingTheFirstInstance[tag] = loadInstance(element, tag);
     return alreadyLoadingTheFirstInstance[tag];
 }
@@ -33,15 +29,28 @@ const loadInstance = async (element: Element, tag: string): Promise<Element> => 
 
     element.attachShadow({ mode: 'open' }).appendChild(template.content.cloneNode(true));
 
-    if (!customElements.get(tag)) {
-        let module = await import(`../html/${path}.js`).catch(console.error);
-        if (!module || !module.default) module = { default: class extends HTMLElement { } };
-        customElements.define(tag, module.default);
-    }
+    customElementsToDefine[tag] = true; // do this after all the attachShadow has happened
+    // if (!customElements.get(tag)) {
+    //     let module = await import(`../html/${path}.js`).catch(console.error);
+    //     if (!module || !module.default) module = { default: class extends HTMLElement { } };
+    //     customElements.define(tag, module.default);
+    // }
 
     scanChildren(element);
     return element;
 }
 
-export var LoadingHTML = scanChildren(document.body);
+const customElementsToDefine = {};
 
+export var LoadingHTML = scanChildren(document.body).then(_ =>
+    Promise.all(
+        Object.keys(customElementsToDefine).map(async tag => {
+            let path = tag.replace(/--/g, "/");
+            //console.log("looking for", tag);
+            let module = await import(`../html/${path}.js`).catch(console.error);
+            if (!module || !module.default) module = { default: class extends HTMLElement { } };
+            customElements.define(tag, module.default);
+            //console.log("Defined", tag);
+            return tag;
+        }))
+);

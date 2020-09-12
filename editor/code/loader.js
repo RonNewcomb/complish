@@ -22,14 +22,17 @@ const loadInstance = async (element, tag) => {
         document.head.appendChild(template);
     }
     element.attachShadow({ mode: 'open' }).appendChild(template.content.cloneNode(true));
-    if (!customElements.get(tag)) {
-        let module = await import(`../html/${path}.js`).catch(console.error);
-        if (!module || !module.default)
-            module = { default: class extends HTMLElement {
-                } };
-        customElements.define(tag, module.default);
-    }
+    customElementsToDefine[tag] = true;
     scanChildren(element);
     return element;
 };
-export var LoadingHTML = scanChildren(document.body);
+const customElementsToDefine = {};
+export var LoadingHTML = scanChildren(document.body).then(_ => Promise.all(Object.keys(customElementsToDefine).map(async (tag) => {
+    let path = tag.replace(/--/g, "/");
+    let module = await import(`../html/${path}.js`).catch(console.error);
+    if (!module || !module.default)
+        module = { default: class extends HTMLElement {
+            } };
+    customElements.define(tag, module.default);
+    return tag;
+})));

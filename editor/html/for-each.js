@@ -7,7 +7,7 @@ export default class extends HTMLElement {
             const variableName = new RegExp("{{" + this.attributes[0].name + "}}", "g");
             let valueOrPropertyName = this.attributes[0].value;
             let value;
-            if (valueOrPropertyName.startsWith('[')) {
+            if (valueOrPropertyName.startsWith('[') || valueOrPropertyName.startsWith('{')) {
                 value = JSON.parse(valueOrPropertyName);
             }
             else if (valueOrPropertyName.match(/^[0123456789]/)) {
@@ -50,7 +50,6 @@ export default class extends HTMLElement {
             }
             else {
                 console.log("for-each received unknown value:", value);
-                return;
             }
         }
         catch (e) {

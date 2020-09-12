@@ -1,4 +1,3 @@
-
 export default class extends HTMLElement {
   constructor() {
     super();
@@ -8,7 +7,7 @@ export default class extends HTMLElement {
       const variableName = new RegExp("{{" + this.attributes[0].name + "}}", "g");
       let valueOrPropertyName = this.attributes[0].value;
       let value: any;
-      if (valueOrPropertyName.startsWith('[')) { // hard-coded literal array
+      if (valueOrPropertyName.startsWith('[') || valueOrPropertyName.startsWith('{')) { // hard-coded literal array
         value = JSON.parse(valueOrPropertyName);
       } else if (valueOrPropertyName.match(/^[0123456789]/)) { // hard-coded number
         value = parseInt(valueOrPropertyName);
@@ -47,7 +46,6 @@ export default class extends HTMLElement {
           this.insertAdjacentHTML("beforeend", html);
       } else {
         console.log("for-each received unknown value:", value);
-        return;
       }
     } catch (e) {
       console.error(e);
