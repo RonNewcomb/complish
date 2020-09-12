@@ -18,6 +18,18 @@ export default class ModalDialogs extends HTMLElement {
         this.innerHTML = styles;
     }
 }
+const template = (message, buttonLabels) => `
+<div>
+  <div class="overlay"></div>
+  <div class="panel modal-dialog">
+    <div>${message}</div>
+    <div style="text-align: right">
+<for-each iter='buttons'>
+        <button>{{iter}}</button>
+      </for-each>
+    </div>
+  </div>
+</div> `;
 const styles = `<style>
 .modal-dialog {
   position: fixed;
@@ -49,15 +61,3 @@ const styles = `<style>
 }
 </style>
 `;
-const template = (message, buttonLabels) => `
-<div>
-<div class="overlay"></div>
-<div class="panel modal-dialog">
-  <div>${message}</div>
-  <div style="text-align: right">
-    <for-each iter='buttons'>
-      <button>{{iter}}</button>
-    </for-each>
-  </div>
-</div>
-</div> `;

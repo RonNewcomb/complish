@@ -1,39 +1,35 @@
-
-export default class extends HTMLElement {
+export default class TitledPanel extends HTMLElement {
   static get observedAttributes() { return ['name', 'classes'] }
 
   constructor() {
     super();
-    this.attachShadow({ mode: "open" }).innerHTML = template;
-
+    this.attachShadow({ mode: "open" }).appendChild(template!.content.cloneNode(true));
   }
 
   get name() { console.log('getter'); return this.getAttribute('name') || ""; }
-  set name(v) { console.log('setter'); this.setAttribute('name', v); this.render(); }
+  set name(v) { console.log('setter'); this.setAttribute('name', v); TitledPanel.render(this); }
   get classes() { console.log('getter'); return this.getAttribute('classes') || ""; }
-  set classes(v) { console.log('setter'); this.setAttribute('classes', v); this.render(); }
+  set classes(v) { console.log('setter'); this.setAttribute('classes', v); TitledPanel.render(this); }
 
   connectedCallback() {
     console.log("connectedCallback");
-    this.render();
+    TitledPanel.render(this);
   }
 
   attributeChangedCallback(attr: string, oldValue: string, newValue: string) {
     console.log("attributecanged", attr);
-    if (oldValue === newValue) return;
-    this[attr] = newValue;
+    if (oldValue !== newValue) this[attr] = newValue; // yes this calls the settor
   }
 
-  render() {
+  static render({ name, classes, shadowRoot }: TitledPanel) {
     console.log("rendering");
-    const r = this.shadowRoot!;
-    r.querySelector("#name")!.innerHTML = this.name;
-    r.querySelector("#classes")!.className = this.classes;
+    shadowRoot!.querySelector("#name")!.innerHTML = name;
+    shadowRoot!.querySelector("#classes")!.className = classes;
   }
-
 }
 
-const template = /*html*/` 
+const template = new DOMParser().parseFromString(/*html*/` 
+<template>
 <div class="panel">
   <div class="hitbox">
     <div class="peekaboo" id="name"></div>
@@ -71,4 +67,4 @@ const template = /*html*/`
   .panel:hover .peekaboo {
     transform: scaleY(1);
   }
-   </style> `;
+   </style></template>`, 'text/html').querySelector('template');
