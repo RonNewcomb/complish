@@ -1,69 +1,45 @@
-"use strict";
+export const getValueFromAncestorProperty = (child, valueOrPropertyName) => {
+    let tries = 100;
+    do {
+        child = child.parentElement || child.parentNode?.host;
+    } while (child && child[valueOrPropertyName] === undefined && --tries);
+    child = child || window;
+    if (child[valueOrPropertyName] === undefined)
+        console.log("Can't find ancestor with a property called", valueOrPropertyName);
+    return child[valueOrPropertyName];
+};
 customElements.define('for-each', class extends HTMLElement {
     constructor() {
-        try {
-            super();
-            const html = this.innerHTML;
-            this.innerHTML = '';
-            let attr = null;
-            let a = 0;
-            do {
-                attr = this.attributes[a];
-            } while (['class', 'style'].includes(attr.name));
-            if (!attr) {
-                console.log("for-each lacks attribute that isn't class or style");
-                return;
-            }
-            const variableName = new RegExp("{{" + attr.name + "}}", "g");
-            let valueOrPropertyName = attr.value;
-            let value;
-            if (valueOrPropertyName.startsWith('[') || valueOrPropertyName.startsWith('{')) {
-                value = JSON.parse(valueOrPropertyName);
-            }
-            else if (valueOrPropertyName.match(/^[0123456789]/)) {
-                value = parseInt(valueOrPropertyName);
-            }
-            else {
-                let current = this;
-                let tries = 100;
-                do {
-                    current = current.parentElement || current.parentNode?.host;
-                    if (!tries--)
-                        break;
-                } while (current && current[valueOrPropertyName] === undefined);
-                current = current || window;
-                if (current[valueOrPropertyName] === undefined) {
-                    console.log("for-each can't find ancestor with a property called", valueOrPropertyName);
-                    return;
-                }
-                value = current[valueOrPropertyName];
-            }
-            if (typeof value === 'function')
-                value = value();
-            if (Array.isArray(value)) {
-                const rendered = value.map(item => html.replace(variableName, item));
-                this.insertAdjacentHTML("beforeend", rendered.join(""));
-            }
-            else if (typeof value === 'number') {
-                const rendered = [];
-                for (let i = 1; i <= value; i++)
-                    rendered.push(html.replace(variableName, i.toString()));
-                this.insertAdjacentHTML("beforeend", rendered.join(""));
-            }
-            else if (typeof value === 'object') {
-                const rendered = Object.keys(value).map(item => html.replace(variableName, item));
-                this.insertAdjacentHTML("beforeend", rendered.join(""));
-            }
-            else if (typeof value === 'boolean') {
-                if (!!value)
-                    this.insertAdjacentHTML("beforeend", html);
-            }
-            else {
-                console.log("for-each received unknown value:", value);
-            }
+        super();
+        const html = this.innerHTML;
+        this.innerHTML = '';
+        const attr = Array.from(this.attributes).filter(a => !['class', 'style'].includes(a.name))[0];
+        if (!attr) {
+            console.log("for-each lacks attribute that isn't class or style");
+            return;
         }
-        catch (e) {
-            console.error(e);
-        }
+        const variableName = new RegExp("{{" + attr.name + "}}", "g");
+        const literalValueOrPropertyName = attr.value;
+        const valueOrMethod = (literalValueOrPropertyName.startsWith('[') || literalValueOrPropertyName.startsWith('{'))
+            ? JSON.parse(literalValueOrPropertyName)
+            : (literalValueOrPropertyName.match(/^[0123456789]/))
+                ? parseInt(literalValueOrPropertyName)
+                : getValueFromAncestorProperty(this, literalValueOrPropertyName);
+        const value = (typeof valueOrMethod === 'function') ? valueOrMethod() : valueOrMethod;
+        const rendered = Array.isArray(value)
+            ? value.map(item => html.replace(variableName, item))
+            : (typeof value === 'number')
+                ? [...Array(value)].map((_, i) => html.replace(variableName, (i + 1).toString()))
+                : (typeof value === 'boolean')
+                    ? [!!value ? html : '']
+                    : (value === null)
+                        ? []
+                        : (typeof value === 'object')
+                            ? Object.keys(value).map(item => html.replace(variableName, item))
+                            : undefined;
+        if (rendered)
+            this.insertAdjacentHTML("beforeend", rendered.join(""));
+        else
+            console.log("for-each received unsupported value", value, "(typeof", typeof value + ")");
     }
 });
