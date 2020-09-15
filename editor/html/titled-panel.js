@@ -15,7 +15,6 @@ class TitledPanel extends HTMLElement {
     }
 }
 const render = ({ name, classes, shadowRoot }) => {
-    console.log("rendering");
     shadowRoot.querySelector("#name").innerHTML = name;
     shadowRoot.querySelector("#classes").className = classes;
 };
