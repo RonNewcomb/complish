@@ -18,7 +18,7 @@ namespace NUnitTest1
 			var parsedSentence = compiler.SyntaxParse.Sentence(sentence);
 
 			Assert.AreEqual(parsedSentence.SentenceType, Rs.FunctionDefinition);
-			File.WriteAllText(@"C:\me.txt", parsedSentence.PrintPyramid());
+			File.WriteAllText(@".\me.txt", parsedSentence.PrintPyramid());
 			Assert.AreEqual(parsedSentence.PrintPyramid(), @"
 	,DeFun
 	,DeFun
