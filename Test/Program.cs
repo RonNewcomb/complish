@@ -19,6 +19,7 @@ namespace Test
 
 			//if (returnCode != 0)
 			//	Console.Beep();
+			Console.WriteLine(my_args);
 		}
 
 		// ExtensionMethods /////////////////////////

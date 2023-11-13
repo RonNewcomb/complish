@@ -24,7 +24,7 @@ There's also some differences.
 * English doesn't nest more than a couple levels deep. Functional languages *hate* this!
 * Defining a verb is very rare in English while it comprises the majority of coding. 
 * Anonymous functions, where you define a new function at the same place you then use it, doesn't seem to fly in English. (And since lambdas are anonymous closures, well...)
-* No single paradigm -- OO, functional, imperative, rule, constraint -- fits perfectly
+* No single paradigm is a perfect fit: OO, functional, imperative, rule, constraint
 * Indistinguishable definite & indefinite gerundial phrases with zero parameters, since the article on the noun phrases decide it rather than a verb suffix (like empty parenthesis)
 * Tense and Gender seem to have little use. Aspect seems promising but English conflates the continuous with the progressive.
 
